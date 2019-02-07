@@ -1,2 +1,2 @@
-# klay
-Korean Language Analyzer
+# KLAY
+Korean Language AnalYzer
