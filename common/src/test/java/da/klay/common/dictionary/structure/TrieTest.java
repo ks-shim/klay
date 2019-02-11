@@ -1,4 +1,4 @@
-package da.klay.common.dictionary;
+package da.klay.common.dictionary.structure;
 
 import da.klay.common.dictionary.structure.Optimizer;
 import da.klay.common.dictionary.structure.Trie;
