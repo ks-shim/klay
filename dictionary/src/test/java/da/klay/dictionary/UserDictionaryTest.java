@@ -19,8 +19,8 @@ class UserDictionaryTest {
     }
 
     @Test
-    void lookup() {
-        CharSequence cs = ud.lookup("자연어");
+    void getFully() {
+        CharSequence cs = ud.getFully("자연어");
         assertEquals(Pos.NNG.name(), cs);
     }
 }
