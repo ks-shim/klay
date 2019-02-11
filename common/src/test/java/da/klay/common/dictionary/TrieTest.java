@@ -1,5 +1,6 @@
 package da.klay.common.dictionary;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.Test;
 import java.nio.file.Paths;
 
@@ -23,6 +24,7 @@ class TrieTest {
         //assertTrieContents(t, keys, vals);
     }
 
+    @Ignore
     @Test
     public void testReduce() throws Exception {
         Trie t = new Trie(true);
@@ -35,8 +37,23 @@ class TrieTest {
 
 
         TrieLoadSaveHelper.store(t, Paths.get("src/test/resources/defaultTrie.dic"));
+        CharSequence cs = t.getLastOnPath("트리케라톱스");
+        assertEquals("초식공룡", cs);
 
         t = t.reduce(new Optimizer());
         TrieLoadSaveHelper.store(t, Paths.get("src/test/resources/reducedTrie.dic"));
+        cs = t.getLastOnPath("트리케라톱스");
+        assertEquals("초식공룡", cs);
+    }
+
+    @Test
+    public void testLoadingDictionary() throws Exception {
+        Trie t = TrieLoadSaveHelper.load(Paths.get("src/test/resources/defaultTrie.dic"));
+        CharSequence cs = t.getLastOnPath("트리케라톱스");
+        assertEquals("초식공룡", cs);
+
+        t = TrieLoadSaveHelper.load(Paths.get("src/test/resources/defaultTrie.dic"));
+        cs = t.getLastOnPath("티라노사우르스");
+        assertEquals("육식공룡", cs);
     }
 }

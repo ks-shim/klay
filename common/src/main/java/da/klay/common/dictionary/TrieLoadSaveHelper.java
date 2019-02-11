@@ -13,9 +13,6 @@ public class TrieLoadSaveHelper {
         try (DataInputStream dis = new DataInputStream(
                 new BufferedInputStream(Files.newInputStream(filePath)))) {
 
-            String method = dis.readUTF().toUpperCase(Locale.ROOT);
-            if(method.indexOf('M') >= 0) throw new UnsupportedOperationException();
-
             return new Trie(dis);
         }
     }
