@@ -1,5 +1,8 @@
 package da.klay.common.dictionary;
 
+import da.klay.common.dictionary.structure.Optimizer;
+import da.klay.common.dictionary.structure.Trie;
+import da.klay.common.dictionary.structure.TrieLoadSaveHelper;
 import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.Test;
 import java.nio.file.Paths;

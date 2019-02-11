@@ -1,10 +1,8 @@
-package da.klay.common.dictionary;
+package da.klay.common.dictionary.structure;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Locale;
 
 public class TrieLoadSaveHelper {
 

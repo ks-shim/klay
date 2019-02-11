@@ -1,4 +1,4 @@
-package da.klay.common.dictionary;
+package da.klay.common.dictionary.structure;
 
 import java.io.DataInput;
 import java.io.DataOutput;

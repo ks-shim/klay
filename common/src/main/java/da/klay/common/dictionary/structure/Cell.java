@@ -1,4 +1,4 @@
-package da.klay.common.dictionary;
+package da.klay.common.dictionary.structure;
 
 /**
  * A Cell is a portion of a trie.
