@@ -1,2 +1,2 @@
 # KLAY
-Korean Language AnalYzer based on KOMORAN
+Korean Language AnalYzer using KOMORAN's dictionaries.
