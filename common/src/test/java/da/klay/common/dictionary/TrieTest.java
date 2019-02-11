@@ -21,7 +21,6 @@ class TrieTest {
         assertEquals(0, t.root);
         assertEquals(18, t.rows.size());
         assertEquals(2, t.cmds.size());
-        //assertTrieContents(t, keys, vals);
     }
 
     @Ignore
