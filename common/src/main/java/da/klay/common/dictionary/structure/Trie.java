@@ -278,7 +278,7 @@ public class Trie {
      * @param key the key
      * @param cmd the patch command
      */
-    void add(CharSequence key, CharSequence cmd) {
+    public void add(CharSequence key, CharSequence cmd) {
         if (key == null || cmd == null) {
             return;
         }
