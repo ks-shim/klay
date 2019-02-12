@@ -14,12 +14,8 @@ import java.nio.file.Path;
 
 public class UserTrieBaseDictionary extends AbstractTrieBaseDictionary {
 
-    public UserTrieBaseDictionary(Path filePath) throws Exception {
-        this(filePath, StandardCharsets.UTF_8);
-    }
-
-    public UserTrieBaseDictionary(Path filePath, Charset cs) throws Exception {
-        super(new DictionaryTextSource(filePath, cs));
+    public UserTrieBaseDictionary(DictionaryTextSource source) throws Exception {
+        super(source);
     }
 
     @Override

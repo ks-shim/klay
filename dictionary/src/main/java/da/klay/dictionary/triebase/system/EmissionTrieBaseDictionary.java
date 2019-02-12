@@ -1,19 +1,19 @@
-package da.klay.dictionary.triebase.user;
+package da.klay.dictionary.triebase.system;
 
 import da.klay.common.dictionary.structure.Trie;
-import da.klay.dictionary.triebase.AbstractTrieBaseDictionary;
+import da.klay.common.pos.Pos;
+import da.klay.dictionary.param.DictionaryBinarySource;
 import da.klay.dictionary.param.DictionaryTextSource;
+import da.klay.dictionary.triebase.AbstractTrieBaseDictionary;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class FWDUserTrieBaseDictionary extends AbstractTrieBaseDictionary {
+public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
 
-    public FWDUserTrieBaseDictionary(DictionaryTextSource source) throws Exception {
+    public EmissionTrieBaseDictionary(DictionaryTextSource source) throws Exception {
         super(source);
     }
 
@@ -29,18 +29,23 @@ public class FWDUserTrieBaseDictionary extends AbstractTrieBaseDictionary {
             String line = null;
             while((line = in.readLine()) != null) {
                 line = line.trim();
-                if(line.isEmpty() || line.startsWith("#")) continue;
+                if(line.isEmpty()) continue;
 
                 int tabIndex = line.indexOf('\t');
                 if(tabIndex < 0 || tabIndex+1 >= line.length()) continue;
 
-                String eojeol = line.substring(0, tabIndex);
-                String answer = line.substring(tabIndex+1).replaceAll("\\s+"," ");
-
-                trie.add(eojeol, answer);
+                String morph;
+                String data;
+                //trie.add(word, pos);
             }
         }
 
         return trie;
+    }
+
+    //private void vali
+    @Override
+    public Trie loadBinary(DictionaryBinarySource source) throws Exception {
+        return super.loadBinary(source);
     }
 }

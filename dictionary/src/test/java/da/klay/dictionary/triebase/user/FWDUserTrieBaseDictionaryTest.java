@@ -1,8 +1,10 @@
 package da.klay.dictionary.triebase.user;
 
+import da.klay.dictionary.param.DictionaryTextSource;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -14,7 +16,7 @@ class FWDUserTrieBaseDictionaryTest {
     @BeforeAll
     static void before() throws Exception {
         Path path = Paths.get("src/test/resources/test.fwd.user");
-        fud = new FWDUserTrieBaseDictionary(path);
+        fud = new FWDUserTrieBaseDictionary(new DictionaryTextSource(path, StandardCharsets.UTF_8));
     }
 
     @Test
