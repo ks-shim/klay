@@ -1,11 +1,11 @@
-package da.klay.dictionary;
+package da.klay.dictionary.triebase;
 
 import da.klay.common.dictionary.structure.Trie;
 import da.klay.dictionary.param.DictionaryBinarySource;
 import da.klay.dictionary.param.DictionaryBinaryTarget;
 import da.klay.dictionary.param.DictionaryTextSource;
 
-public interface Dictionary {
+public interface TrieBaseDictionary {
 
     Trie loadText(DictionaryTextSource source) throws Exception;
 

@@ -1,7 +1,7 @@
-package da.klay.dictionary.user;
+package da.klay.dictionary.triebase.user;
 
 import da.klay.common.dictionary.structure.Trie;
-import da.klay.dictionary.AbstractDictionary;
+import da.klay.dictionary.triebase.AbstractTrieBaseDictionary;
 import da.klay.dictionary.param.DictionaryTextSource;
 
 import java.io.BufferedReader;
@@ -11,13 +11,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class FWDUserDictionary extends AbstractDictionary {
+public class FWDUserTrieBaseDictionary extends AbstractTrieBaseDictionary {
 
-    public FWDUserDictionary(Path filePath) throws Exception {
+    public FWDUserTrieBaseDictionary(Path filePath) throws Exception {
         this(filePath, StandardCharsets.UTF_8);
     }
 
-    public FWDUserDictionary(Path filePath, Charset cs) throws Exception {
+    public FWDUserTrieBaseDictionary(Path filePath, Charset cs) throws Exception {
         super(new DictionaryTextSource(filePath, cs));
     }
 

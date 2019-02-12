@@ -1,4 +1,4 @@
-package da.klay.dictionary;
+package da.klay.dictionary.triebase;
 
 import da.klay.common.dictionary.structure.Trie;
 import da.klay.dictionary.param.DictionaryBinarySource;
@@ -7,15 +7,15 @@ import da.klay.dictionary.param.DictionaryTextSource;
 import lombok.Data;
 
 @Data
-public abstract class AbstractDictionary implements Dictionary {
+public abstract class AbstractTrieBaseDictionary implements TrieBaseDictionary {
 
     protected final Trie trie;
 
-    protected AbstractDictionary(DictionaryTextSource source) throws Exception {
+    protected AbstractTrieBaseDictionary(DictionaryTextSource source) throws Exception {
         this.trie = loadText(source);
     }
 
-    protected AbstractDictionary(DictionaryBinarySource source) throws Exception {
+    protected AbstractTrieBaseDictionary(DictionaryBinarySource source) throws Exception {
         this.trie = loadBinary(source);
     }
 

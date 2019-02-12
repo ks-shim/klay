@@ -1,6 +1,5 @@
-package da.klay.dictionary.user;
+package da.klay.dictionary.triebase.user;
 
-import da.klay.common.pos.Pos;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -9,13 +8,13 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FWDUserDictionaryTest {
+class FWDUserTrieBaseDictionaryTest {
 
-    static FWDUserDictionary fud;
+    static FWDUserTrieBaseDictionary fud;
     @BeforeAll
     static void before() throws Exception {
         Path path = Paths.get("src/test/resources/test.fwd.user");
-        fud = new FWDUserDictionary(path);
+        fud = new FWDUserTrieBaseDictionary(path);
     }
 
     @Test
