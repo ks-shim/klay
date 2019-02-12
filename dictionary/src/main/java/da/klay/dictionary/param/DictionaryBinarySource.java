@@ -1,4 +1,4 @@
-package da.klay.dictionary;
+package da.klay.dictionary.param;
 
 import lombok.Data;
 

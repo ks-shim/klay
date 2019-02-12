@@ -2,7 +2,7 @@ package da.klay.dictionary.user;
 
 import da.klay.common.dictionary.structure.Trie;
 import da.klay.dictionary.AbstractDictionary;
-import da.klay.dictionary.DictionaryTextSource;
+import da.klay.dictionary.param.DictionaryTextSource;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

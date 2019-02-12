@@ -1,4 +1,4 @@
-package da.klay.dictionary;
+package da.klay.dictionary.param;
 
 import da.klay.common.dictionary.structure.Optimizer;
 import da.klay.common.dictionary.structure.Reduce;
