@@ -35,10 +35,10 @@ public class FWDUserDictionary extends AbstractDictionary {
                 if(line.isEmpty() || line.startsWith("#")) continue;
 
                 int tabIndex = line.indexOf('\t');
-                if(tabIndex < 0 || tabIndex >= line.length()) continue;
+                if(tabIndex < 0 || tabIndex+1 >= line.length()) continue;
 
                 String eojeol = line.substring(0, tabIndex);
-                String answer = line.substring(tabIndex).replaceAll("\\s+"," ");
+                String answer = line.substring(tabIndex+1).replaceAll("\\s+"," ");
 
                 trie.add(eojeol, answer);
             }
