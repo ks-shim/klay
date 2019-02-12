@@ -1,13 +1,14 @@
 package da.klay.dictionary.triebase;
 
 import da.klay.common.dictionary.structure.Trie;
+import da.klay.dictionary.Dictionary;
 import da.klay.dictionary.param.DictionaryBinarySource;
 import da.klay.dictionary.param.DictionaryBinaryTarget;
 import da.klay.dictionary.param.DictionaryTextSource;
 import lombok.Data;
 
 @Data
-public abstract class AbstractTrieBaseDictionary implements TrieBaseDictionary {
+public abstract class AbstractTrieBaseDictionary implements Dictionary<Trie, CharSequence> {
 
     protected final Trie trie;
 

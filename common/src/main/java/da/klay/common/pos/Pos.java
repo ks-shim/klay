@@ -7,7 +7,12 @@ public enum Pos {
     NP(2),
     VCP(3),
     VX(4),
-    END(45),
+    END(45) {
+        @Override
+        public String label() {
+            return '<' + name() + '>';
+        }
+    },
     NNB(5),
     NR(6),
     NNG(7),
@@ -20,7 +25,12 @@ public enum Pos {
     SL(14),
     IC(15),
     XsV(16),
-    START(17),
+    START(17) {
+        @Override
+        public String label() {
+            return '<' + name() + '>';
+        }
+    },
     SN(18),
     SO(19),
     SP(20),
@@ -52,5 +62,9 @@ public enum Pos {
     private int index;
     private Pos(int _index) {
         index = _index;
+    }
+
+    public String label() {
+        return name();
     }
 }

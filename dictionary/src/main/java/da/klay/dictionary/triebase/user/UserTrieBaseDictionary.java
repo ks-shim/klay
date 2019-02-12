@@ -22,6 +22,7 @@ public class UserTrieBaseDictionary extends AbstractTrieBaseDictionary {
         super(new DictionaryTextSource(filePath, cs));
     }
 
+    @Override
     public Trie loadText(DictionaryTextSource source) throws Exception {
 
         Trie trie = new Trie(true);
@@ -40,7 +41,7 @@ public class UserTrieBaseDictionary extends AbstractTrieBaseDictionary {
                 int tabIndex = line.lastIndexOf('\t');
                 if(tabIndex < 0) {
                     word = line;
-                    pos = Pos.NNP.name();
+                    pos = Pos.NNP.label();
                 } else {
                     word = line.substring(0, tabIndex);
                     pos = line.substring(tabIndex + 1);

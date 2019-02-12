@@ -21,6 +21,6 @@ class UserTrieBaseDictionaryTest {
     @Test
     void getFully() {
         CharSequence cs = ud.getFully("자연어");
-        assertEquals(Pos.NNG.name(), cs);
+        assertEquals(Pos.NNG.label(), cs);
     }
 }

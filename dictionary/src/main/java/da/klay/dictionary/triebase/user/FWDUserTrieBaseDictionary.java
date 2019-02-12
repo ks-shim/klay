@@ -21,6 +21,7 @@ public class FWDUserTrieBaseDictionary extends AbstractTrieBaseDictionary {
         super(new DictionaryTextSource(filePath, cs));
     }
 
+    @Override
     public Trie loadText(DictionaryTextSource source) throws Exception {
 
         Trie trie = new Trie(true);

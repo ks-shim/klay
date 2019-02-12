@@ -1,17 +1,17 @@
-package da.klay.dictionary.triebase;
+package da.klay.dictionary;
 
 import da.klay.common.dictionary.structure.Trie;
 import da.klay.dictionary.param.DictionaryBinarySource;
 import da.klay.dictionary.param.DictionaryBinaryTarget;
 import da.klay.dictionary.param.DictionaryTextSource;
 
-public interface TrieBaseDictionary {
+public interface Dictionary<T, K> {
 
-    Trie loadText(DictionaryTextSource source) throws Exception;
+    T loadText(DictionaryTextSource source) throws Exception;
 
-    Trie loadBinary(DictionaryBinarySource source) throws Exception;
+    T loadBinary(DictionaryBinarySource source) throws Exception;
 
     void save(DictionaryBinaryTarget target) throws Exception;
 
-    CharSequence getFully(CharSequence cs);
+    K getFully(CharSequence cs);
 }
