@@ -1,6 +1,7 @@
-package da.klay.dictionary;
+package da.klay.dictionary.user;
 
 import da.klay.common.pos.Pos;
+import da.klay.dictionary.user.UserDictionary;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
