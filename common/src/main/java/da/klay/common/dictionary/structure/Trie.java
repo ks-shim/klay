@@ -72,28 +72,23 @@ public class Trie {
      * @param key Description of the Parameter
      * @return The all value
      */
-    public CharSequence[] getAll(CharSequence key) {
-        int res[] = new int[key.length()];
+    public TrieResult[] getAll(CharSequence key, int from) {
+        int[] res = new int[key.length()];
+        int[] resPos = new int[key.length()];
         int resc = 0;
         Row now = getRow(root);
         int w;
-        StrEnum e = new StrEnum(key, forward);
+        StrEnum e = new StrEnum(key, from, forward);
         boolean br = false;
 
-        for (int i = 0; i < key.length() - 1; i++) {
+        int i = from;
+        for (; i < key.length() - 1; i++) {
             Character ch = e.next();
             w = now.getCmd(ch);
             if (w >= 0) {
-                int n = w;
-                for (int j = 0; j < resc; j++) {
-                    if (n == res[j]) {
-                        n = -1;
-                        break;
-                    }
-                }
-                if (n >= 0) {
-                    res[resc++] = n;
-                }
+                res[resc] = w;
+                resPos[resc] = i;
+                ++resc;
             }
             w = now.getRef(ch);
             if (w >= 0) {
@@ -106,27 +101,19 @@ public class Trie {
         if (br == false) {
             w = now.getCmd(e.next());
             if (w >= 0) {
-                int n = w;
-                for (int j = 0; j < resc; j++) {
-                    if (n == res[j]) {
-                        n = -1;
-                        break;
-                    }
-                }
-                if (n >= 0) {
-                    res[resc++] = n;
-                }
+                res[resc] = w;
+                resPos[resc] = i;
+                ++resc;
             }
         }
 
-        if (resc < 1) {
-            return null;
-        }
-        CharSequence R[] = new CharSequence[resc];
-        for (int j = 0; j < resc; j++) {
-            R[j] = cmds.get(res[j]);
-        }
-        return R;
+        if (resc < 1) return null;
+
+        TrieResult ret[] = new TrieResult[resc];
+        for (int j = 0; j < resc; j++)
+            ret[j] = new TrieResult(cmds.get(res[j]), from, resPos[j]);
+
+        return ret;
     }
 
     /**
@@ -210,6 +197,10 @@ public class Trie {
         return (cmd == -1) ? null : cmds.get(cmd);
     }
 
+    public TrieResult getLastOnPath(CharSequence key) {
+        return getLastOnPath(key, 0);
+    }
+
     /**
      * Return the element that is stored as last on a path associated with the
      * given key.
@@ -217,13 +208,15 @@ public class Trie {
      * @param key the key associated with the desired element
      * @return the last on path element
      */
-    public CharSequence getLastOnPath(CharSequence key) {
+    public TrieResult getLastOnPath(CharSequence key,
+                                    int from) {
         Row now = getRow(root);
         int w;
         CharSequence last = null;
-        StrEnum e = new StrEnum(key, forward);
+        StrEnum e = new StrEnum(key, from, forward);
 
-        for (int i = 0; i < key.length() - 1; i++) {
+        int i = from;
+        for (; i < key.length() - 1; i++) {
             Character ch = e.next();
             w = now.getCmd(ch);
             if (w >= 0) {
@@ -233,11 +226,11 @@ public class Trie {
             if (w >= 0) {
                 now = getRow(w);
             } else {
-                return last;
+                return new TrieResult(last, from, i);
             }
         }
         w = now.getCmd(e.next());
-        return (w >= 0) ? cmds.get(w) : last;
+        return new TrieResult((w >= 0) ? cmds.get(w) : last, from, i);
     }
 
     /**
@@ -337,19 +330,25 @@ public class Trie {
         int from;
         int by;
 
+        StrEnum(CharSequence s,
+                boolean up) {
+            this(s, 0, up);
+        }
         /**
          * Constructor for the StrEnum object
          *
          * @param s Description of the Parameter
          * @param up Description of the Parameter
          */
-        StrEnum(CharSequence s, boolean up) {
+        StrEnum(CharSequence s,
+                int from,
+                boolean up) {
             this.s = s;
             if (up) {
-                from = 0;
+                this.from = from;
                 by = 1;
             } else {
-                from = s.length() - 1;
+                this.from = s.length() - 1 - from;
                 by = -1;
             }
         }

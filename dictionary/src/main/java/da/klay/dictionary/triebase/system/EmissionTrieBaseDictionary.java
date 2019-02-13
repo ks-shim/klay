@@ -39,7 +39,7 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
                 int tabIndex = line.indexOf('\t');
                 if(tabIndex < 0 || tabIndex+1 >= line.length()) continue;
 
-                String morph = Joiner.on("").join(JasoParser.parse(line.substring(0, tabIndex)));
+                String morph = JasoParser.parseAsString(line.substring(0, tabIndex));
                 String data = validate(line.substring(tabIndex+1)) ;
 
                 trie.add(morph, data);

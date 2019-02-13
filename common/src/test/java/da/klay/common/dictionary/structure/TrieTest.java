@@ -1,8 +1,5 @@
 package da.klay.common.dictionary.structure;
 
-import da.klay.common.dictionary.structure.Optimizer;
-import da.klay.common.dictionary.structure.Trie;
-import da.klay.common.dictionary.structure.TrieLoadSaveHelper;
 import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.Test;
 import java.nio.file.Paths;
@@ -39,23 +36,23 @@ class TrieTest {
 
 
         TrieLoadSaveHelper.store(t, Paths.get("src/test/resources/defaultTrie.dic"));
-        CharSequence cs = t.getLastOnPath("트리케라톱스");
-        assertEquals("초식공룡", cs);
+        TrieResult cs = t.getLastOnPath("트리케라톱스");
+        assertEquals("초식공룡", cs.getData());
 
         t = t.reduce(new Optimizer());
         TrieLoadSaveHelper.store(t, Paths.get("src/test/resources/reducedTrie.dic"));
         cs = t.getLastOnPath("트리케라톱스");
-        assertEquals("초식공룡", cs);
+        assertEquals("초식공룡", cs.getData());
     }
 
     @Test
     public void testLoadingDictionary() throws Exception {
         Trie t = TrieLoadSaveHelper.load(Paths.get("src/test/resources/defaultTrie.dic"));
-        CharSequence cs = t.getLastOnPath("트리케라톱스");
-        assertEquals("초식공룡", cs);
+        TrieResult cs = t.getLastOnPath("트리케라톱스");
+        assertEquals("초식공룡", cs.getData());
 
         t = TrieLoadSaveHelper.load(Paths.get("src/test/resources/defaultTrie.dic"));
         cs = t.getLastOnPath("티라노사우르스");
-        assertEquals("육식공룡", cs);
+        assertEquals("육식공룡", cs.getData());
     }
 }

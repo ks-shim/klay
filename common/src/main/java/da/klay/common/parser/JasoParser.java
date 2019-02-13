@@ -1,6 +1,7 @@
 package da.klay.common.parser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class JasoParser {
@@ -16,9 +17,8 @@ public class JasoParser {
             0x313e, 0x313f, 0x3140, 0x3141, 0x3142, 0x3144, 0x3145, 0x3146,
             0x3147, 0x3148, 0x314a, 0x314b, 0x314c, 0x314d, 0x314e};
 
-    public static List<Character> parse(String s) {
-
-        List<Character> jasoList = new ArrayList<>();
+    public static String parseAsString(String s) {
+        StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < s.length(); i++) {
             char ch = s.charAt(i);
@@ -26,7 +26,7 @@ public class JasoParser {
             Character.UnicodeBlock block = Character.UnicodeBlock.of(ch);
             // cases no needed to parse ...
             if (block != Character.UnicodeBlock.HANGUL_SYLLABLES) {
-                jasoList.add(ch);
+                sb.append(ch);
                 continue;
             }
 
@@ -35,11 +35,21 @@ public class JasoParser {
             tmp = tmp % (21 * 28);
             int joong = tmp / 28;
             int jong = tmp % 28;
-            jasoList.add(CHO_SUNG[cho]);
-            jasoList.add(JOONG_SUNG[joong]);
-            if (jong != 0) jasoList.add(JONG_SUNG[jong]);
+            sb.append(CHO_SUNG[cho]);
+            sb.append(JOONG_SUNG[joong]);
+            if (jong != 0) sb.append(JONG_SUNG[jong]);
         }
 
-        return jasoList;
+        return sb.toString();
+    }
+
+    public static List<Character> parse(String s) {
+        List<Character> list = new ArrayList<>();
+
+        s = parseAsString(s);
+        for(int i=0; i<s.length(); i++)
+            list.add(s.charAt(i));
+
+        return list;
     }
 }
