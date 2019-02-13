@@ -12,6 +12,7 @@
     <modules>
         <module>common</module>
         <module>dictionary</module>
+        <module>core</module>
     </modules>
 
     <properties>
