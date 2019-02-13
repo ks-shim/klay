@@ -45,4 +45,14 @@ public abstract class AbstractMapBaseDictionary
     public Map<CharSequence, Integer> getFully(CharSequence cs) {
         return map.get(cs);
     }
+
+    @Override
+    public Map<CharSequence, Integer> getLastOnPath(CharSequence cs) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Map<CharSequence, Integer>[] getAll(CharSequence cs) {
+        throw new UnsupportedOperationException();
+    }
 }

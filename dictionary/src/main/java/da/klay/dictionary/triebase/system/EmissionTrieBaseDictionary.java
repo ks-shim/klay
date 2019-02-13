@@ -1,8 +1,13 @@
 package da.klay.dictionary.triebase.system;
 
+import com.google.common.base.Joiner;
 import da.klay.common.dictionary.structure.Trie;
+import da.klay.common.dictionary.structure.TrieLoadSaveHelper;
+import da.klay.common.parser.JasoParser;
 import da.klay.common.pos.Pos;
+import da.klay.dictionary.exception.DataFormatException;
 import da.klay.dictionary.param.DictionaryBinarySource;
+import da.klay.dictionary.param.DictionaryBinaryTarget;
 import da.klay.dictionary.param.DictionaryTextSource;
 import da.klay.dictionary.triebase.AbstractTrieBaseDictionary;
 
@@ -34,16 +39,27 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
                 int tabIndex = line.indexOf('\t');
                 if(tabIndex < 0 || tabIndex+1 >= line.length()) continue;
 
-                String morph;
-                String data;
-                //trie.add(word, pos);
+                String morph = Joiner.on("").join(JasoParser.parse(line.substring(0, tabIndex)));
+                String data = validate(line.substring(tabIndex+1)) ;
+
+                trie.add(morph, data);
             }
         }
 
         return trie;
     }
 
-    //private void vali
+    private String validate(String data) throws DataFormatException {
+
+        String[] poses = data.split("\t");
+        for(int i=0; i<poses.length; i++) {
+            String[] values = poses[i].trim().split(":");
+
+            if(values.length != 2 || values[0].isEmpty() || values[1].isEmpty()) throw new DataFormatException();
+        }
+        return data;
+    }
+
     @Override
     public Trie loadBinary(DictionaryBinarySource source) throws Exception {
         return super.loadBinary(source);

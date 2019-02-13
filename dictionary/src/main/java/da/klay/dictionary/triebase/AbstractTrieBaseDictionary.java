@@ -1,6 +1,10 @@
 package da.klay.dictionary.triebase;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import da.klay.common.dictionary.structure.Trie;
+import da.klay.common.dictionary.structure.TrieLoadSaveHelper;
 import da.klay.dictionary.Dictionary;
 import da.klay.dictionary.param.DictionaryBinarySource;
 import da.klay.dictionary.param.DictionaryBinaryTarget;
@@ -18,11 +22,22 @@ public abstract class AbstractTrieBaseDictionary implements Dictionary<Trie, Cha
 
     protected AbstractTrieBaseDictionary(DictionaryBinarySource source) throws Exception {
         this.trie = loadBinary(source);
+
     }
 
     @Override
     public CharSequence getFully(CharSequence cs) {
         return trie.getFully(cs);
+    }
+
+    @Override
+    public CharSequence getLastOnPath(CharSequence cs) {
+        return trie.getLastOnPath(cs);
+    }
+
+    @Override
+    public CharSequence[] getAll(CharSequence cs) {
+        return trie.getAll(cs);
     }
 
     @Override
@@ -37,6 +52,6 @@ public abstract class AbstractTrieBaseDictionary implements Dictionary<Trie, Cha
 
     @Override
     public void save(DictionaryBinaryTarget target) throws Exception {
-        throw new UnsupportedOperationException();
+        TrieLoadSaveHelper.store(trie, target.getFilePath());
     }
 }

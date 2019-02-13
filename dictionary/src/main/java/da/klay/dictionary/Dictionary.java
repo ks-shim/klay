@@ -14,4 +14,8 @@ public interface Dictionary<T, K> {
     void save(DictionaryBinaryTarget target) throws Exception;
 
     K getFully(CharSequence cs);
+
+    K getLastOnPath(CharSequence cs);
+
+    K[] getAll(CharSequence cs);
 }
