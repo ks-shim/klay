@@ -43,6 +43,41 @@ public class JasoParser {
         return sb.toString();
     }
 
+    public static String parseAsString(String s,
+                                       List<Integer> syllablePositions) {
+        StringBuilder sb = new StringBuilder();
+
+        int pos = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+
+            Character.UnicodeBlock block = Character.UnicodeBlock.of(ch);
+            // cases no needed to parse ...
+            if (block != Character.UnicodeBlock.HANGUL_SYLLABLES) {
+                sb.append(ch);
+                syllablePositions.add(pos++, i);
+                continue;
+            }
+
+            int tmp = ch - 0xAC00;
+            int cho = tmp / (21 * 28);
+            tmp = tmp % (21 * 28);
+            int joong = tmp / 28;
+            int jong = tmp % 28;
+
+            sb.append(CHO_SUNG[cho]);
+            syllablePositions.add(pos++, i);
+            sb.append(JOONG_SUNG[joong]);
+            syllablePositions.add(pos++, i);
+            if (jong != 0) {
+                sb.append(JONG_SUNG[jong]);
+                syllablePositions.add(pos++, i);
+            }
+        }
+
+        return sb.toString();
+    }
+
     public static List<Character> parse(String s) {
         List<Character> list = new ArrayList<>();
 
