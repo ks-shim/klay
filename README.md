@@ -3,4 +3,5 @@ Korean Language AnalYzer using KOMORAN's dictionaries.
 - korean morphology analysis
 - 한국어 형태소 분석기 입니다.
 - 개발 시작일 : 2019. 02 ~
-- KOMORAN의 사전을 이용하며, 형태소 분석 방식은 상이합니다.
+- KOMORAN의 사전을 기반으로 분석하며, 사용하는 Data structure와 분석 방식은 상이합니다.
+- Data Structure : Lucene의 Trie를 사용합니다.
