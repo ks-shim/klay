@@ -28,7 +28,7 @@ public class TransitionMapBaseDictionary extends AbstractMapBaseDictionary {
     }
 
     @Override
-    public Map<CharSequence, Map<CharSequence, Integer>> loadText(DictionaryTextSource source) throws Exception {
+    protected Map<CharSequence, Map<CharSequence, Integer>> loadText(DictionaryTextSource source) throws Exception {
 
         Map<CharSequence, Map<CharSequence, Integer>> map = new HashMap<>();
 
@@ -67,7 +67,7 @@ public class TransitionMapBaseDictionary extends AbstractMapBaseDictionary {
     }
 
     @Override
-    public Map<CharSequence, Map<CharSequence, Integer>> loadBinary(DictionaryBinarySource source) throws Exception {
+    protected Map<CharSequence, Map<CharSequence, Integer>> loadBinary(DictionaryBinarySource source) throws Exception {
 
         Map<CharSequence, Map<CharSequence, Integer>> map;
 

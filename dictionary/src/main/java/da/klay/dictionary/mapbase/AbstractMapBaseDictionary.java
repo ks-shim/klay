@@ -23,15 +23,9 @@ public abstract class AbstractMapBaseDictionary
         this.map = loadBinary(source);
     }
 
-    @Override
-    public Map<CharSequence, Map<CharSequence, Integer>> loadText(DictionaryTextSource source) throws Exception {
-        throw new UnsupportedOperationException();
-    }
+    protected abstract Map<CharSequence, Map<CharSequence, Integer>> loadText(DictionaryTextSource source) throws Exception;
 
-    @Override
-    public Map<CharSequence, Map<CharSequence, Integer>> loadBinary(DictionaryBinarySource source) throws Exception {
-        throw new UnsupportedOperationException();
-    }
+    protected abstract Map<CharSequence, Map<CharSequence, Integer>> loadBinary(DictionaryBinarySource source) throws Exception;
 
     @Override
     public void save(DictionaryBinaryTarget target) throws Exception {

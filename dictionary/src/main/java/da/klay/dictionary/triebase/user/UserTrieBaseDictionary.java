@@ -2,6 +2,7 @@ package da.klay.dictionary.triebase.user;
 
 import da.klay.common.dictionary.structure.Trie;
 import da.klay.common.pos.Pos;
+import da.klay.dictionary.param.DictionaryBinarySource;
 import da.klay.dictionary.triebase.AbstractTrieBaseDictionary;
 import da.klay.dictionary.param.DictionaryTextSource;
 
@@ -19,7 +20,7 @@ public class UserTrieBaseDictionary extends AbstractTrieBaseDictionary {
     }
 
     @Override
-    public Trie loadText(DictionaryTextSource source) throws Exception {
+    protected Trie loadText(DictionaryTextSource source) throws Exception {
 
         Trie trie = new Trie(true);
 
@@ -48,5 +49,10 @@ public class UserTrieBaseDictionary extends AbstractTrieBaseDictionary {
         }
 
         return trie;
+    }
+
+    @Override
+    protected Trie loadBinary(DictionaryBinarySource source) throws Exception {
+        throw new UnsupportedOperationException();
     }
 }

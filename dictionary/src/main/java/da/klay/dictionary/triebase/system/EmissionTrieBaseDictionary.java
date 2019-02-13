@@ -23,7 +23,7 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
     }
 
     @Override
-    public Trie loadText(DictionaryTextSource source) throws Exception {
+    protected Trie loadText(DictionaryTextSource source) throws Exception {
 
         Trie trie = new Trie(true);
 
@@ -61,7 +61,7 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
     }
 
     @Override
-    public Trie loadBinary(DictionaryBinarySource source) throws Exception {
-        return super.loadBinary(source);
+    protected Trie loadBinary(DictionaryBinarySource source) throws Exception {
+        return TrieLoadSaveHelper.load(source.getFilePath());
     }
 }

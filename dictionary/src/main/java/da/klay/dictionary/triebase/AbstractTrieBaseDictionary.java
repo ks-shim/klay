@@ -40,15 +40,9 @@ public abstract class AbstractTrieBaseDictionary implements Dictionary<Trie, Cha
         return trie.getAll(cs);
     }
 
-    @Override
-    public Trie loadText(DictionaryTextSource source) throws Exception {
-        throw new UnsupportedOperationException();
-    }
+    protected abstract Trie loadText(DictionaryTextSource source) throws Exception;
 
-    @Override
-    public Trie loadBinary(DictionaryBinarySource source) throws Exception {
-        throw new UnsupportedOperationException();
-    }
+    protected abstract Trie loadBinary(DictionaryBinarySource source) throws Exception;
 
     @Override
     public void save(DictionaryBinaryTarget target) throws Exception {
