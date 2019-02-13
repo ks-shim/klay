@@ -18,6 +18,10 @@ public abstract class AbstractTrieBaseDictionary implements Dictionary<CharSeque
         this.trie = loadText(source);
     }
 
+    protected AbstractTrieBaseDictionary(DictionaryTextSource[] sources) throws Exception {
+        this.trie = loadText(sources);
+    }
+
     protected AbstractTrieBaseDictionary(DictionaryBinarySource source) throws Exception {
         this.trie = loadBinary(source);
 
@@ -50,6 +54,8 @@ public abstract class AbstractTrieBaseDictionary implements Dictionary<CharSeque
     }
 
     protected abstract Trie loadText(DictionaryTextSource source) throws Exception;
+
+    protected abstract Trie loadText(DictionaryTextSource[] sources) throws Exception;
 
     protected abstract Trie loadBinary(DictionaryBinarySource source) throws Exception;
 

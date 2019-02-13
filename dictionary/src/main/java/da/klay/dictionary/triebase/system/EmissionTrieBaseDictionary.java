@@ -21,6 +21,10 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
         super(source);
     }
 
+    public EmissionTrieBaseDictionary(DictionaryTextSource[] sources) throws Exception {
+        super(sources);
+    }
+
     public EmissionTrieBaseDictionary(DictionaryBinarySource source) throws Exception {
         super(source);
     }
@@ -29,7 +33,12 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
     protected Trie loadText(DictionaryTextSource source) throws Exception {
 
         Trie trie = new Trie(true);
+        loadText(trie, source);
+        return trie;
+    }
 
+    private void loadText(Trie trie,
+                          DictionaryTextSource source) throws Exception {
         try (BufferedReader in = new BufferedReader(
                 new InputStreamReader(
                         Files.newInputStream(source.getFilePath()), source.getCharSet()))) {
@@ -48,6 +57,14 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
                 trie.add(morph, data);
             }
         }
+    }
+
+    @Override
+    protected Trie loadText(DictionaryTextSource[] sources) throws Exception {
+        Trie trie = new Trie(true);
+
+        for(DictionaryTextSource source : sources)
+            loadText(trie, source);
 
         return trie;
     }

@@ -46,6 +46,11 @@ public class FWDUserTrieBaseDictionary extends AbstractTrieBaseDictionary {
     }
 
     @Override
+    protected Trie loadText(DictionaryTextSource[] sources) throws Exception {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     protected Trie loadBinary(DictionaryBinarySource source) throws Exception {
         throw new UnsupportedOperationException();
     }
