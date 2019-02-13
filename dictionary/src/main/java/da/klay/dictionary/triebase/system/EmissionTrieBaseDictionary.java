@@ -14,11 +14,14 @@ import da.klay.dictionary.triebase.AbstractTrieBaseDictionary;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
-import java.nio.file.Path;
 
 public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
 
     public EmissionTrieBaseDictionary(DictionaryTextSource source) throws Exception {
+        super(source);
+    }
+
+    public EmissionTrieBaseDictionary(DictionaryBinarySource source) throws Exception {
         super(source);
     }
 
