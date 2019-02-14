@@ -1,23 +1,29 @@
 package da.klay.core.tokenization;
 
+import da.klay.core.tokenization.rule.ChainedTokenizationRule;
+
 import java.util.Iterator;
 
-public class Tokenizer implements Iterator<Token> {
+public class Tokenizer implements Iterator<TokenResult> {
 
     private final String text;
-    private int currentPosition;
+    private final ChainedTokenizationRule rule;
+    private final TokenResult token;
 
-    public Tokenizer(String text) {
+    private Tokenizer(String text, ChainedTokenizationRule rule) {
         this.text = text;
+        this.rule = rule;
+        this.token = new TokenResult(text.length());
     }
 
     @Override
     public boolean hasNext() {
-        return false;
+        return token.getOriginTextLength() > token.getEndPosition();
     }
 
     @Override
-    public Token next() {
-        return null;
+    public TokenResult next() {
+        rule.apply(text, token);
+        return token;
     }
 }
