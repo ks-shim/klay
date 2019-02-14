@@ -11,5 +11,18 @@
 
     <artifactId>da-klay-core</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>da.klay</groupId>
+            <artifactId>da-klay-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
+        <dependency>
+            <groupId>da.klay</groupId>
+            <artifactId>da-klay-dictionary
+            </artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>
