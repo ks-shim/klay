@@ -1,5 +1,6 @@
 package da.klay.core;
 
+import da.klay.common.parser.JasoParser;
 import da.klay.core.tokenization.TokenResult;
 import da.klay.core.tokenization.Tokenizer;
 import da.klay.core.tokenization.rule.ChainedTokenizationRule;
@@ -29,7 +30,7 @@ public class Klay {
         buildAnalysisRule();
 
         watch.stop();
-        System.out.println(watch.getTime(TimeUnit.MILLISECONDS));
+        System.out.println("Dictionary Loading Time : " + watch.getTime(TimeUnit.MILLISECONDS) + " (ms)");
     }
 
     private ChainedTokenizationRule buildTokenizationRule() throws Exception {
