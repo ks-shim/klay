@@ -23,6 +23,7 @@ public class UserDictionaryMatchRule extends AbstractChainedTokenizationRule {
             return;
         }
 
+        // If not found ...
         super.apply(cs, token);
     }
 }
