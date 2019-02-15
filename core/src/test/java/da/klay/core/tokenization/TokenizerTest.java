@@ -26,10 +26,14 @@ class TokenizerTest {
         // 2. create Tokenizer
         String text = "dwayne! 너 거기서 뭐하니? 빨리 개발 안하고 ...  알리타볼래?";
         Tokenizer tokenizer = new Tokenizer(text, rule);
+
+        // 3. get started test
+        int tokenCount = 0;
         while(tokenizer.hasNext()) {
             TokenResult result = tokenizer.next();
-            System.out.print(result);
-            System.out.println(" : " + text.substring(result.getStartPosition(), result.getEndPosition()));
+            tokenCount++;
         }
+
+        assertEquals(23, tokenCount);
     }
 }
