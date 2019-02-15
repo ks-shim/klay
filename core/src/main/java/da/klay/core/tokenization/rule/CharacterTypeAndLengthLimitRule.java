@@ -19,28 +19,44 @@ public class CharacterTypeAndLengthLimitRule extends AbstractChainedTokenization
     public void apply(CharSequence cs, TokenResult token) {
 
         TokenCharacterType preCharType = null;
+        char preCh = ' ';
         int startPosition = token.getEndPosition();
         for(int i=startPosition; i<token.getOriginTextLength(); i++) {
-            char ch = cs.charAt(i);
-            Character.UnicodeBlock curUniBlock = Character.UnicodeBlock.of(ch);
-            TokenCharacterType curCharType = TokenCharacterType.getCharType(curUniBlock, ch);
+            char curCh = cs.charAt(i);
+            Character.UnicodeBlock curUniBlock = Character.UnicodeBlock.of(curCh);
+            TokenCharacterType curCharType = TokenCharacterType.getCharType(curUniBlock, curCh);
 
-            if(!keepDoing(preCharType, curCharType)) break;
+            if(!keepDoing(preCharType, preCh, curCharType, curCh)) break;
 
             token.set(startPosition, i+1, curCharType);
             if(token.length() >= lengthLimit) break;
 
             preCharType = curCharType;
+            preCh = curCh;
         }
     }
 
     private boolean keepDoing(TokenCharacterType preCharType,
-                              TokenCharacterType curCharType) {
+                              char preCh,
+                              TokenCharacterType curCharType,
+                              char curCh) {
 
         if(preCharType == null) return true;
 
-        if(curCharType == TokenCharacterType.OTHERS) return false;
+        if(curCharType == TokenCharacterType.OTHERS) {
+            if(preCh != curCh) return false;
+            else return true; // keep doing for continuous special characters.
+        }
 
         return (curCharType != TokenCharacterType.OTHERS) && (preCharType == curCharType);
+    }
+
+    public static void main(String[] args) {
+        String str = ",./<>?[]{}!@#$%^&*()+=-_\\|";
+        for(int i=0; i<str.length(); i++) {
+            char ch = str.charAt(i);
+            System.out.println(ch + " : " + Character.getType(ch));
+        }
+
     }
 }
