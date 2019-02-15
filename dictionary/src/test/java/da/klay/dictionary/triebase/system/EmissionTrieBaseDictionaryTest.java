@@ -30,7 +30,7 @@ class EmissionTrieBaseDictionaryTest {
     @Test
     void get() {
         // 1. getFully test
-        String key = JasoParser.parseAsString("대구일보");
+        CharSequence key = JasoParser.parseAsString("대구일보");
         CharSequence result = etd.getFully(key);
 
         assertNotNull(result);
@@ -66,7 +66,7 @@ class EmissionTrieBaseDictionaryTest {
         EmissionTrieBaseDictionary newETD = new EmissionTrieBaseDictionary(new DictionaryBinarySource(filePath));
 
         // 1. getFully test
-        String key = JasoParser.parseAsString("대구일보");
+        CharSequence key = JasoParser.parseAsString("대구일보");
         CharSequence result = newETD.getFully(key);
 
         assertNotNull(result);
