@@ -1,13 +1,10 @@
 package da.klay.dictionary.triebase.system;
 
-import com.google.common.base.Joiner;
 import da.klay.common.dictionary.structure.Trie;
 import da.klay.common.dictionary.structure.TrieLoadSaveHelper;
 import da.klay.common.parser.JasoParser;
-import da.klay.common.pos.Pos;
 import da.klay.dictionary.exception.DataFormatException;
 import da.klay.dictionary.param.DictionaryBinarySource;
-import da.klay.dictionary.param.DictionaryBinaryTarget;
 import da.klay.dictionary.param.DictionaryTextSource;
 import da.klay.dictionary.triebase.AbstractTrieBaseDictionary;
 
@@ -43,6 +40,7 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
                 new InputStreamReader(
                         Files.newInputStream(source.getFilePath()), source.getCharSet()))) {
 
+            StringBuilder reformSb = new StringBuilder();
             String line = null;
             while((line = in.readLine()) != null) {
                 line = line.trim();
@@ -51,9 +49,11 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
                 int tabIndex = line.indexOf('\t');
                 if(tabIndex < 0 || tabIndex+1 >= line.length()) continue;
 
-                CharSequence morph = JasoParser.parseAsString(line.substring(0, tabIndex));
-                String data = validate(line.substring(tabIndex+1)) ;
-
+                reformSb.setLength(0);
+                CharSequence word = line.substring(0, tabIndex);
+                CharSequence morph = JasoParser.parseAsString(word);
+                CharSequence data = validateAndReform(line.substring(tabIndex+1), word, reformSb) ;
+                System.out.println(morph + " : " + data);
                 trie.add(morph, data);
             }
         }
@@ -69,7 +69,7 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
         return trie;
     }
 
-    private String validate(String data) throws DataFormatException {
+    private CharSequence validateAndReform(String data, CharSequence word, StringBuilder reformSb) throws DataFormatException {
 
         String[] poses = data.split("\t");
         for(int i=0; i<poses.length; i++) {
@@ -77,7 +77,15 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
 
             if(values.length != 2 || values[0].isEmpty() || values[1].isEmpty()) throw new DataFormatException();
         }
-        return data;
+
+        if(data.indexOf('/') >= 0) return data;
+
+        for(int i=0; i<poses.length; i++) {
+            if(reformSb.length() != 0) reformSb.append('\t');
+
+            reformSb.append(word).append('/').append(poses[i].trim());
+        }
+        return reformSb.toString();
     }
 
     @Override
