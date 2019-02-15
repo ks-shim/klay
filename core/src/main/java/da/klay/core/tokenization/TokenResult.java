@@ -41,6 +41,7 @@ public class TokenResult {
     public void set(int startPosition, int endPosition, CharSequence pos) {
         this.set(startPosition, endPosition);
         this.pos = pos;
+        this.chType = null;
     }
 
     public void set(int startPosition, int endPosition, TokenCharacterType chType) {

@@ -10,7 +10,7 @@ public class Tokenizer implements Iterator<TokenResult> {
     private final ChainedTokenizationRule rule;
     private final TokenResult token;
 
-    private Tokenizer(String text, ChainedTokenizationRule rule) {
+    public Tokenizer(String text, ChainedTokenizationRule rule) {
         this.text = text;
         this.rule = rule;
         this.token = new TokenResult(text.length());

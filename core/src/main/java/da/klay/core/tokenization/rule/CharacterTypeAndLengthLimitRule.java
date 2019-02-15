@@ -1,19 +1,17 @@
 package da.klay.core.tokenization.rule;
 
-import da.klay.common.pos.Pos;
 import da.klay.core.tokenization.TokenCharacterType;
 import da.klay.core.tokenization.TokenResult;
 
-import java.util.HashSet;
-import java.util.Set;
-
+/**
+ * This rule must be the last one.
+ */
 public class CharacterTypeAndLengthLimitRule extends AbstractChainedTokenizationRule {
 
     private final int lengthLimit;
 
-    public CharacterTypeAndLengthLimitRule(int lengthLimit,
-                                           ChainedTokenizationRule nextRule) {
-        super(nextRule);
+    public CharacterTypeAndLengthLimitRule(int lengthLimit) {
+        super(null);
         this.lengthLimit = lengthLimit;
     }
 
@@ -34,8 +32,6 @@ public class CharacterTypeAndLengthLimitRule extends AbstractChainedTokenization
 
             preCharType = curCharType;
         }
-
-        //super.apply(cs, token);
     }
 
     private boolean keepDoing(TokenCharacterType preCharType,

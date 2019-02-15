@@ -111,7 +111,7 @@ public class Trie {
 
         TrieResult ret[] = new TrieResult[resc];
         for (int j = 0; j < resc; j++)
-            ret[j] = new TrieResult(cmds.get(res[j]), from, resPos[j]);
+            ret[j] = new TrieResult(cmds.get(res[j]), from, resPos[j]+1);
 
         return ret;
     }
@@ -226,11 +226,11 @@ public class Trie {
             if (w >= 0) {
                 now = getRow(w);
             } else {
-                return new TrieResult(last, from, i);
+                return new TrieResult(last, from, i+1);
             }
         }
         w = now.getCmd(e.next());
-        return new TrieResult((w >= 0) ? cmds.get(w) : last, from, i);
+        return new TrieResult((w >= 0) ? cmds.get(w) : last, from, i+1);
     }
 
     /**
