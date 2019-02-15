@@ -50,13 +50,4 @@ public class CharacterTypeAndLengthLimitRule extends AbstractChainedTokenization
 
         return (curCharType != TokenCharacterType.OTHERS) && (preCharType == curCharType);
     }
-
-    public static void main(String[] args) {
-        String str = ",./<>?[]{}!@#$%^&*()+=-_\\|";
-        for(int i=0; i<str.length(); i++) {
-            char ch = str.charAt(i);
-            System.out.println(ch + " : " + Character.getType(ch));
-        }
-
-    }
 }
