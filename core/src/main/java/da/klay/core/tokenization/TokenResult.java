@@ -51,8 +51,8 @@ public class TokenResult {
         this.pos = chType.pos();
     }
 
-    public boolean needMorphologyAnalysis() {
-        return pos == null;
+    public boolean canSkipAnalysis() {
+        return pos != null;
     }
 
     public int length() {
