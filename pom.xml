@@ -13,6 +13,7 @@
         <module>common</module>
         <module>dictionary</module>
         <module>core</module>
+        <module>dictionary-build</module>
     </modules>
 
     <properties>

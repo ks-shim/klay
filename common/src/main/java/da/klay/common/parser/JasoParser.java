@@ -17,14 +17,14 @@ public class JasoParser {
             0x313e, 0x313f, 0x3140, 0x3141, 0x3142, 0x3144, 0x3145, 0x3146,
             0x3147, 0x3148, 0x314a, 0x314b, 0x314c, 0x314d, 0x314e};
 
-    public static String parseAsString(String s) {
+    public static CharSequence parseAsString(CharSequence s, int from, int to) {
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < s.length(); i++) {
+        for (int i = from; i < to; i++) {
             char ch = s.charAt(i);
 
             Character.UnicodeBlock block = Character.UnicodeBlock.of(ch);
-            // cases no needed to parse ...
+            // cases no needed to parseAsList ...
             if (block != Character.UnicodeBlock.HANGUL_SYLLABLES) {
                 sb.append(ch);
                 continue;
@@ -43,6 +43,10 @@ public class JasoParser {
         return sb.toString();
     }
 
+    public static CharSequence parseAsString(CharSequence s) {
+        return parseAsString(s, 0, s.length());
+    }
+
     public static String parseAsString(String s,
                                        List<Integer> syllablePositions) {
         StringBuilder sb = new StringBuilder();
@@ -52,7 +56,7 @@ public class JasoParser {
             char ch = s.charAt(i);
 
             Character.UnicodeBlock block = Character.UnicodeBlock.of(ch);
-            // cases no needed to parse ...
+            // cases no needed to parseAsList ...
             if (block != Character.UnicodeBlock.HANGUL_SYLLABLES) {
                 sb.append(ch);
                 syllablePositions.add(pos++, i);
@@ -78,7 +82,7 @@ public class JasoParser {
         return sb.toString();
     }
 
-    public static List<Character> parse(String s) {
+    public static List<Character> parseAsList(CharSequence s) {
         List<Character> list = new ArrayList<>();
 
         s = parseAsString(s);

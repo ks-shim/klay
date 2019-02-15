@@ -11,7 +11,7 @@ class JasoParserTest {
     @Test
     void parse() {
         String text = "KLAY입니다.";
-        List<Character> jasoList = JasoParser.parse(text);
+        List<Character> jasoList = JasoParser.parseAsList(text);
 
         assertArrayEquals(
                 new Character[]{'K', 'L', 'A', 'Y','ㅇ', 'ㅣ', 'ㅂ', 'ㄴ', 'ㅣ', 'ㄷ', 'ㅏ', '.'},
