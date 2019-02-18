@@ -15,6 +15,7 @@ import da.klay.dictionary.triebase.user.UserTrieBaseDictionary;
 import org.apache.commons.lang3.time.StopWatch;
 
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 
 public class Klay {

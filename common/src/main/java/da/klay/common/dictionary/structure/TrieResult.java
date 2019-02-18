@@ -22,4 +22,8 @@ public class TrieResult {
     public boolean hasResult() {
         return data != null;
     }
+
+    public int length() {
+        return endPosition - startPosition;
+    }
 }
