@@ -30,40 +30,42 @@ public class AllPossibleCandidatesRule {
 
         for(int i=0; i<jasoLength; i++) {
 
-            if(i > 0 && candidateNodesSlot.get(i) == null) continue;
+            List<CandidateNode> curCandidateNodeList = candidateNodesSlot.get(i);
+            if(i > 0 && curCandidateNodeList == null) continue;
 
             TrieResult[] results = emissionDictionary.getAll(jaso, i);
             if(results == null && i == 0) break;
             else if(results == null) continue;
 
-            assignSlot(i, results, candidateNodesSlot);
+            assignSlotAndCalculateScore(i, results, candidateNodesSlot, curCandidateNodeList);
         }
     }
 
-    private void assignSlot(int curJasoPosition,
-                            TrieResult[] results,
-                            Map<Integer, List<CandidateNode>> candidateNodesSlot) {
+    private void assignSlotAndCalculateScore(int curJasoPosition,
+                                             TrieResult[] results,
+                                             Map<Integer, List<CandidateNode>> candidateNodesSlot,
+                                             List<CandidateNode> curCandidateNodeList) {
 
         for(TrieResult result : results) {
             if(!result.hasResult()) continue;
 
             int insertIndex = curJasoPosition + result.length();
-            List<CandidateNode> candidateNodeList = candidateNodesSlot.get(insertIndex);
-            if(candidateNodeList == null) {
-                candidateNodeList = new LinkedList<>();
-                candidateNodesSlot.put(insertIndex, candidateNodeList);
+            List<CandidateNode> newCandidateNodeList = candidateNodesSlot.get(insertIndex);
+            if(newCandidateNodeList == null) {
+                newCandidateNodeList = new LinkedList<>();
+                candidateNodesSlot.put(insertIndex, newCandidateNodeList);
             }
 
-            parseTrieResultAsSave(result.getData(), candidateNodeList, result.length());
+            newCandidateNodesAndCalculateScore(result.getData(), curCandidateNodeList, newCandidateNodeList);
         }
     }
 
-    private void parseTrieResultAsSave(CharSequence res,
-                                      List<CandidateNode> nodeList,
-                                      int jasoLength) {
+    private void newCandidateNodesAndCalculateScore(CharSequence res,
+                                                    List<CandidateNode> curCandidateNodeList,
+                                                    List<CandidateNode> newCandidateNodeList) {
 
-        CandidateNode newNode = new CandidateNode(jasoLength);
-        nodeList.add(newNode);
+        CandidateNode newNode = new CandidateNode();
+        newCandidateNodeList.add(newNode);
 
         // ex) 달/VV ㄴ/ETM:18	달/VA ㄴ/ETM:4
         int textStartIndex = 0;
@@ -89,28 +91,49 @@ public class AllPossibleCandidatesRule {
 
                 Morph morph = new Morph(text, pos);
                 newNode.addMorph(morph);
-            } else if(ch == '\t' || i == resLength-1) {
+            } else if(ch == '\t') {
                 textStartIndex = i+1;
-                int emissionScore = Integer.parseInt((String)res.subSequence(colonIndex+1, (i == resLength-1) ? i+1 : i));
+                int emissionScore = Integer.parseInt((String)res.subSequence(colonIndex+1, i));
                 newNode.setEmissionScore(emissionScore);
-                System.out.println(newNode);
+                calculateScore(curCandidateNodeList, newNode);
 
-                newNode = new CandidateNode(jasoLength);
-                nodeList.add(newNode);
+                newNode = new CandidateNode();
+                newCandidateNodeList.add(newNode);
+            } else if(i == resLength-1) {
+                int emissionScore = Integer.parseInt((String)res.subSequence(colonIndex+1, i+1));
+                newNode.setEmissionScore(emissionScore);
+                calculateScore(curCandidateNodeList, newNode);
             }
         }
     }
 
+    private void calculateScore(List<CandidateNode> curCandidateNodeList,
+                                CandidateNode newCandidateNode) {
+        if(curCandidateNodeList == null) return;
+
+        int curListSize = curCandidateNodeList.size();
+        for(int i=0; i<curListSize; i++) {
+            CandidateNode curNode = curCandidateNodeList.get(i);
+            CharSequence curEndPos = curNode.lastMorph().getPos();
+
+            CharSequence newStartPos = newCandidateNode.firstMorph().getPos();
+
+            Map<CharSequence, Integer> transitionMap = transitionDictionary.getFully(curEndPos);
+            Integer transitionScore;
+            if(transitionMap == null || (transitionScore = transitionMap.get(newStartPos)) == null) transitionScore = -1;
+
+            newCandidateNode.compareAndSetPreCandidateNode(curNode, transitionScore);
+        }
+    }
     @Data
     @ToString
     private class CandidateNode {
+        CandidateNode preCandidateNode;
         LinkedList<Morph> morphList;
         int emissionScore = 0;
         int totalScore = 0;
-        int jasoLength;
 
-        CandidateNode(int jasoLength) {
-            this.jasoLength = jasoLength;
+        CandidateNode() {
             this.morphList = new LinkedList<>();
         }
 
@@ -124,6 +147,15 @@ public class AllPossibleCandidatesRule {
 
         Morph lastMorph() {
             return morphList.getLast();
+        }
+
+        void compareAndSetPreCandidateNode(CandidateNode newPreNode,
+                                           int transitionScore) {
+            int newTotalScore = newPreNode.emissionScore + transitionScore + emissionScore;
+            if(newTotalScore < totalScore) return;
+
+            totalScore = newTotalScore;
+            preCandidateNode = newPreNode;
         }
     }
 
