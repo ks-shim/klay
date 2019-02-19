@@ -2,93 +2,159 @@ package da.klay.core.morphology.analysis.rule;
 
 import da.klay.common.dictionary.structure.TrieResult;
 import da.klay.common.parser.JasoParser;
-import da.klay.core.tokenization.TokenResult;
-import da.klay.dictionary.Dictionary;
+import da.klay.core.morphology.analysis.Morph;
+import da.klay.dictionary.mapbase.TransitionMapBaseDictionary;
 import da.klay.dictionary.param.DictionaryBinarySource;
 import da.klay.dictionary.triebase.system.EmissionTrieBaseDictionary;
 import lombok.Data;
 import lombok.ToString;
 
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 
 public class AllPossibleCandidatesRule {
 
-    private final EmissionTrieBaseDictionary dictionary;
-    public AllPossibleCandidatesRule(EmissionTrieBaseDictionary dictionary) {
-        this.dictionary = dictionary;
+    private final EmissionTrieBaseDictionary emissionDictionary;
+    private final TransitionMapBaseDictionary transitionDictionary;
+    public AllPossibleCandidatesRule(EmissionTrieBaseDictionary emissionDictionary,
+                                     TransitionMapBaseDictionary transitionDictionary) {
+        this.emissionDictionary = emissionDictionary;
+        this.transitionDictionary = transitionDictionary;
     }
 
-    public void apply(CharSequence jaso, Vertical[] candidates) {
+    public void apply(CharSequence jaso, Map<Integer, List<CandidateNode>> candidateNodesSlot) {
 
         // 1. initialize
         int jasoLength = jaso.length();
-        Arrays.fill(candidates, 0, jasoLength, null);
+        candidateNodesSlot.clear();
 
         for(int i=0; i<jasoLength; i++) {
 
-            if(i > 0 && candidates[i] == null) continue;
+            if(i > 0 && candidateNodesSlot.get(i) == null) continue;
 
-            TrieResult[] results = dictionary.getAll(jaso, i);
+            TrieResult[] results = emissionDictionary.getAll(jaso, i);
             if(results == null && i == 0) break;
             else if(results == null) continue;
 
-            for(TrieResult result : results) {
-                if(!result.hasResult()) continue;
+            assignSlot(i, results, candidateNodesSlot);
+        }
+    }
 
-                int insertIndex = i + result.length();
-                Vertical vertical = candidates[insertIndex];
-                if(vertical == null) {
-                    vertical = new Vertical(result.getData());
-                    candidates[insertIndex] = vertical;
-                    continue;
-                }
-                Vertical nextOne = new Vertical(result.getData());
-                vertical.addNext(nextOne);
-                candidates[insertIndex] = nextOne;
+    private void assignSlot(int curJasoPosition,
+                            TrieResult[] results,
+                            Map<Integer, List<CandidateNode>> candidateNodesSlot) {
+
+        for(TrieResult result : results) {
+            if(!result.hasResult()) continue;
+
+            int insertIndex = curJasoPosition + result.length();
+            List<CandidateNode> candidateNodeList = candidateNodesSlot.get(insertIndex);
+            if(candidateNodeList == null) {
+                candidateNodeList = new LinkedList<>();
+                candidateNodesSlot.put(insertIndex, candidateNodeList);
+            }
+
+            parseTrieResultAsSave(result.getData(), candidateNodeList, result.length());
+        }
+    }
+
+    private void parseTrieResultAsSave(CharSequence res,
+                                      List<CandidateNode> nodeList,
+                                      int jasoLength) {
+
+        CandidateNode newNode = new CandidateNode(jasoLength);
+        nodeList.add(newNode);
+
+        // ex) 달/VV ㄴ/ETM:18	달/VA ㄴ/ETM:4
+        int textStartIndex = 0;
+        int slashIndex = 0;
+        int colonIndex = 0;
+        int resLength = res.length();
+        for(int i=0; i<resLength; i++) {
+
+            char ch = res.charAt(i);
+            if(ch == '/') {
+                slashIndex = i;
+            } else if(ch == ' ') {
+                CharSequence text = res.subSequence(textStartIndex, slashIndex);
+                CharSequence pos = res.subSequence(slashIndex+1, i);
+                textStartIndex = i+1;
+
+                Morph morph = new Morph(text, pos);
+                newNode.addMorph(morph);
+            } else if (ch == ':') {
+                CharSequence text = res.subSequence(textStartIndex, slashIndex);
+                CharSequence pos = res.subSequence(slashIndex+1, i);
+                colonIndex = i;
+
+                Morph morph = new Morph(text, pos);
+                newNode.addMorph(morph);
+            } else if(ch == '\t' || i == resLength-1) {
+                textStartIndex = i+1;
+                int emissionScore = Integer.parseInt((String)res.subSequence(colonIndex+1, (i == resLength-1) ? i+1 : i));
+                newNode.setEmissionScore(emissionScore);
+                System.out.println(newNode);
+
+                newNode = new CandidateNode(jasoLength);
+                nodeList.add(newNode);
             }
         }
     }
 
     @Data
-    private class Vertical {
-        Vertical previous;
-        Vertical next;
-        CharSequence data;
+    @ToString
+    private class CandidateNode {
+        LinkedList<Morph> morphList;
+        int emissionScore = 0;
+        int totalScore = 0;
+        int jasoLength;
 
-        Vertical(CharSequence data) {
-            this.data = data;
+        CandidateNode(int jasoLength) {
+            this.jasoLength = jasoLength;
+            this.morphList = new LinkedList<>();
         }
 
-        void addNext(Vertical nextOne) {
-            this.next = nextOne;
-            nextOne.previous = this;
+        void addMorph(Morph morph) {
+            morphList.add(morph);
+        }
+
+        Morph firstMorph() {
+            return morphList.getFirst();
+        }
+
+        Morph lastMorph() {
+            return morphList.getLast();
         }
     }
 
     public static void main(String[] args) throws Exception {
-        EmissionTrieBaseDictionary dictionary =
+        EmissionTrieBaseDictionary emissionDictionary =
                 new EmissionTrieBaseDictionary(
                         new DictionaryBinarySource(Paths.get("data/dictionary/binary/system/emission.bin")));
 
-        AllPossibleCandidatesRule rule = new AllPossibleCandidatesRule(dictionary);
+        TransitionMapBaseDictionary transitionDictionary =
+                new TransitionMapBaseDictionary(
+                        new DictionaryBinarySource(Paths.get("data/dictionary/binary/System/transition.bin")));
 
-        CharSequence jaso = JasoParser.parseAsString( "대구일보기자입니다");
-        Vertical[] candidates = new Vertical[32 * 4];
-        rule.apply(jaso, candidates);
+        AllPossibleCandidatesRule rule = new AllPossibleCandidatesRule(emissionDictionary, transitionDictionary);
 
-        for(int i=0; i<jaso.length(); i++) {
-            Vertical candidate = candidates[i];
-            if(candidate == null) continue;
+        CharSequence jaso = JasoParser.parseAsString( "나쁜사람입니다");
+        rule.apply(jaso, new HashMap<>());
+
+        int end = jaso.length();
+        //rule.print(candidates, end);
+        /*for(int i=end; i>=0; i--) {
+            CandidateNode candidate = candidates[i];
+            if(candidate == null && i == end-1) break;
+            else if(candidate == null) continue;
 
             while(candidate != null) {
                 System.out.println(candidate.data);
-                candidate = candidate.previous;
+                candidate = candidate.verticalPreNode;
             }
             System.out.println("-----------");
-        }
+        }*/
         //System.out.println(Arrays.toString(candidates));
     }
+
 }
