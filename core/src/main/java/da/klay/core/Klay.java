@@ -16,10 +16,14 @@ import da.klay.dictionary.mapbase.TransitionMapBaseDictionary;
 import da.klay.dictionary.param.DictionaryBinarySource;
 import da.klay.dictionary.param.DictionaryTextSource;
 import da.klay.dictionary.triebase.system.EmissionTrieBaseDictionary;
+import da.klay.dictionary.triebase.user.FWDUserTrieBaseDictionary;
 import da.klay.dictionary.triebase.user.UserTrieBaseDictionary;
 import org.apache.commons.lang3.time.StopWatch;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 // TODO : 1. 기분석 사전 Analysis Rule 추가
@@ -30,7 +34,12 @@ public class Klay {
     private final ChainedTokenizationRule tokenizationRule;
     private final AnalysisRule analysisRule;
     private final TransitionMapBaseDictionary transitionDictionary;
-    public Klay() throws Exception {
+
+    private final Properties config;
+    public Klay(Path configFilePath) throws Exception {
+
+        config = new Properties();
+        config.load(Files.newInputStream(configFilePath));
 
         StopWatch watch = new StopWatch();
         watch.start();
@@ -46,10 +55,11 @@ public class Klay {
     private ChainedTokenizationRule buildTokenizationRule() throws Exception {
         // 1. build user dictionary and rules .
         DictionaryTextSource userDicSource =
-                new DictionaryTextSource(Paths.get("data/dictionary/text/user/dic.user"));
+                new DictionaryTextSource(Paths.get(config.getProperty("dictionary.user.path")));
 
         UserTrieBaseDictionary userDictionary = new UserTrieBaseDictionary(userDicSource);
-        ChainedTokenizationRule rule = new CharacterTypeAndLengthLimitRule(Integer.MAX_VALUE);
+        int tokenLengthLimit = Integer.parseInt(config.getProperty("tokenization.token.length_limit", "-1"));
+        ChainedTokenizationRule rule = new CharacterTypeAndLengthLimitRule(tokenLengthLimit < 0 ? Integer.MAX_VALUE : tokenLengthLimit);
         rule = new UserDictionaryMatchRule(userDictionary, rule);
 
         return rule;
@@ -57,14 +67,18 @@ public class Klay {
 
     private TransitionMapBaseDictionary buildTransitionDictionary() throws Exception {
         DictionaryBinarySource transitionSource =
-                new DictionaryBinarySource(Paths.get("data/dictionary/binary/system/transition.bin"));
+                new DictionaryBinarySource(Paths.get(config.getProperty("dictionary.transition.path")));
         return new TransitionMapBaseDictionary(transitionSource);
     }
 
     private AnalysisRule buildAnalysisRule() throws Exception {
         DictionaryBinarySource emissionSource =
-                new DictionaryBinarySource(Paths.get("data/dictionary/binary/system/emission.bin"));
+                new DictionaryBinarySource(Paths.get(config.getProperty("dictionary.emission.path")));
         EmissionTrieBaseDictionary emissionDictionary = new EmissionTrieBaseDictionary(emissionSource);
+
+        DictionaryTextSource fwdSource =
+                new DictionaryTextSource(Paths.get(config.getProperty("dictionary.fwd.path")));
+        FWDUserTrieBaseDictionary fwdDictionary = new FWDUserTrieBaseDictionary(fwdSource);
 
         return new CanSkipRule(
                 new AllPossibleCandidatesRule(emissionDictionary, transitionDictionary),
@@ -101,7 +115,7 @@ public class Klay {
     }
 
     public static void main(String[] args) throws Exception {
-        Klay klay = new Klay();
+        Klay klay = new Klay(Paths.get("data/configuration/klay.conf"));
         klay.doKlay("대구일보는 나쁜사람입니다");
     }
 }
