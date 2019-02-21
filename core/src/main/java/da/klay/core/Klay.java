@@ -2,6 +2,8 @@ package da.klay.core;
 
 import da.klay.common.parser.JasoParser;
 import da.klay.core.morphology.analysis.rule.AnalysisParam;
+import da.klay.core.morphology.analysis.rule.AnalysisRule;
+import da.klay.core.morphology.analysis.rule.CanSkipRule;
 import da.klay.core.morphology.analysis.sequence.Morph;
 import da.klay.core.morphology.analysis.rule.AllPossibleCandidatesRule;
 import da.klay.core.morphology.analysis.sequence.MorphSequence;
@@ -28,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 public class Klay {
 
     private final ChainedTokenizationRule tokenizationRule;
-    private final AllPossibleCandidatesRule analysisRule;
+    private final AnalysisRule analysisRule;
     private final TransitionMapBaseDictionary transitionDictionary;
     public Klay() throws Exception {
 
@@ -61,12 +63,14 @@ public class Klay {
         return new TransitionMapBaseDictionary(transitionSource);
     }
 
-    private AllPossibleCandidatesRule buildAnalysisRule() throws Exception {
+    private AnalysisRule buildAnalysisRule() throws Exception {
         DictionaryBinarySource emissionSource =
                 new DictionaryBinarySource(Paths.get("data/dictionary/binary/system/emission.bin"));
         EmissionTrieBaseDictionary emissionDictionary = new EmissionTrieBaseDictionary(emissionSource);
 
-        return new AllPossibleCandidatesRule(emissionDictionary, transitionDictionary);
+        return new CanSkipRule(
+                new AllPossibleCandidatesRule(emissionDictionary, transitionDictionary),
+                transitionDictionary);
     }
 
     public void doKlay(CharSequence text) throws Exception {
@@ -74,28 +78,28 @@ public class Klay {
         // 1. create tokenizer
         Tokenizer tokenizer = new Tokenizer(text, tokenizationRule);
 
-        // 2. create start morph-seqs
-        MorphSequence startMSeq = new SingleMorphSequence(Morph.newStartMorph());
-
-        // 3. Analysis Param
+        // 3. create start morph-seq and analysis Param
         AnalysisParam param = new AnalysisParam();
-        param.setLastMSeq(startMSeq);
+        param.setLastMSeq(new SingleMorphSequence(Morph.newStartMorph()));
 
+        // 4. analyze
         while(tokenizer.hasNext()) {
             TokenResult token = tokenizer.next();
 
             param.set(text, token.getPos(), token.getStartPosition(), token.getEndPosition(), token.canSkipAnalysis());
             analysisRule.apply(param);
-            //System.out.println(token + " : " + jaso);
         }
-    }
 
-    public void compareAndSetPreMorph(Morph preMorph, Morph curMorph) {
-        Map<CharSequence, Integer> transitionMap = transitionDictionary.getFully(curEndPos);
-        Integer transitionScore;
-        if(transitionMap == null || (transitionScore = transitionMap.get(newStartPos)) == null) transitionScore = -1;
+        MorphSequence lastMSeq = param.lastMSeq();
+        MorphSequence endMSeq = new SingleMorphSequence(Morph.newEndMorph());
+        while(true) {
+            endMSeq.compareScoreAndSetPreviousMSeq(lastMSeq, transitionDictionary);
 
-        newCandidateNode.compareAndSetPreCandidateNode(curNode, transitionScore);
+            if(!lastMSeq.hasVPreviousMSeq()) break;
+            lastMSeq = lastMSeq.getVPreviousMSeq();
+        }
+
+        System.out.println(endMSeq);
     }
 
     public static void main(String[] args) throws Exception {

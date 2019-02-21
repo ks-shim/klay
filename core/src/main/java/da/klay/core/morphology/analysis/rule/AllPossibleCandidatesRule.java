@@ -9,7 +9,6 @@ import da.klay.dictionary.param.DictionaryBinarySource;
 import da.klay.dictionary.triebase.system.EmissionTrieBaseDictionary;
 
 import java.nio.file.Paths;
-import java.util.*;
 
 public class AllPossibleCandidatesRule extends AbstractAnalysisRule {
 
@@ -38,7 +37,7 @@ public class AllPossibleCandidatesRule extends AbstractAnalysisRule {
 
         for(int i=0; i<jasoLength; i++) {
 
-            MorphSequence currentMSeq = param.slotAt(i);
+            MorphSequence currentMSeq = (i == 0) ? param.lastMSeq() : param.slotAt(i);
             if(i > 0 && currentMSeq == null) continue;
 
             TrieResult[] results = emissionDictionary.getAll(jaso, i);
@@ -52,10 +51,12 @@ public class AllPossibleCandidatesRule extends AbstractAnalysisRule {
         }
 
         MorphSequence lastMSeq = param.slotAt(jasoLength);
-        if(lastMSeq != null) {
-            param.setLastMSeq(lastMSeq);
+        if(lastMSeq == null) {
+            super.apply(param);
             return;
         }
+
+        param.setLastMSeq(lastMSeq);
     }
 
     private void assignSlotAndCalculateScore(int currentJasoPos,
@@ -138,37 +139,4 @@ public class AllPossibleCandidatesRule extends AbstractAnalysisRule {
             currentMSeq = currentMSeq.getVPreviousMSeq();
         }
     }
-
-    public static void main(String[] args) throws Exception {
-        EmissionTrieBaseDictionary emissionDictionary =
-                new EmissionTrieBaseDictionary(
-                        new DictionaryBinarySource(Paths.get("data/dictionary/binary/system/emission.bin")));
-
-        TransitionMapBaseDictionary transitionDictionary =
-                new TransitionMapBaseDictionary(
-                        new DictionaryBinarySource(Paths.get("data/dictionary/binary/System/transition.bin")));
-
-        AllPossibleCandidatesRule rule = new AllPossibleCandidatesRule(emissionDictionary, transitionDictionary);
-
-        String text = "나쁜사람입니다";
-        AnalysisParam param = new AnalysisParam();
-        param.set(text, 0, text.length());
-        rule.apply(param);
-
-        //int end = jaso.length();
-        //rule.print(candidates, end);
-        /*for(int i=end; i>=0; i--) {
-            CandidateNode candidate = candidates[i];
-            if(candidate == null && i == end-1) break;
-            else if(candidate == null) continue;
-
-            while(candidate != null) {
-                System.out.println(candidate.data);
-                candidate = candidate.verticalPreNode;
-            }
-            System.out.println("-----------");
-        }*/
-        //System.out.println(Arrays.toString(candidates));
-    }
-
 }
