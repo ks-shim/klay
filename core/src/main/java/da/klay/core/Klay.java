@@ -46,7 +46,7 @@ public class Klay {
                 new DictionaryTextSource(Paths.get("data/dictionary/text/user/dic.user"));
 
         UserTrieBaseDictionary userDictionary = new UserTrieBaseDictionary(userDicSource);
-        ChainedTokenizationRule rule = new CharacterTypeAndLengthLimitRule(10);
+        ChainedTokenizationRule rule = new CharacterTypeAndLengthLimitRule(Integer.MAX_VALUE);
         rule = new UserDictionaryMatchRule(userDictionary, rule);
 
         return rule;
