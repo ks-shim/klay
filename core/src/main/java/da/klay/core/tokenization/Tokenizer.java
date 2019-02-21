@@ -4,16 +4,16 @@ import da.klay.core.tokenization.rule.ChainedTokenizationRule;
 
 import java.util.Iterator;
 
-public class Tokenizer implements Iterator<TokenResult> {
+public class Tokenizer implements Iterator<Token> {
 
     private final CharSequence text;
     private final ChainedTokenizationRule rule;
-    private final TokenResult token;
+    private final Token token;
 
     public Tokenizer(CharSequence text, ChainedTokenizationRule rule) {
         this.text = text;
         this.rule = rule;
-        this.token = new TokenResult(text.length());
+        this.token = new Token(text.length());
     }
 
     @Override
@@ -22,7 +22,7 @@ public class Tokenizer implements Iterator<TokenResult> {
     }
 
     @Override
-    public TokenResult next() {
+    public Token next() {
         rule.apply(text, token);
         return token;
     }

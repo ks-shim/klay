@@ -1,5 +1,6 @@
 package da.klay.core.morphology.analysis.rule;
 
+import da.klay.core.morphology.analysis.rule.param.AnalysisParam;
 import da.klay.core.morphology.analysis.sequence.Morph;
 import da.klay.core.morphology.analysis.sequence.MorphSequence;
 import da.klay.core.morphology.analysis.sequence.SingleMorphSequence;

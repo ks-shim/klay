@@ -6,7 +6,7 @@ import lombok.ToString;
 
 @Data
 @ToString
-public class TokenResult {
+public class Token {
 
     private int originTextLength;
     private int startPosition;
@@ -14,14 +14,14 @@ public class TokenResult {
     private CharSequence pos;
     private TokenCharacterType chType;
 
-    public TokenResult(int originTextLength) {
+    public Token(int originTextLength) {
         this.originTextLength = originTextLength;
         reset();
     }
 
-    public TokenResult(int originTextLength,
-                       int startPosition,
-                       int endPosition) {
+    public Token(int originTextLength,
+                 int startPosition,
+                 int endPosition) {
         this.originTextLength = originTextLength;
         this.startPosition = startPosition;
         this.endPosition = endPosition;

@@ -1,14 +1,12 @@
 package da.klay.core.morphology.analysis.rule;
 
 import da.klay.common.dictionary.structure.TrieResult;
+import da.klay.core.morphology.analysis.rule.param.AnalysisParam;
 import da.klay.core.morphology.analysis.sequence.Morph;
 import da.klay.core.morphology.analysis.sequence.MorphSequence;
 import da.klay.core.morphology.analysis.sequence.MultiMorphSequence;
 import da.klay.dictionary.mapbase.TransitionMapBaseDictionary;
-import da.klay.dictionary.param.DictionaryBinarySource;
 import da.klay.dictionary.triebase.system.EmissionTrieBaseDictionary;
-
-import java.nio.file.Paths;
 
 public class AllPossibleCandidatesRule extends AbstractAnalysisRule {
 

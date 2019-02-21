@@ -1,5 +1,7 @@
 package da.klay.core.morphology.analysis.rule;
 
+import da.klay.core.morphology.analysis.rule.param.AnalysisParam;
+
 public abstract class AbstractAnalysisRule implements AnalysisRule {
 
     protected AnalysisRule nextRule;

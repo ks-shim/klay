@@ -1,7 +1,7 @@
 package da.klay.core.tokenization.rule;
 
 import da.klay.core.tokenization.TokenCharacterType;
-import da.klay.core.tokenization.TokenResult;
+import da.klay.core.tokenization.Token;
 
 /**
  * This rule must be the last one.
@@ -16,7 +16,7 @@ public class CharacterTypeAndLengthLimitRule extends AbstractChainedTokenization
     }
 
     @Override
-    public void apply(CharSequence cs, TokenResult token) {
+    public void apply(CharSequence cs, Token token) {
 
         TokenCharacterType preCharType = null;
         char preCh = ' ';

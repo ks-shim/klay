@@ -1,4 +1,4 @@
-package da.klay.core.morphology.analysis.rule;
+package da.klay.core.morphology.analysis.rule.param;
 
 import da.klay.common.parser.JasoParser;
 import da.klay.core.morphology.analysis.sequence.MorphSequence;

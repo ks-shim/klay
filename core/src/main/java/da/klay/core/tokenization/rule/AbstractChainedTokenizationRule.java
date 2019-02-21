@@ -1,6 +1,6 @@
 package da.klay.core.tokenization.rule;
 
-import da.klay.core.tokenization.TokenResult;
+import da.klay.core.tokenization.Token;
 
 public abstract class AbstractChainedTokenizationRule implements ChainedTokenizationRule {
 
@@ -11,7 +11,7 @@ public abstract class AbstractChainedTokenizationRule implements ChainedTokeniza
     }
 
     @Override
-    public void apply(CharSequence cs, TokenResult token) {
+    public void apply(CharSequence cs, Token token) {
         if(nextRule == null) return;
         nextRule.apply(cs, token);
     }

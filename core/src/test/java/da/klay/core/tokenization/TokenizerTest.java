@@ -30,7 +30,7 @@ class TokenizerTest {
         // 3. get started test
         int tokenCount = 0;
         while(tokenizer.hasNext()) {
-            TokenResult result = tokenizer.next();
+            Token result = tokenizer.next();
             //System.out.println(result + " : " + text.substring(result.getStartPosition(), result.getEndPosition()));
             tokenCount++;
         }

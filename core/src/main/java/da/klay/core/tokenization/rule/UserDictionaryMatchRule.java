@@ -1,7 +1,7 @@
 package da.klay.core.tokenization.rule;
 
 import da.klay.common.dictionary.structure.TrieResult;
-import da.klay.core.tokenization.TokenResult;
+import da.klay.core.tokenization.Token;
 import da.klay.dictionary.triebase.user.UserTrieBaseDictionary;
 
 public class UserDictionaryMatchRule extends AbstractChainedTokenizationRule {
@@ -15,7 +15,7 @@ public class UserDictionaryMatchRule extends AbstractChainedTokenizationRule {
     }
 
     @Override
-    public void apply(CharSequence cs, TokenResult token) {
+    public void apply(CharSequence cs, Token token) {
 
         TrieResult result = dictionary.getLastOnPath(cs, token.getEndPosition());
         if(result.hasResult()) {

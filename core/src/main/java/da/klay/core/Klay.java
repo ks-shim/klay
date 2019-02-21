@@ -1,14 +1,13 @@
 package da.klay.core;
 
-import da.klay.common.parser.JasoParser;
-import da.klay.core.morphology.analysis.rule.AnalysisParam;
+import da.klay.core.morphology.analysis.rule.param.AnalysisParam;
 import da.klay.core.morphology.analysis.rule.AnalysisRule;
 import da.klay.core.morphology.analysis.rule.CanSkipRule;
 import da.klay.core.morphology.analysis.sequence.Morph;
 import da.klay.core.morphology.analysis.rule.AllPossibleCandidatesRule;
 import da.klay.core.morphology.analysis.sequence.MorphSequence;
 import da.klay.core.morphology.analysis.sequence.SingleMorphSequence;
-import da.klay.core.tokenization.TokenResult;
+import da.klay.core.tokenization.Token;
 import da.klay.core.tokenization.Tokenizer;
 import da.klay.core.tokenization.rule.ChainedTokenizationRule;
 import da.klay.core.tokenization.rule.CharacterTypeAndLengthLimitRule;
@@ -21,10 +20,6 @@ import da.klay.dictionary.triebase.user.UserTrieBaseDictionary;
 import org.apache.commons.lang3.time.StopWatch;
 
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class Klay {
@@ -84,7 +79,7 @@ public class Klay {
 
         // 4. analyze
         while(tokenizer.hasNext()) {
-            TokenResult token = tokenizer.next();
+            Token token = tokenizer.next();
 
             param.set(text, token.getPos(), token.getStartPosition(), token.getEndPosition(), token.canSkipAnalysis());
             analysisRule.apply(param);
