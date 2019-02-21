@@ -22,6 +22,9 @@ import org.apache.commons.lang3.time.StopWatch;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
+// TODO : 1. 기분석 사전 Analysis Rule 추가
+// TODO : 2. NA Analysis Rule 추가
+// TODO : 3. 특수문자 pos 맞추기
 public class Klay {
 
     private final ChainedTokenizationRule tokenizationRule;
