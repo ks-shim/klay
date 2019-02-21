@@ -1,18 +1,17 @@
 package da.klay.core.morphology.analysis.rule;
 
 import da.klay.common.dictionary.structure.TrieResult;
-import da.klay.common.parser.JasoParser;
-import da.klay.core.morphology.analysis.Morph;
+import da.klay.core.morphology.analysis.sequence.Morph;
+import da.klay.core.morphology.analysis.sequence.MorphSequence;
+import da.klay.core.morphology.analysis.sequence.MultiMorphSequence;
 import da.klay.dictionary.mapbase.TransitionMapBaseDictionary;
 import da.klay.dictionary.param.DictionaryBinarySource;
 import da.klay.dictionary.triebase.system.EmissionTrieBaseDictionary;
-import lombok.Data;
-import lombok.ToString;
 
 import java.nio.file.Paths;
 import java.util.*;
 
-public class AllPossibleCandidatesRule {
+public class AllPossibleCandidatesRule extends AbstractAnalysisRule {
 
     private final EmissionTrieBaseDictionary emissionDictionary;
     private final TransitionMapBaseDictionary transitionDictionary;
@@ -22,50 +21,66 @@ public class AllPossibleCandidatesRule {
         this.transitionDictionary = transitionDictionary;
     }
 
-    public void apply(CharSequence jaso, Map<Integer, List<CandidateNode>> candidateNodesSlot) {
+    public AllPossibleCandidatesRule(EmissionTrieBaseDictionary emissionDictionary,
+                                     TransitionMapBaseDictionary transitionDictionary,
+                                     AnalysisRule nextRule) {
+
+        super(nextRule);
+        this.emissionDictionary = emissionDictionary;
+        this.transitionDictionary = transitionDictionary;
+    }
+
+    public void apply(AnalysisParam param) {
 
         // 1. initialize
+        CharSequence jaso = param.jaso();
         int jasoLength = jaso.length();
-        candidateNodesSlot.clear();
 
         for(int i=0; i<jasoLength; i++) {
 
-            List<CandidateNode> curCandidateNodeList = candidateNodesSlot.get(i);
-            if(i > 0 && curCandidateNodeList == null) continue;
+            MorphSequence currentMSeq = param.slotAt(i);
+            if(i > 0 && currentMSeq == null) continue;
 
             TrieResult[] results = emissionDictionary.getAll(jaso, i);
             if(results == null && i == 0) break;
-            else if(results == null) continue;
+            else if(results == null) {
+                param.removeSlot(i);
+                continue;
+            }
 
-            assignSlotAndCalculateScore(i, results, candidateNodesSlot, curCandidateNodeList);
+            assignSlotAndCalculateScore(i, results, param, currentMSeq);
+        }
+
+        MorphSequence lastMSeq = param.slotAt(jasoLength);
+        if(lastMSeq != null) {
+            param.setLastMSeq(lastMSeq);
+            return;
         }
     }
 
-    private void assignSlotAndCalculateScore(int curJasoPosition,
+    private void assignSlotAndCalculateScore(int currentJasoPos,
                                              TrieResult[] results,
-                                             Map<Integer, List<CandidateNode>> candidateNodesSlot,
-                                             List<CandidateNode> curCandidateNodeList) {
+                                             AnalysisParam param,
+                                             MorphSequence currentMSeq) {
 
         for(TrieResult result : results) {
             if(!result.hasResult()) continue;
 
-            int insertIndex = curJasoPosition + result.length();
-            List<CandidateNode> newCandidateNodeList = candidateNodesSlot.get(insertIndex);
-            if(newCandidateNodeList == null) {
-                newCandidateNodeList = new LinkedList<>();
-                candidateNodesSlot.put(insertIndex, newCandidateNodeList);
-            }
+            int insertIndex = currentJasoPos + result.length();
+            MorphSequence nextMSeq = param.slotAt(insertIndex);
+            if(nextMSeq == null) nextMSeq = param.newSlotAt(insertIndex);
 
-            newCandidateNodesAndCalculateScore(result.getData(), curCandidateNodeList, newCandidateNodeList);
+            nextMSeq = parseTrieResultAndCreateMSeqs(result.getData(), currentMSeq, nextMSeq);
+            param.setSlotAt(insertIndex, nextMSeq);
         }
     }
 
-    private void newCandidateNodesAndCalculateScore(CharSequence res,
-                                                    List<CandidateNode> curCandidateNodeList,
-                                                    List<CandidateNode> newCandidateNodeList) {
+    private MorphSequence parseTrieResultAndCreateMSeqs(CharSequence res,
+                                               MorphSequence currentMSeq,
+                                               MorphSequence nextMSeq) {
 
-        CandidateNode newNode = new CandidateNode();
-        newCandidateNodeList.add(newNode);
+        MorphSequence vPreviousMSeq = nextMSeq;
+        MorphSequence vNextMSeq = new MultiMorphSequence();
 
         // ex) 달/VV ㄴ/ETM:18	달/VA ㄴ/ETM:4
         int textStartIndex = 0;
@@ -83,79 +98,44 @@ public class AllPossibleCandidatesRule {
                 textStartIndex = i+1;
 
                 Morph morph = new Morph(text, pos);
-                newNode.addMorph(morph);
+                vNextMSeq.addMorph(morph);
             } else if (ch == ':') {
                 CharSequence text = res.subSequence(textStartIndex, slashIndex);
                 CharSequence pos = res.subSequence(slashIndex+1, i);
                 colonIndex = i;
 
                 Morph morph = new Morph(text, pos);
-                newNode.addMorph(morph);
+                vNextMSeq.addMorph(morph);
             } else if(ch == '\t') {
                 textStartIndex = i+1;
                 int emissionScore = Integer.parseInt((String)res.subSequence(colonIndex+1, i));
-                newNode.setEmissionScore(emissionScore);
-                calculateScore(curCandidateNodeList, newNode);
+                vNextMSeq.setEmissionScore(emissionScore);
+                calculateScore(currentMSeq, vNextMSeq);
+                vNextMSeq.setVPreviousMSeq(vPreviousMSeq);
+                vPreviousMSeq = vNextMSeq;
 
-                newNode = new CandidateNode();
-                newCandidateNodeList.add(newNode);
+                vNextMSeq = new MultiMorphSequence();
             } else if(i == resLength-1) {
                 int emissionScore = Integer.parseInt((String)res.subSequence(colonIndex+1, i+1));
-                newNode.setEmissionScore(emissionScore);
-                calculateScore(curCandidateNodeList, newNode);
+                vNextMSeq.setEmissionScore(emissionScore);
+                calculateScore(currentMSeq, vNextMSeq);
+                vNextMSeq.setVPreviousMSeq(vPreviousMSeq);
+                vPreviousMSeq = vNextMSeq;
             }
         }
+
+        return vPreviousMSeq;
     }
 
-    private void calculateScore(List<CandidateNode> curCandidateNodeList,
-                                CandidateNode newCandidateNode) {
-        if(curCandidateNodeList == null) return;
+    private void calculateScore(MorphSequence currentMSeq,
+                                MorphSequence nextMSeq) {
 
-        int curListSize = curCandidateNodeList.size();
-        for(int i=0; i<curListSize; i++) {
-            CandidateNode curNode = curCandidateNodeList.get(i);
-            CharSequence curEndPos = curNode.lastMorph().getPos();
+        while(true) {
+            nextMSeq.compareScoreAndSetPreviousMSeq(currentMSeq, transitionDictionary);
 
-            CharSequence newStartPos = newCandidateNode.firstMorph().getPos();
+            if(!currentMSeq.hasVPreviousMSeq()) break;
 
-            Map<CharSequence, Integer> transitionMap = transitionDictionary.getFully(curEndPos);
-            Integer transitionScore;
-            if(transitionMap == null || (transitionScore = transitionMap.get(newStartPos)) == null) transitionScore = -1;
-
-            newCandidateNode.compareAndSetPreCandidateNode(curNode, transitionScore);
-        }
-    }
-    @Data
-    @ToString
-    private class CandidateNode {
-        CandidateNode preCandidateNode;
-        LinkedList<Morph> morphList;
-        int emissionScore = 0;
-        int totalScore = 0;
-
-        CandidateNode() {
-            this.morphList = new LinkedList<>();
-        }
-
-        void addMorph(Morph morph) {
-            morphList.add(morph);
-        }
-
-        Morph firstMorph() {
-            return morphList.getFirst();
-        }
-
-        Morph lastMorph() {
-            return morphList.getLast();
-        }
-
-        void compareAndSetPreCandidateNode(CandidateNode newPreNode,
-                                           int transitionScore) {
-            int newTotalScore = newPreNode.emissionScore + transitionScore + emissionScore;
-            if(newTotalScore < totalScore) return;
-
-            totalScore = newTotalScore;
-            preCandidateNode = newPreNode;
+            currentMSeq = currentMSeq.getVPreviousMSeq();
         }
     }
 
@@ -170,10 +150,12 @@ public class AllPossibleCandidatesRule {
 
         AllPossibleCandidatesRule rule = new AllPossibleCandidatesRule(emissionDictionary, transitionDictionary);
 
-        CharSequence jaso = JasoParser.parseAsString( "나쁜사람입니다");
-        rule.apply(jaso, new HashMap<>());
+        String text = "나쁜사람입니다";
+        AnalysisParam param = new AnalysisParam();
+        param.set(text, 0, text.length());
+        rule.apply(param);
 
-        int end = jaso.length();
+        //int end = jaso.length();
         //rule.print(candidates, end);
         /*for(int i=end; i>=0; i--) {
             CandidateNode candidate = candidates[i];

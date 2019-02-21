@@ -8,9 +8,10 @@ public enum Pos {
     VCP(3),
     VX(4),
     END(45) {
+        private String l = '<' + name() + '>';
         @Override
         public String label() {
-            return '<' + name() + '>';
+            return l;
         }
     },
     NNB(5),
@@ -26,9 +27,10 @@ public enum Pos {
     IC(15),
     XsV(16),
     START(17) {
+        private String l = '<' + name() + '>';
         @Override
         public String label() {
-            return '<' + name() + '>';
+            return l;
         }
     },
     SN(18),

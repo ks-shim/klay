@@ -1,5 +1,6 @@
 package da.klay.core.tokenization;
 
+import da.klay.common.parser.JasoParser;
 import lombok.Data;
 import lombok.ToString;
 
@@ -58,5 +59,4 @@ public class TokenResult {
     public int length() {
         return endPosition - startPosition;
     }
-
 }
