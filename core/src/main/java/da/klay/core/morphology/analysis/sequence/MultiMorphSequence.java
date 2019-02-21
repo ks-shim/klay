@@ -2,7 +2,6 @@ package da.klay.core.morphology.analysis.sequence;
 
 import lombok.Data;
 
-@Data
 public class MultiMorphSequence extends AbstractMorphSequence {
 
     private Morph first;

@@ -69,9 +69,8 @@ public class AllPossibleCandidatesRule extends AbstractAnalysisRule {
 
             int insertIndex = currentJasoPos + result.length();
             MorphSequence nextMSeq = param.slotAt(insertIndex);
-            if(nextMSeq == null) nextMSeq = param.newSlotAt(insertIndex);
-
             nextMSeq = parseTrieResultAndCreateMSeqs(result.getData(), currentMSeq, nextMSeq);
+
             param.setSlotAt(insertIndex, nextMSeq);
         }
     }

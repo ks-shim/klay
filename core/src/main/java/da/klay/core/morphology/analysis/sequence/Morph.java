@@ -4,8 +4,6 @@ import da.klay.common.pos.Pos;
 import lombok.Data;
 import lombok.ToString;
 
-@Data
-@ToString
 public class Morph {
 
     private Morph previous;
@@ -29,6 +27,18 @@ public class Morph {
 
         score = newTotalScore;
         previous = newPreMorph;
+    }
+
+    public CharSequence getPos() {
+        return pos;
+    }
+
+    public void setPrevious(Morph morph) {
+        this.previous = morph;
+    }
+
+    public void setNext(Morph morph) {
+        this.next = next;
     }
 
     public static Morph emptyMorph(Pos pos) {
