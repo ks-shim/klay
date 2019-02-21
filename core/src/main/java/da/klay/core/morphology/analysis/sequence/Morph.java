@@ -1,8 +1,6 @@
 package da.klay.core.morphology.analysis.sequence;
 
 import da.klay.common.pos.Pos;
-import lombok.Data;
-import lombok.ToString;
 
 public class Morph {
 
@@ -18,15 +16,6 @@ public class Morph {
                  CharSequence pos) {
         this.text = text;
         this.pos = pos;
-    }
-
-    public void compareAndSetPreMorph(Morph newPreMorph,
-                                              int transitionScore) {
-        long newTotalScore = newPreMorph.score + transitionScore + score;
-        if(newTotalScore < score) return;
-
-        score = newTotalScore;
-        previous = newPreMorph;
     }
 
     public CharSequence getPos() {
