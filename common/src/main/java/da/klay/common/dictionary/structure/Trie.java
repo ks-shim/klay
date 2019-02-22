@@ -83,7 +83,7 @@ public class Trie {
 
         int i = from;
         for (; i < key.length() - 1; i++) {
-            Character ch = e.next();
+            char ch = e.next();
             w = now.getCmd(ch);
             if (w >= 0) {
                 res[resc] = w;

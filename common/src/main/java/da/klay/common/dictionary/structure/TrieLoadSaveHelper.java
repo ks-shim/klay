@@ -18,8 +18,6 @@ public class TrieLoadSaveHelper {
     public static void store(Trie t,
                              Path filePath) throws Exception {
 
-        t.reduce(new Lift(true));
-
         try (DataOutputStream dos = new DataOutputStream(
                 new BufferedOutputStream(Files.newOutputStream(filePath)))) {
 

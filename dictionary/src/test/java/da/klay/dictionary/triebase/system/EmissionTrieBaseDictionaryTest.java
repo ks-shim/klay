@@ -30,7 +30,7 @@ class EmissionTrieBaseDictionaryTest {
     @Test
     void get() {
         // 1. getFully test
-        CharSequence key = JasoParser.parseAsString("대구일보");
+        CharSequence key = JasoParser.parseAsString("기대앉");
         CharSequence result = etd.getFully(key);
 
         assertNotNull(result);

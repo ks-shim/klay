@@ -24,9 +24,7 @@ import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-// TODO : 1. 기분석 사전 Analysis Rule 추가
-// TODO : 2. NA Analysis Rule 추가
-// TODO : 3. 특수문자 pos 맞추기
+// TODO : 1. 특수문자 pos 맞추기
 public class Klay {
 
     private final ChainedTokenizationRule tokenizationRule;
@@ -119,6 +117,6 @@ public class Klay {
 
     public static void main(String[] args) throws Exception {
         Klay klay = new Klay(Paths.get("data/configuration/klay.conf"));
-        klay.doKlay("대구일보 나쁜사람입니다");
+        klay.doKlay("기대안하고갔나재밌게봤다");
     }
 }
