@@ -1,11 +1,8 @@
 package da.klay.core;
 
-import da.klay.core.morphology.analysis.rule.FWDRule;
+import da.klay.core.morphology.analysis.rule.*;
 import da.klay.core.morphology.analysis.rule.param.AnalysisParam;
-import da.klay.core.morphology.analysis.rule.AnalysisRule;
-import da.klay.core.morphology.analysis.rule.CanSkipRule;
 import da.klay.core.morphology.analysis.sequence.Morph;
-import da.klay.core.morphology.analysis.rule.AllPossibleCandidatesRule;
 import da.klay.core.morphology.analysis.sequence.MorphSequence;
 import da.klay.core.morphology.analysis.sequence.SingleMorphSequence;
 import da.klay.core.tokenization.Token;
@@ -81,11 +78,14 @@ public class Klay {
                 new DictionaryTextSource(Paths.get(config.getProperty("dictionary.fwd.path")));
         FWDUserTrieBaseDictionary fwdDictionary = new FWDUserTrieBaseDictionary(fwdSource);
 
-        return new CanSkipRule(
-                new FWDRule(
-                        new AllPossibleCandidatesRule(emissionDictionary, transitionDictionary),
-                        fwdDictionary, transitionDictionary),
-                transitionDictionary);
+        // CanSkipRule --> FWDRule --> AllPossibleCandidateRule --> NARule
+        return new CanSkipRule(transitionDictionary,
+                new FWDRule(fwdDictionary, transitionDictionary,
+                        new AllPossibleCandidatesRule(emissionDictionary, transitionDictionary,
+                                new NARule(transitionDictionary)
+                        )
+                )
+        );
     }
 
     public void doKlay(CharSequence text) {

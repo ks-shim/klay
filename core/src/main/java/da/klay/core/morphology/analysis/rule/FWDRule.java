@@ -17,9 +17,9 @@ public class FWDRule extends AbstractAnalysisRule {
         this.transitionDictionary = transitionDictionary;
     }
 
-    public FWDRule(AnalysisRule nextRule,
-                   FWDUserTrieBaseDictionary dictionary,
-                   TransitionMapBaseDictionary transitionDictionary) {
+    public FWDRule(FWDUserTrieBaseDictionary dictionary,
+                   TransitionMapBaseDictionary transitionDictionary,
+                   AnalysisRule nextRule) {
         super(nextRule);
         this.fwdDictionary = dictionary;
         this.transitionDictionary = transitionDictionary;
