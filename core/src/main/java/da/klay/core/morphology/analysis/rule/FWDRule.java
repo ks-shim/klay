@@ -54,10 +54,16 @@ public class FWDRule extends AbstractAnalysisRule {
             char ch = res.charAt(i);
             if(ch == '/') {
                 slashIndex = i;
-            } else if(ch == ' ' || i == resLength - 1) {
+            } else if(ch == ' ') {
                 CharSequence text = res.subSequence(textStartIndex, slashIndex);
                 CharSequence pos = res.subSequence(slashIndex+1, i);
                 textStartIndex = i+1;
+
+                Morph morph = new Morph(text, pos);
+                currentMSeq.addMorph(morph);
+            } else if(i == resLength - 1) {
+                CharSequence text = res.subSequence(textStartIndex, slashIndex);
+                CharSequence pos = res.subSequence(slashIndex+1, i+1);
 
                 Morph morph = new Morph(text, pos);
                 currentMSeq.addMorph(morph);

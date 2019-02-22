@@ -16,6 +16,8 @@ public interface MorphSequence {
 
     void compareScoreAndSetPreviousMSeq(MorphSequence newPreMorphSequence,
                                         TransitionMapBaseDictionary dictionary);
+    boolean hasHPreviousMSeq();
+
     boolean hasVNextMSeq();
 
     boolean hasVPreviousMSeq();

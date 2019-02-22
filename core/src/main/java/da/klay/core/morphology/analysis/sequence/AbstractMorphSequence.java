@@ -18,6 +18,11 @@ public abstract class AbstractMorphSequence implements MorphSequence {
     protected AbstractMorphSequence() {}
 
     @Override
+    public boolean hasHPreviousMSeq() {
+        return hPreviousMSeq != null;
+    }
+
+    @Override
     public long score() {
         return score;
     }
@@ -35,7 +40,7 @@ public abstract class AbstractMorphSequence implements MorphSequence {
         if(transitionMap == null || (transitionScore = transitionMap.get(first().getPos())) == null) transitionScore = -1;
 
         long newTotalScore = newPreviousMSeq.score() + transitionScore + emissionScore;
-        if(newTotalScore < score) return;
+        if(newTotalScore < score && hasHPreviousMSeq()) return;
 
         score = newTotalScore;
         hPreviousMSeq = newPreviousMSeq;

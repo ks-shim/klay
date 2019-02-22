@@ -119,6 +119,6 @@ public class Klay {
 
     public static void main(String[] args) throws Exception {
         Klay klay = new Klay(Paths.get("data/configuration/klay.conf"));
-        klay.doKlay("대구일보는 나쁜사람입니다");
+        klay.doKlay("대구일보 나쁜사람입니다");
     }
 }
