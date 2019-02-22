@@ -1,5 +1,6 @@
 package da.klay.core.morphology.analysis.sequence;
 
+import da.klay.core.morphology.analysis.Morph;
 import da.klay.dictionary.mapbase.TransitionMapBaseDictionary;
 
 public interface MorphSequence {
@@ -16,11 +17,14 @@ public interface MorphSequence {
 
     void compareScoreAndSetPreviousMSeq(MorphSequence newPreMorphSequence,
                                         TransitionMapBaseDictionary dictionary);
+
     boolean hasHPreviousMSeq();
 
     boolean hasVNextMSeq();
 
     boolean hasVPreviousMSeq();
+
+    MorphSequence getHPreviousMSeq();
 
     MorphSequence setVNextMSeq(MorphSequence nextMSeq);
 

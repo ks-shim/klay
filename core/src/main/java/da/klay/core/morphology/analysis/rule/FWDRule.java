@@ -1,7 +1,7 @@
 package da.klay.core.morphology.analysis.rule;
 
 import da.klay.core.morphology.analysis.rule.param.AnalysisParam;
-import da.klay.core.morphology.analysis.sequence.Morph;
+import da.klay.core.morphology.analysis.Morph;
 import da.klay.core.morphology.analysis.sequence.MorphSequence;
 import da.klay.core.morphology.analysis.sequence.MultiMorphSequence;
 import da.klay.dictionary.mapbase.TransitionMapBaseDictionary;
@@ -36,11 +36,12 @@ public class FWDRule extends AbstractAnalysisRule {
             return;
         }
 
-        MorphSequence lastMSeq = parseTrieResultAndCreateMSeqs(result, previousMSeq);
+        MorphSequence lastMSeq = parseTrieResultAndCreateMSeqs(param, result, previousMSeq);
         param.setLastMSeq(lastMSeq);
     }
 
-    private MorphSequence parseTrieResultAndCreateMSeqs(CharSequence res,
+    private MorphSequence parseTrieResultAndCreateMSeqs(AnalysisParam param,
+                                                        CharSequence res,
                                                         MorphSequence previousMSeq) {
 
         MorphSequence currentMSeq = new MultiMorphSequence();
@@ -59,13 +60,13 @@ public class FWDRule extends AbstractAnalysisRule {
                 CharSequence pos = res.subSequence(slashIndex+1, i);
                 textStartIndex = i+1;
 
-                Morph morph = new Morph(text, pos);
+                Morph morph = new Morph(param.getTokenNumber(), text, pos);
                 currentMSeq.addMorph(morph);
             } else if(i == resLength - 1) {
                 CharSequence text = res.subSequence(textStartIndex, slashIndex);
                 CharSequence pos = res.subSequence(slashIndex+1, i+1);
 
-                Morph morph = new Morph(text, pos);
+                Morph morph = new Morph(param.getTokenNumber(), text, pos);
                 currentMSeq.addMorph(morph);
             }
         }

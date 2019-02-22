@@ -1,8 +1,9 @@
 package da.klay.core;
 
+import da.klay.core.morphology.analysis.Morphs;
 import da.klay.core.morphology.analysis.rule.*;
 import da.klay.core.morphology.analysis.rule.param.AnalysisParam;
-import da.klay.core.morphology.analysis.sequence.Morph;
+import da.klay.core.morphology.analysis.Morph;
 import da.klay.core.morphology.analysis.sequence.MorphSequence;
 import da.klay.core.morphology.analysis.sequence.SingleMorphSequence;
 import da.klay.core.tokenization.Token;
@@ -21,6 +22,7 @@ import org.apache.commons.lang3.time.StopWatch;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Iterator;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -86,23 +88,26 @@ public class Klay {
         );
     }
 
-    public void doKlay(CharSequence text) {
+    public Morphs doKlay(CharSequence text) {
 
         // 1. create tokenizer
         Tokenizer tokenizer = new Tokenizer(text, tokenizationRule);
 
         // 3. create start morph-seq and analysis Param
+        MorphSequence startMSeq = new SingleMorphSequence(Morph.newStartMorph());
         AnalysisParam param = new AnalysisParam();
-        param.setLastMSeq(new SingleMorphSequence(Morph.newStartMorph()));
+        param.setLastMSeq(startMSeq);
 
         // 4. analyze
+        int tokenNumber = 0;
         while(tokenizer.hasNext()) {
             Token token = tokenizer.next();
 
-            param.set(text, token.getPos(), token.getStartPosition(), token.getEndPosition(), token.canSkipAnalysis());
+            param.set(tokenNumber++, text, token.getPos(), token.getStartPosition(), token.getEndPosition(), token.canSkipAnalysis());
             analysisRule.apply(param);
         }
 
+        // 5. connect lastMSeq -> endMSeq
         MorphSequence lastMSeq = param.lastMSeq();
         MorphSequence endMSeq = new SingleMorphSequence(Morph.newEndMorph());
         while(true) {
@@ -112,11 +117,22 @@ public class Klay {
             lastMSeq = lastMSeq.getVPreviousMSeq();
         }
 
-        System.out.println(endMSeq);
+        // 6. create Morphs object lastly ...
+        Morphs morphs = new Morphs(text);
+        MorphSequence mSeq = endMSeq;
+        while((mSeq = mSeq.getHPreviousMSeq()) != startMSeq) {
+            morphs.addFirst(mSeq);
+        }
+
+        return morphs;
     }
 
     public static void main(String[] args) throws Exception {
         Klay klay = new Klay(Paths.get("data/configuration/klay.conf"));
-        klay.doKlay("기대안하고갔나재밌게봤다");
+        Morphs morphs = klay.doKlay("기대 안하고 갔나 재밌게 봤다");
+        Iterator<Morph> iter = morphs.iterator();
+        while(iter.hasNext()) {
+            System.out.println(iter.next());
+        }
     }
 }

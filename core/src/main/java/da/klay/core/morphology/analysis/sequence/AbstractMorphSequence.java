@@ -52,6 +52,11 @@ public abstract class AbstractMorphSequence implements MorphSequence {
     }
 
     @Override
+    public MorphSequence getHPreviousMSeq() {
+        return hPreviousMSeq;
+    }
+
+    @Override
     public MorphSequence setVNextMSeq(MorphSequence vNextMSeq) {
         this.vNextMSeq = vNextMSeq;
         return this.vNextMSeq;

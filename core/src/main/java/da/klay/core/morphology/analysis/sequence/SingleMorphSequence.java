@@ -1,6 +1,6 @@
 package da.klay.core.morphology.analysis.sequence;
 
-import lombok.Data;
+import da.klay.core.morphology.analysis.Morph;
 
 public class SingleMorphSequence extends AbstractMorphSequence {
 

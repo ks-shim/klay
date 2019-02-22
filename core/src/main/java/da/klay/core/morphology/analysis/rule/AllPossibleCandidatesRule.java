@@ -2,7 +2,7 @@ package da.klay.core.morphology.analysis.rule;
 
 import da.klay.common.dictionary.structure.TrieResult;
 import da.klay.core.morphology.analysis.rule.param.AnalysisParam;
-import da.klay.core.morphology.analysis.sequence.Morph;
+import da.klay.core.morphology.analysis.Morph;
 import da.klay.core.morphology.analysis.sequence.MorphSequence;
 import da.klay.core.morphology.analysis.sequence.MultiMorphSequence;
 import da.klay.dictionary.mapbase.TransitionMapBaseDictionary;
@@ -67,15 +67,16 @@ public class AllPossibleCandidatesRule extends AbstractAnalysisRule {
 
             int insertIndex = currentJasoPos + result.length();
             MorphSequence nextMSeq = param.slotAt(insertIndex);
-            nextMSeq = parseTrieResultAndCreateMSeqs(result.getData(), currentMSeq, nextMSeq);
+            nextMSeq = parseTrieResultAndCreateMSeqs(param, result.getData(), currentMSeq, nextMSeq);
 
             param.setSlotAt(insertIndex, nextMSeq);
         }
     }
 
-    private MorphSequence parseTrieResultAndCreateMSeqs(CharSequence res,
-                                               MorphSequence currentMSeq,
-                                               MorphSequence nextMSeq) {
+    private MorphSequence parseTrieResultAndCreateMSeqs(AnalysisParam param,
+                                                        CharSequence res,
+                                                        MorphSequence currentMSeq,
+                                                        MorphSequence nextMSeq) {
 
         MorphSequence vPreviousMSeq = nextMSeq;
         MorphSequence vNextMSeq = new MultiMorphSequence();
@@ -95,14 +96,14 @@ public class AllPossibleCandidatesRule extends AbstractAnalysisRule {
                 CharSequence pos = res.subSequence(slashIndex+1, i);
                 textStartIndex = i+1;
 
-                Morph morph = new Morph(text, pos);
+                Morph morph = new Morph(param.getTokenNumber(), text, pos);
                 vNextMSeq.addMorph(morph);
             } else if (ch == ':') {
                 CharSequence text = res.subSequence(textStartIndex, slashIndex);
                 CharSequence pos = res.subSequence(slashIndex+1, i);
                 colonIndex = i;
 
-                Morph morph = new Morph(text, pos);
+                Morph morph = new Morph(param.getTokenNumber(), text, pos);
                 vNextMSeq.addMorph(morph);
             } else if(ch == '\t') {
                 textStartIndex = i+1;

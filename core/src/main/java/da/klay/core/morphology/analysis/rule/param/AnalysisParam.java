@@ -12,6 +12,7 @@ import java.util.Map;
 
 public class AnalysisParam {
 
+    private int tokenNumber;
     private CharSequence text;
     private CharSequence pos;
     private int from;
@@ -44,7 +45,11 @@ public class AnalysisParam {
         return to - from;
     }
 
-    public void set(CharSequence text, CharSequence pos, int from, int to, boolean canSkip) {
+    public void set(int tokenNumber,
+                    CharSequence text,
+                    CharSequence pos,
+                    int from, int to, boolean canSkip) {
+        this.tokenNumber = tokenNumber;
         this.text = text;
         this.pos = pos;
         this.from = from;
@@ -52,6 +57,10 @@ public class AnalysisParam {
         this.canSkip = canSkip;
 
         clearJasoAndSlot();
+    }
+
+    public int getTokenNumber() {
+        return tokenNumber;
     }
 
     public CharSequence getSubCharSequence() {
