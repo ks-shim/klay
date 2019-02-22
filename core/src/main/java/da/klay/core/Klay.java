@@ -1,5 +1,6 @@
 package da.klay.core;
 
+import da.klay.core.morphology.analysis.rule.FWDRule;
 import da.klay.core.morphology.analysis.rule.param.AnalysisParam;
 import da.klay.core.morphology.analysis.rule.AnalysisRule;
 import da.klay.core.morphology.analysis.rule.CanSkipRule;
@@ -81,7 +82,9 @@ public class Klay {
         FWDUserTrieBaseDictionary fwdDictionary = new FWDUserTrieBaseDictionary(fwdSource);
 
         return new CanSkipRule(
-                new AllPossibleCandidatesRule(emissionDictionary, transitionDictionary),
+                new FWDRule(
+                        new AllPossibleCandidatesRule(emissionDictionary, transitionDictionary),
+                        fwdDictionary, transitionDictionary),
                 transitionDictionary);
     }
 
