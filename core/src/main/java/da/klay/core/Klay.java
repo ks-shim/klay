@@ -88,7 +88,7 @@ public class Klay {
                 transitionDictionary);
     }
 
-    public void doKlay(CharSequence text) throws Exception {
+    public void doKlay(CharSequence text) {
 
         // 1. create tokenizer
         Tokenizer tokenizer = new Tokenizer(text, tokenizationRule);
