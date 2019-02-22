@@ -32,8 +32,13 @@ public abstract class AbstractMapBaseDictionary
     }
 
     @Override
-    public Map<CharSequence, Integer> getFully(CharSequence cs) {
-        return map.get(cs);
+    public Map<CharSequence, Integer> getFully(CharSequence key) {
+        return map.get(key);
+    }
+
+    @Override
+    public Map<CharSequence, Integer> getFully(CharSequence key, int from, int keyLength) {
+        throw new UnsupportedOperationException();
     }
 
     protected abstract Map<CharSequence, Map<CharSequence, Integer>> loadText(DictionaryTextSource source) throws Exception;

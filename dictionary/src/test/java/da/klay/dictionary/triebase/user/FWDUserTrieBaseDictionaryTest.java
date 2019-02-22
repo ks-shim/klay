@@ -21,7 +21,7 @@ class FWDUserTrieBaseDictionaryTest {
 
     @Test
     void getFully() {
-        CharSequence cs = fud.getFully("흘렸어요");
+        CharSequence cs = fud.getFully("흘렸어요", 0, 4);
         assertEquals("흘리/VV 었/EP 어요/EC", cs);
     }
 }

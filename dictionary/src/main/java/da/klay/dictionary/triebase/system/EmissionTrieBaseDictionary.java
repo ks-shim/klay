@@ -53,7 +53,6 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
                 CharSequence word = line.substring(0, tabIndex);
                 CharSequence morph = JasoParser.parseAsString(word);
                 CharSequence data = validateAndReform(line.substring(tabIndex+1), word, reformSb) ;
-                System.out.println(morph + " : " + data);
                 trie.add(morph, data);
             }
         }

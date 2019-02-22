@@ -28,6 +28,18 @@ public class AnalysisParam {
         candidateMSeqSlot = new HashMap<>();
     }
 
+    public CharSequence getText() {
+        return text;
+    }
+
+    public int getFrom() {
+        return from;
+    }
+
+    public int getTo() {
+        return to;
+    }
+
     public void set(CharSequence text, CharSequence pos, int from, int to, boolean canSkip) {
         this.text = text;
         this.pos = pos;

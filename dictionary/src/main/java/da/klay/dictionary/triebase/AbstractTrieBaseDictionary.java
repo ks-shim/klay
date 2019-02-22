@@ -29,7 +29,12 @@ public abstract class AbstractTrieBaseDictionary implements Dictionary<CharSeque
 
     @Override
     public CharSequence getFully(CharSequence key) {
-        return trie.getFully(key);
+        return getFully(key, 0, key.length());
+    }
+
+    @Override
+    public CharSequence getFully(CharSequence key, int from, int keyLength) {
+        return trie.getFully(key, from, keyLength);
     }
 
     @Override

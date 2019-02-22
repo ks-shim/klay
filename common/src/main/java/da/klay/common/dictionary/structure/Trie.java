@@ -78,7 +78,7 @@ public class Trie {
         int resc = 0;
         Row now = getRow(root);
         int w;
-        StrEnum e = new StrEnum(key, from, forward);
+        StrEnum e = new StrEnum(key, from,key.length() - from, forward);
         boolean br = false;
 
         int i = from;
@@ -152,22 +152,16 @@ public class Trie {
         return size;
     }
 
-    /**
-     * Return the element that is stored in a cell associated with the given key.
-     *
-     * @param key the key
-     * @return the associated element
-     */
-    public CharSequence getFully(CharSequence key) {
+    public CharSequence getFully(CharSequence key, int from, int keyLength) {
         Row now = getRow(root);
         int w;
         Cell c;
         int cmd = -1;
-        StrEnum e = new StrEnum(key, forward);
+        StrEnum e = new StrEnum(key, from, keyLength, forward);
         Character ch = null;
         Character aux = null;
 
-        for (int i = 0; i < key.length();) {
+        for (int i = from; i < keyLength;) {
             ch = e.next();
             i++;
 
@@ -190,11 +184,21 @@ public class Trie {
             w = now.getRef(ch);
             if (w >= 0) {
                 now = getRow(w);
-            } else if (i < key.length()) {
+            } else if (i < e.length()) {
                 return null;
             }
         }
         return (cmd == -1) ? null : cmds.get(cmd);
+    }
+
+    /**
+     * Return the element that is stored in a cell associated with the given key.
+     *
+     * @param key the key
+     * @return the associated element
+     */
+    public CharSequence getFully(CharSequence key) {
+        return getFully(key, 0, key.length());
     }
 
     public TrieResult getLastOnPath(CharSequence key) {
@@ -213,7 +217,7 @@ public class Trie {
         Row now = getRow(root);
         int w;
         CharSequence last = null;
-        StrEnum e = new StrEnum(key, from, forward);
+        StrEnum e = new StrEnum(key, from, key.length() - from, forward);
 
         int i = from;
         for (; i < key.length() - 1; i++) {
@@ -328,33 +332,37 @@ public class Trie {
     class StrEnum {
         CharSequence s;
         int from;
+        int length;
         int by;
 
         StrEnum(CharSequence s,
                 boolean up) {
             this(s, 0, up);
         }
-        /**
-         * Constructor for the StrEnum object
-         *
-         * @param s Description of the Parameter
-         * @param up Description of the Parameter
-         */
+
         StrEnum(CharSequence s,
                 int from,
                 boolean up) {
+            this(s, from, s.length(), up);
+        }
+
+        StrEnum(CharSequence s,
+                int from,
+                int length,
+                boolean up) {
             this.s = s;
+            this.length = length;
             if (up) {
                 this.from = from;
                 by = 1;
             } else {
-                this.from = s.length() - 1 - from;
+                this.from = length - 1 - from;
                 by = -1;
             }
         }
 
         int length() {
-            return s.length();
+            return length;
         }
 
         char next() {

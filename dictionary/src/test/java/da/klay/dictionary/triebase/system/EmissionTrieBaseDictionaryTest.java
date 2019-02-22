@@ -40,13 +40,13 @@ class EmissionTrieBaseDictionaryTest {
         TrieResult trieResult = etd.getLastOnPath(key);
 
         assertEquals(true, trieResult.hasResult());
-        assertEquals(8, trieResult.getEndPosition());
+        assertEquals(9, trieResult.getEndPosition());
 
-        trieResult = etd.getLastOnPath(key, trieResult.getEndPosition()+1);
+        trieResult = etd.getLastOnPath(key, trieResult.getEndPosition());
 
         assertEquals(true, trieResult.hasResult());
         assertEquals(9, trieResult.getStartPosition());
-        assertEquals(14, trieResult.getEndPosition());
+        assertEquals(15, trieResult.getEndPosition());
 
         // 3. all matching test
         key = JasoParser.parseAsString("대구일보기자");
