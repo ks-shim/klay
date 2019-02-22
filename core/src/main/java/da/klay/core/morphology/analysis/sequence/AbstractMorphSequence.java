@@ -28,17 +28,17 @@ public abstract class AbstractMorphSequence implements MorphSequence {
     }
 
     @Override
-    public void compareScoreAndSetPreviousMSeq(MorphSequence newPreMorphSequence,
+    public void compareScoreAndSetPreviousMSeq(MorphSequence newPreviousMSeq,
                                                TransitionMapBaseDictionary dictionary) {
-        Map<CharSequence, Integer> transitionMap = dictionary.getFully(newPreMorphSequence.last().getPos());
+        Map<CharSequence, Integer> transitionMap = dictionary.getFully(newPreviousMSeq.last().getPos());
         Integer transitionScore;
         if(transitionMap == null || (transitionScore = transitionMap.get(first().getPos())) == null) transitionScore = -1;
 
-        long newTotalScore = newPreMorphSequence.score() + transitionScore + emissionScore;
+        long newTotalScore = newPreviousMSeq.score() + transitionScore + emissionScore;
         if(newTotalScore < score) return;
 
         score = newTotalScore;
-        hPreviousMSeq = newPreMorphSequence;
+        hPreviousMSeq = newPreviousMSeq;
     }
 
     @Override

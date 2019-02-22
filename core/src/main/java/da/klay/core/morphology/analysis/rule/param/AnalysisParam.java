@@ -40,6 +40,10 @@ public class AnalysisParam {
         return to;
     }
 
+    public int getKeyLength() {
+        return to - from;
+    }
+
     public void set(CharSequence text, CharSequence pos, int from, int to, boolean canSkip) {
         this.text = text;
         this.pos = pos;
