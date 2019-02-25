@@ -36,6 +36,10 @@ public class Morph {
         return morphNumber;
     }
 
+    public CharSequence getText() {
+        return text;
+    }
+
     public Morph getPrevious() {
         return previous;
     }
