@@ -55,6 +55,8 @@ public class AllPossibleCandidatesRule extends AbstractAnalysisRule {
         }
 
         param.setLastMSeq(lastMSeq);
+
+        param.printSlot();
     }
 
     private void assignSlotAndCalculateScore(int currentJasoPos,

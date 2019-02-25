@@ -108,6 +108,10 @@ public class AnalysisParam {
         return candidateMSeqSlot.get(index);
     }
 
+    public void printSlot() {
+        System.out.println(candidateMSeqSlot);
+    }
+
     public void removeSlot(int index) {
         candidateMSeqSlot.remove(index);
     }

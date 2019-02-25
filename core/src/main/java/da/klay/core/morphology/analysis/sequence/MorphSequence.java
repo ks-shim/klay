@@ -11,9 +11,9 @@ public interface MorphSequence {
 
     Morph last();
 
-    long score();
+    double score();
 
-    void setEmissionScore(int score);
+    void setEmissionScore(double score);
 
     void compareScoreAndSetPreviousMSeq(MorphSequence newPreMorphSequence,
                                         TransitionMapBaseDictionary dictionary);
