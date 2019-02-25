@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 public class DictionaryBuilder {
 
@@ -23,10 +24,13 @@ public class DictionaryBuilder {
     private DictionaryTextSource transitionSource;
     private DictionaryBinaryTarget transitionTarget;
 
-    private DictionaryBuilder(DictionaryTextSource[] emissionSources,
+    private DictionaryBuilder(DictionaryTextSource posFreqSource,
+                              DictionaryTextSource[] emissionSources,
                               DictionaryBinaryTarget emissionTarget,
                               DictionaryTextSource transitionSource,
                               DictionaryBinaryTarget transitionTarget) {
+
+        this.posFreqSource = posFreqSource;
         this.emissionSources = emissionSources;
         this.emissionTarget = emissionTarget;
         this.transitionSource = transitionSource;
@@ -80,7 +84,7 @@ public class DictionaryBuilder {
 
     private void buildEmissionDictionary(Map<CharSequence, Integer> posFreqMap) throws Exception {
         for(DictionaryTextSource source : emissionSources) {
-            if(!source.isUsePosFreq()) continue;
+            if(DictionaryTextSource.DictionaryType.DIC_WORD != source.getDictionaryType()) continue;
             source.setPosFreqMap(posFreqMap);
         }
 
@@ -97,11 +101,18 @@ public class DictionaryBuilder {
 
     public static class Builder {
 
+        private DictionaryTextSource posFreqSource;
+
         private DictionaryTextSource[] emissionSources;
         private DictionaryBinaryTarget emissionTarget;
 
         private DictionaryTextSource transitionSource;
         private DictionaryBinaryTarget transitionTarget;
+
+        public Builder posFreqSource(DictionaryTextSource posFreqSource) {
+            this.posFreqSource = posFreqSource;
+            return this;
+        }
 
         public Builder emissionSourcesAndTarget(DictionaryTextSource[] sources,
                                                 DictionaryBinaryTarget target) {
@@ -119,6 +130,7 @@ public class DictionaryBuilder {
 
         public DictionaryBuilder build() {
             return new DictionaryBuilder(
+                    posFreqSource,
                     emissionSources, emissionTarget,
                     transitionSource, transitionTarget);
         }
@@ -127,18 +139,32 @@ public class DictionaryBuilder {
 
     public static void main(String[] args) throws Exception {
 
-        // 1. emission related variables.
-        DictionaryTextSource[] emissionSources = {
-                new DictionaryTextSource(Paths.get("data/dictionary/text/system/dic.irregular")),
-                new DictionaryTextSource(Paths.get("data/dictionary/text/system/dic.word"), true)
-        };
-        DictionaryBinaryTarget emissionTarget = new DictionaryBinaryTarget(Paths.get("data/dictionary/binary/system/emission.bin"));
+        // 1. configuration
+        Properties config = new Properties();
+        config.load(Files.newInputStream(Paths.get("data/configuration/klay.conf")));
 
-        // 2. transition related variables.
-        DictionaryTextSource transitionSource = new DictionaryTextSource(Paths.get("data/dictionary/text/system/grammar.in"), true);
-        DictionaryBinaryTarget transitionTarget = new DictionaryBinaryTarget(Paths.get("data/dictionary/binary/system/transition.bin"));
+        // 2. pos frequency related.
+        DictionaryTextSource posFreqSource = new DictionaryTextSource(Paths.get(config.getProperty("dictionary.grammar.path")));
+
+        // 3. emission related variables.
+        DictionaryTextSource[] emissionSources = {
+                new DictionaryTextSource(
+                        Paths.get(config.getProperty("dictionary.irregular.path")), DictionaryTextSource.DictionaryType.DIC_IRREGULAR),
+                new DictionaryTextSource(
+                        Paths.get(config.getProperty("dictionary.word.path")), DictionaryTextSource.DictionaryType.DIC_WORD)
+        };
+        DictionaryBinaryTarget emissionTarget =
+                new DictionaryBinaryTarget(Paths.get(config.getProperty("dictionary.emission.path")));
+
+        // 4. transition related variables.
+        DictionaryTextSource transitionSource =
+                new DictionaryTextSource(
+                        Paths.get(config.getProperty("dictionary.grammar.path")), DictionaryTextSource.DictionaryType.GRAMMAR);
+        DictionaryBinaryTarget transitionTarget =
+                new DictionaryBinaryTarget(Paths.get(config.getProperty("dictionary.transition.path")));
 
         DictionaryBuilder builder = new DictionaryBuilder.Builder()
+                .posFreqSource(posFreqSource)
                 .emissionSourcesAndTarget(emissionSources, emissionTarget)
                 .transitionSourceAndTarget(transitionSource, transitionTarget)
                 .build();

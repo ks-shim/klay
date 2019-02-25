@@ -46,7 +46,8 @@ public class TransitionMapBaseDictionary extends AbstractMapBaseDictionary {
                 if(tabIndex < 0 || tabIndex+1 >= line.length()) continue;
 
                 String prePos = line.substring(0, tabIndex);
-                int prePosFreq = posFreqMap.get(prePos);
+                Integer prePosFreq = posFreqMap.get(prePos);
+                if(prePosFreq == null) prePosFreq = 1;
                 String data = line.substring(tabIndex+1).replaceAll("\\s+", "");
 
                 String[] nextPoses = data.split(",");
@@ -58,8 +59,7 @@ public class TransitionMapBaseDictionary extends AbstractMapBaseDictionary {
                     int colonIndex = transitionData.indexOf(':');
                     if(colonIndex < 0 || colonIndex+1 >= transitionData.length()) continue;
                     String nextPos = transitionData.substring(0, colonIndex);
-                    int nextPosFreq = posFreqMap.get(nextPos);
-                    Integer freq = Integer.parseInt(transitionData.substring(colonIndex+1));
+                    Integer nextPosFreq = Integer.parseInt(transitionData.substring(colonIndex+1));
 
                     if(Pos.NNP.label().equals(nextPos)) {
                         prePosFreq += 100000;

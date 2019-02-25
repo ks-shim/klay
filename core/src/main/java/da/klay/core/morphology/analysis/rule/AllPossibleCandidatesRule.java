@@ -109,7 +109,7 @@ public class AllPossibleCandidatesRule extends AbstractAnalysisRule {
                 vNextMSeq.addMorph(morph);
             } else if(ch == '\t') {
                 textStartIndex = i+1;
-                int emissionScore = Integer.parseInt((String)res.subSequence(colonIndex+1, i));
+                double emissionScore = Double.parseDouble((String)res.subSequence(colonIndex+1, i));
                 vNextMSeq.setEmissionScore(emissionScore);
                 calculateScore(currentMSeq, vNextMSeq);
                 vNextMSeq.setVPreviousMSeq(vPreviousMSeq);
@@ -117,7 +117,7 @@ public class AllPossibleCandidatesRule extends AbstractAnalysisRule {
 
                 vNextMSeq = new MultiMorphSequence();
             } else if(i == resLength-1) {
-                int emissionScore = Integer.parseInt((String)res.subSequence(colonIndex+1, i+1));
+                double emissionScore = Double.parseDouble((String)res.subSequence(colonIndex+1, i+1));
                 vNextMSeq.setEmissionScore(emissionScore);
                 calculateScore(currentMSeq, vNextMSeq);
                 vNextMSeq.setVPreviousMSeq(vPreviousMSeq);

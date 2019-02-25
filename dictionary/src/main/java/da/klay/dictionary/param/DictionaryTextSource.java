@@ -11,10 +11,17 @@ import java.util.Map;
 @Data
 public class DictionaryTextSource {
 
+    public enum DictionaryType {
+        DIC_WORD,
+        DIC_IRREGULAR,
+        GRAMMAR,
+        OTHER
+    }
+
     private final Path filePath;
     private final Charset charSet;
 
-    private final boolean usePosFreq;
+    private final DictionaryType dictionaryType;
     private Map<CharSequence, Integer> posFreqMap;
 
     public DictionaryTextSource(Path filePath) {
@@ -23,19 +30,19 @@ public class DictionaryTextSource {
 
     public DictionaryTextSource(Path filePath,
                                 Charset charSet) {
-        this(filePath, charSet, false);
+        this(filePath, charSet, DictionaryType.OTHER);
     }
 
     public DictionaryTextSource(Path filePath,
-                                boolean usePosFreq) {
-        this(filePath, StandardCharsets.UTF_8, usePosFreq);
+                                DictionaryType dictionaryType) {
+        this(filePath, StandardCharsets.UTF_8, dictionaryType);
     }
 
     public DictionaryTextSource(Path filePath,
                                 Charset charSet,
-                                boolean usePosFreq) {
+                                DictionaryType dictionaryType) {
         this.filePath = filePath;
         this.charSet = charSet;
-        this.usePosFreq = usePosFreq;
+        this.dictionaryType = dictionaryType;
     }
 }
