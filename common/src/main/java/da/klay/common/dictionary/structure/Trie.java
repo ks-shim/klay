@@ -161,7 +161,7 @@ public class Trie {
         Character ch = null;
         Character aux = null;
 
-        for (int i = from; i < keyLength;) {
+        for (int i = from; i < from + keyLength;) {
             ch = e.next();
             i++;
 

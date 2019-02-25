@@ -106,7 +106,7 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
 
             String pos = values[0];
             Integer freq = Integer.parseInt(values[1]);
-            double score = Math.log10((double)freq);
+            double score = Math.log10((double)freq) - 3.0;
             poses[i] = pos + ':' + score;
         }
 

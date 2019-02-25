@@ -61,12 +61,14 @@ public class TransitionMapBaseDictionary extends AbstractMapBaseDictionary {
                     String nextPos = transitionData.substring(0, colonIndex);
                     Integer nextPosFreq = Integer.parseInt(transitionData.substring(colonIndex+1));
 
+                    int tempPrePosFreq = prePosFreq;
                     if(Pos.NNP.label().equals(nextPos)) {
-                        prePosFreq += 100000;
+                        tempPrePosFreq += 100000;
                         nextPosFreq += 100000;
                     }
 
-                    nextPosMap.put(nextPos, Math.log10(nextPosFreq/(double)prePosFreq));
+                    System.out.println(prePos + " -> " + nextPos + " : " + tempPrePosFreq + " : " + nextPosFreq);
+                    nextPosMap.put(nextPos, Math.log10(nextPosFreq/(double)tempPrePosFreq));
                 }
                 map.put(prePos, nextPosMap);
             }
