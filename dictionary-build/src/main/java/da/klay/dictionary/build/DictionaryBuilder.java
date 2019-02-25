@@ -76,8 +76,8 @@ public class DictionaryBuilder {
 
         // 1. emission related variables.
         DictionaryTextSource[] emissionSources = {
-                new DictionaryTextSource(Paths.get("data/dictionary/text/system/dic.word")),
-                new DictionaryTextSource(Paths.get("data/dictionary/text/system/dic.irregular"))
+                new DictionaryTextSource(Paths.get("data/dictionary/text/system/dic.irregular")),
+                new DictionaryTextSource(Paths.get("data/dictionary/text/system/dic.word"))
         };
         DictionaryBinaryTarget emissionTarget = new DictionaryBinaryTarget(Paths.get("data/dictionary/binary/system/emission.bin"));
 

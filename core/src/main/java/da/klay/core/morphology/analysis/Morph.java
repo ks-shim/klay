@@ -6,6 +6,7 @@ import lombok.Data;
 public class Morph {
 
     private int tokenNumber;
+    private int morphNumber;
 
     private Morph previous;
     private Morph next;
@@ -25,6 +26,14 @@ public class Morph {
 
     public int getTokenNumber() {
         return tokenNumber;
+    }
+
+    public void setMorphNumber(int number) {
+        morphNumber = number;
+    }
+
+    public int getMorphNumber() {
+        return morphNumber;
     }
 
     public Morph getPrevious() {
@@ -57,6 +66,6 @@ public class Morph {
 
     @Override
     public String toString() {
-        return "[" + tokenNumber + "] : " + text + "/" + pos;
+        return "[" + tokenNumber + " - " + morphNumber + "] : " + text + "/" + pos;
     }
 }

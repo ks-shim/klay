@@ -32,6 +32,13 @@ public class Morphs {
         }
     }
 
+    public void doNumbering() {
+        int number = 0;
+        Iterator<Morph> iter = morphs.iterator();
+        while(iter.hasNext())
+            iter.next().setMorphNumber(number++);
+    }
+
     public void addFirst(Morph morph) {
         morphs.addFirst(morph);
     }

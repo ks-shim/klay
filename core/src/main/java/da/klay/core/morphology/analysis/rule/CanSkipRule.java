@@ -38,5 +38,7 @@ public class CanSkipRule extends AbstractAnalysisRule {
 
             previousMSeq = previousMSeq.getVPreviousMSeq();
         }
+
+        param.setLastMSeq(mSeq);
     }
 }

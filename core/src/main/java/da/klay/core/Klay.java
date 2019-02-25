@@ -124,12 +124,15 @@ public class Klay {
             morphs.addFirst(mSeq);
         }
 
+        // 7. number morphs
+        morphs.doNumbering();
+
         return morphs;
     }
 
     public static void main(String[] args) throws Exception {
         Klay klay = new Klay(Paths.get("data/configuration/klay.conf"));
-        Morphs morphs = klay.doKlay("기대안하고갔나재밌게봤다");
+        Morphs morphs = klay.doKlay("나는 dwayne입니다.");
         Iterator<Morph> iter = morphs.iterator();
         while(iter.hasNext()) {
             System.out.println(iter.next());

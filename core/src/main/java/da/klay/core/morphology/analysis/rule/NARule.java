@@ -29,5 +29,7 @@ public class NARule extends AbstractAnalysisRule {
 
             previousMSeq = previousMSeq.getVPreviousMSeq();
         }
+
+        param.setLastMSeq(mSeq);
     }
 }
