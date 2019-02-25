@@ -10,7 +10,7 @@ public enum TokenCharacterType {
     KOREAN(null),
     ENGLISH(Pos.SL.label()),
     CHINESE(Pos.SH.label()),
-    JAPANESE(Pos.SH.label()),
+    JAPANESE(Pos.SL.label()),
     NUMERIC(Pos.SN.label()),
     WHITE_SPACE(null),
     OTHERS(null);
