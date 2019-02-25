@@ -11,9 +11,9 @@ import java.nio.file.Files;
 import java.util.Map;
 
 public abstract class AbstractMapBaseDictionary
-        implements Dictionary<Map<CharSequence, Integer>> {
+        implements Dictionary<Map<CharSequence, Double>> {
 
-    protected final Map<CharSequence, Map<CharSequence, Integer>> map;
+    protected final Map<CharSequence, Map<CharSequence, Double>> map;
 
     protected AbstractMapBaseDictionary(DictionaryTextSource source) throws Exception {
         this.map = loadText(source);
@@ -32,16 +32,16 @@ public abstract class AbstractMapBaseDictionary
     }
 
     @Override
-    public Map<CharSequence, Integer> getFully(CharSequence key) {
+    public Map<CharSequence, Double> getFully(CharSequence key) {
         return map.get(key);
     }
 
     @Override
-    public Map<CharSequence, Integer> getFully(CharSequence key, int from, int keyLength) {
+    public Map<CharSequence, Double> getFully(CharSequence key, int from, int keyLength) {
         throw new UnsupportedOperationException();
     }
 
-    protected abstract Map<CharSequence, Map<CharSequence, Integer>> loadText(DictionaryTextSource source) throws Exception;
+    protected abstract Map<CharSequence, Map<CharSequence, Double>> loadText(DictionaryTextSource source) throws Exception;
 
-    protected abstract Map<CharSequence, Map<CharSequence, Integer>> loadBinary(DictionaryBinarySource source) throws Exception;
+    protected abstract Map<CharSequence, Map<CharSequence, Double>> loadBinary(DictionaryBinarySource source) throws Exception;
 }

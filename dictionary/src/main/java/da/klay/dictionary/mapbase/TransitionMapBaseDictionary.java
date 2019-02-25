@@ -28,9 +28,10 @@ public class TransitionMapBaseDictionary extends AbstractMapBaseDictionary {
     }
 
     @Override
-    protected Map<CharSequence, Map<CharSequence, Integer>> loadText(DictionaryTextSource source) throws Exception {
+    protected Map<CharSequence, Map<CharSequence, Double>> loadText(DictionaryTextSource source) throws Exception {
 
-        Map<CharSequence, Map<CharSequence, Integer>> map = new HashMap<>();
+        Map<CharSequence, Integer> posFreqMap = source.getPosFreqMap();
+        Map<CharSequence, Map<CharSequence, Double>> map = new HashMap<>();
 
         try (BufferedReader in = new BufferedReader(
                 new InputStreamReader(
@@ -45,19 +46,27 @@ public class TransitionMapBaseDictionary extends AbstractMapBaseDictionary {
                 if(tabIndex < 0 || tabIndex+1 >= line.length()) continue;
 
                 String prePos = line.substring(0, tabIndex);
+                int prePosFreq = posFreqMap.get(prePos);
                 String data = line.substring(tabIndex+1).replaceAll("\\s+", "");
 
                 String[] nextPoses = data.split(",");
                 if(nextPoses.length == 0) continue;
 
-                Map<CharSequence, Integer> nextPosMap = new HashMap<>();
+                Map<CharSequence, Double> nextPosMap = new HashMap<>();
                 for(int i=0; i<nextPoses.length; i++) {
                     String transitionData = nextPoses[i];
                     int colonIndex = transitionData.indexOf(':');
                     if(colonIndex < 0 || colonIndex+1 >= transitionData.length()) continue;
                     String nextPos = transitionData.substring(0, colonIndex);
-                    Integer propability = Integer.parseInt(transitionData.substring(colonIndex+1));
-                    nextPosMap.put(nextPos, propability);
+                    int nextPosFreq = posFreqMap.get(nextPos);
+                    Integer freq = Integer.parseInt(transitionData.substring(colonIndex+1));
+
+                    if(Pos.NNP.label().equals(nextPos)) {
+                        prePosFreq += 100000;
+                        nextPosFreq += 100000;
+                    }
+
+                    nextPosMap.put(nextPos, Math.log10(nextPosFreq/(double)prePosFreq));
                 }
                 map.put(prePos, nextPosMap);
             }
@@ -67,9 +76,9 @@ public class TransitionMapBaseDictionary extends AbstractMapBaseDictionary {
     }
 
     @Override
-    protected Map<CharSequence, Map<CharSequence, Integer>> loadBinary(DictionaryBinarySource source) throws Exception {
+    protected Map<CharSequence, Map<CharSequence, Double>> loadBinary(DictionaryBinarySource source) throws Exception {
 
-        Map<CharSequence, Map<CharSequence, Integer>> map;
+        Map<CharSequence, Map<CharSequence, Double>> map;
 
         Kryo kryo = new Kryo();
         try (Input in = new Input(Files.newInputStream(source.getFilePath()))) {

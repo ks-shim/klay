@@ -26,7 +26,7 @@ class TransitionMapBaseDictionaryTest {
     @Test
     void loadText() throws Exception {
 
-        Map<CharSequence, Integer> resultMap = tmbd.getFully("XSV");
+        Map<CharSequence, Double> resultMap = tmbd.getFully("XSV");
         assertEquals(resultMap.size(), 7);
     }
 
@@ -37,7 +37,7 @@ class TransitionMapBaseDictionaryTest {
 
         TransitionMapBaseDictionary newTmbd = new TransitionMapBaseDictionary(new DictionaryBinarySource(path));
 
-        Map<CharSequence, Integer> resultMap = newTmbd.getFully("XSV");
+        Map<CharSequence, Double> resultMap = newTmbd.getFully("XSV");
         System.out.println(resultMap);
         assertEquals(resultMap.size(), 7);
     }
