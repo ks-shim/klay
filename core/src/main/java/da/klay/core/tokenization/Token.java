@@ -56,6 +56,9 @@ public class Token {
         return pos != null;
     }
 
+    public boolean isWhiteSpace() {
+        return TokenCharacterType.WHITE_SPACE == chType;
+    }
     public int length() {
         return endPosition - startPosition;
     }

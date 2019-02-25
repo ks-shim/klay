@@ -12,7 +12,7 @@ public enum TokenCharacterType {
     CHINESE(Pos.SH.label()),
     JAPANESE(Pos.SH.label()),
     NUMERIC(Pos.SN.label()),
-    WHITE_SPACE(Pos.SP.label()),
+    WHITE_SPACE(null),
     OTHERS(null);
 
     private String pos;

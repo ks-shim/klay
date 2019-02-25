@@ -102,6 +102,10 @@ public class Klay {
         int tokenNumber = 0;
         while(tokenizer.hasNext()) {
             Token token = tokenizer.next();
+            if(token.isWhiteSpace()) {
+                tokenNumber++;
+                continue;
+            }
 
             param.set(tokenNumber++, text, token.getPos(), token.getStartPosition(), token.getEndPosition(), token.canSkipAnalysis());
             analysisRule.apply(param);
