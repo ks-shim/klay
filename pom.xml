@@ -7,7 +7,7 @@
     <groupId>da.klay</groupId>
     <artifactId>da-klay</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1</version>
 
     <modules>
         <module>common</module>

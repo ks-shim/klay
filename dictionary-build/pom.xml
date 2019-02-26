@@ -5,7 +5,7 @@
     <parent>
         <artifactId>da-klay</artifactId>
         <groupId>da.klay</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,13 +15,13 @@
         <dependency>
             <groupId>da.klay</groupId>
             <artifactId>da-klay-common</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.1</version>
         </dependency>
 
         <dependency>
             <groupId>da.klay</groupId>
             <artifactId>da-klay-dictionary</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.1</version>
         </dependency>
     </dependencies>
 </project>
