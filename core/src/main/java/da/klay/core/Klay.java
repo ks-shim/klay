@@ -55,6 +55,7 @@ public class Klay {
         DictionaryTextSource userDicSource =
                 new DictionaryTextSource(Paths.get(config.getProperty("dictionary.user.path")));
 
+        // UserDictionaryRule --> CharacterTypeAndLengthLimitRule
         UserTrieBaseDictionary userDictionary = new UserTrieBaseDictionary(userDicSource);
         int tokenLengthLimit = Integer.parseInt(config.getProperty("tokenization.token.length_limit", "-1"));
         ChainedTokenizationRule rule = new CharacterTypeAndLengthLimitRule(tokenLengthLimit < 0 ? Integer.MAX_VALUE : tokenLengthLimit);
