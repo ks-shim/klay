@@ -139,8 +139,13 @@ public class Klay {
     public static void main(String[] args) throws Exception {
         Klay klay = new Klay(Paths.get("data/configuration/klay.conf"));
 
-        String text = "하임준과 심강섭은 누구입니까?";
+        String text = "너무기대안하고갔나재밌게봤다";
+
+        StopWatch watch = new StopWatch();
+        watch.start();
         Morphs morphs = klay.doKlay(text);
+        watch.stop();
+        System.out.println("Analysis Time : " + watch.getTime(TimeUnit.MILLISECONDS) + " (ms)");
 
         System.out.println("\nTEXT : " + text);
         System.out.println("-----------------------------------------------------------\n");
