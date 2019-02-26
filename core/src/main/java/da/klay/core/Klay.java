@@ -136,7 +136,7 @@ public class Klay {
 
     public static void main(String[] args) throws Exception {
         Klay klay = new Klay(Paths.get("data/configuration/klay.conf"));
-        Morphs morphs = klay.doKlay("저는 대구일보입니다.");
+        Morphs morphs = klay.doKlay("기대안하고갔나재밌게봤다");
         Iterator<Morph> iter = morphs.iterator();
         while(iter.hasNext()) {
             System.out.println(iter.next());
