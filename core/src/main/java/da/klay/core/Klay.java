@@ -137,7 +137,7 @@ public class Klay {
     public static void main(String[] args) throws Exception {
         Klay klay = new Klay(Paths.get("data/configuration/klay.conf"));
 
-        String text = "개봉했을때부터 지금까지 마음이답답하거나 힘들때 이영화 보고있어요 그때마다 심적인 위로를 받을수있는영화같아요 장면 하나하나가 너무예쁘고 마음에 남아서 진한 여운까지 주는영화 감사합니다";
+        String text = "하임준과 심강섭은 누구입니까?";
         Morphs morphs = klay.doKlay(text);
 
         System.out.println("\nTEXT : " + text);
