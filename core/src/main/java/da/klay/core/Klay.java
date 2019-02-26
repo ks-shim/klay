@@ -140,7 +140,7 @@ public class Klay {
     public static void main(String[] args) throws Exception {
         Klay klay = new Klay(Paths.get("data/configuration/klay.conf"));
 
-        String text = "너무기대안하고갔나재밌게봤다";
+        String text = "밀리언 달러 베이비랑 바람과 함께 사라지다랑 뭐가 더 재밌었어?";
 
         StopWatch watch = new StopWatch();
         watch.start();
