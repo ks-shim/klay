@@ -65,6 +65,19 @@ public class Row {
         c.cnt = (cmd >= 0) ? 1 : 0;
     }
 
+    public void setCmdIfNotExist(Character way, int cmd) {
+        Cell c = at(way);
+        if (c == null) {
+            c = new Cell();
+            c.cmd = cmd;
+            cells.put(way, c);
+        } else {
+            if(c.cmd < 0) c.cmd = cmd;
+        }
+
+        c.cnt = (cmd >= 0) ? 1 : 0;
+    }
+
     /**
      * Set the reference to the next row in the Cell of the given Character to the
      * given integer.

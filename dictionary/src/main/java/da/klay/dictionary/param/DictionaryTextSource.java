@@ -23,6 +23,7 @@ public class DictionaryTextSource {
 
     private final DictionaryType dictionaryType;
     private Map<CharSequence, Integer> posFreqMap;
+    private Map<CharSequence, Map<CharSequence, Double>> transitionMap;
 
     public DictionaryTextSource(Path filePath) {
         this(filePath, StandardCharsets.UTF_8);

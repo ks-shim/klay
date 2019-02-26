@@ -37,7 +37,7 @@ public abstract class AbstractMorphSequence implements MorphSequence {
                                                TransitionMapBaseDictionary dictionary) {
         Map<CharSequence, Double> transitionMap = dictionary.getFully(newPreviousMSeq.last().getPos());
         Double transitionScore;
-        if(transitionMap == null || (transitionScore = transitionMap.get(first().getPos())) == null) transitionScore = -1.0;
+        if(transitionMap == null || (transitionScore = transitionMap.get(first().getPos())) == null) transitionScore = -10.0;
 
         double newTotalScore = newPreviousMSeq.score() + transitionScore + emissionScore;
         if(newTotalScore < score && hasHPreviousMSeq()) return;

@@ -27,6 +27,10 @@ public class TransitionMapBaseDictionary extends AbstractMapBaseDictionary {
         super(source);
     }
 
+    public Map<CharSequence, Map<CharSequence, Double>> getTransitionMap() {
+        return map;
+    }
+
     @Override
     protected Map<CharSequence, Map<CharSequence, Double>> loadText(DictionaryTextSource source) throws Exception {
 
@@ -67,7 +71,7 @@ public class TransitionMapBaseDictionary extends AbstractMapBaseDictionary {
                         nextPosFreq += 100000;
                     }
 
-                    System.out.println(prePos + " -> " + nextPos + " : " + tempPrePosFreq + " : " + nextPosFreq);
+                    //System.out.println(prePos + " -> " + nextPos + " : " + tempPrePosFreq + " : " + nextPosFreq);
                     nextPosMap.put(nextPos, Math.log10(nextPosFreq/(double)tempPrePosFreq));
                 }
                 map.put(prePos, nextPosMap);

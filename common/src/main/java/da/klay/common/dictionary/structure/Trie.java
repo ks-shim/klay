@@ -275,7 +275,7 @@ public class Trie {
      * @param key the key
      * @param cmd the patch command
      */
-    public void add(CharSequence key, CharSequence cmd) {
+    public void add(CharSequence key, CharSequence cmd, boolean addIfNotExist) {
         if (key == null || cmd == null) {
             return;
         }
@@ -306,7 +306,17 @@ public class Trie {
                 r = n;
             }
         }
-        r.setCmd(e.next(), id_cmd);
+
+        if(addIfNotExist) r.setCmdIfNotExist(e.next(), id_cmd);
+        else r.setCmd(e.next(), id_cmd);
+    }
+
+    public void add(CharSequence key, CharSequence cmd) {
+        add(key, cmd, false);
+    }
+
+    public void addIfNotExist(CharSequence key, CharSequence cmd) {
+        add(key, cmd, true);
     }
 
     /**

@@ -10,6 +10,7 @@ import da.klay.dictionary.triebase.AbstractTrieBaseDictionary;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.nio.DoubleBuffer;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,9 +57,9 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
                 CharSequence word = line.substring(0, tabIndex);
                 CharSequence morph = JasoParser.parseAsString(word);
                 CharSequence data = (source.getDictionaryType() == DictionaryTextSource.DictionaryType.DIC_WORD) ?
-                        validateAndReform(line.substring(tabIndex+1), word, reformSb, source.getPosFreqMap()) :
-                        validateAndReform(line.substring(tabIndex+1), reformSb);
-                trie.add(morph, data);
+                        validateAndReformForWord(line.substring(tabIndex+1), word, reformSb, source.getPosFreqMap()) :
+                        validateAndReformForIrregular(line.substring(tabIndex+1), reformSb, trie, source.getTransitionMap());
+                trie.addIfNotExist(morph, data);
             }
         }
     }
@@ -73,10 +74,13 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
         return trie;
     }
 
-    private CharSequence validateAndReform(String data,
-                                           CharSequence word,
-                                           StringBuilder reformSb,
-                                           Map<CharSequence, Integer> posFreqMap) throws DataFormatException {
+    //*********************************************************************************************************
+    // validateAndReformForWord method related ...
+    //*********************************************************************************************************
+    private CharSequence validateAndReformForWord(String data,
+                                                  CharSequence word,
+                                                  StringBuilder reformSb,
+                                                  Map<CharSequence, Integer> posFreqMap) throws DataFormatException {
 
         String[] poses = data.split("\t");
         for(int i=0; i<poses.length; i++) {
@@ -95,8 +99,23 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
         return reformSb.toString();
     }
 
-    private CharSequence validateAndReform(String data,
-                                           StringBuilder reformSb) throws DataFormatException {
+    private void changeProbability(String[] poses, int index,
+                                   String[] values,
+                                   Map<CharSequence, Integer> posFreqMap) {
+        String pos = values[0];
+        Integer freq = Integer.parseInt(values[1]);
+        Integer totalFreq = posFreqMap.get(pos);
+        double score = Math.log10((double)freq/(double)totalFreq);
+        poses[index] = pos + ':' + score;
+    }
+
+    //*********************************************************************************************************
+    // validateAndReformForIrregular method related ...
+    //*********************************************************************************************************
+    private CharSequence validateAndReformForIrregular(String data,
+                                                       StringBuilder reformSb,
+                                                       Trie trie,
+                                                       Map<CharSequence, Map<CharSequence, Double>> transitionMap) throws DataFormatException {
 
         String[] poses = data.split("\t");
         for(int i=0; i<poses.length; i++) {
@@ -106,26 +125,72 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
 
             String pos = values[0];
             Integer freq = Integer.parseInt(values[1]);
-            double score = Math.log10((double)freq);
+
+            //******************************************
+            // ** skip rule, but I don't know why...
+            // ** This is from KOMORAN.
+            //******************************************
+            if(poses.length > 1 && freq < 2) continue;
+
+            double score = scoreForIrregular(pos, freq, trie, transitionMap);
             poses[i] = pos + ':' + score;
-        }
 
-        for(int i=0; i<poses.length; i++) {
             if(reformSb.length() != 0) reformSb.append('\t');
-
-            reformSb.append(poses[i].trim());
+            reformSb.append(pos).append(':').append(score);
         }
+
         return reformSb.toString();
     }
 
-    private void changeProbability(String[] poses, int index,
-                                   String[] values,
-                                   Map<CharSequence, Integer> posFreqMap) {
-        String pos = values[0];
-        Integer freq = Integer.parseInt(values[1]);
-        Integer totalFreq = posFreqMap.get(pos);
-        double score = Math.log10((double)freq/(double)totalFreq);
-        poses[index] = pos + ':' + score;
+    private double scoreForIrregular(String data,
+                                     int freq,
+                                     Trie trie,
+                                     Map<CharSequence, Map<CharSequence, Double>> transitionMap) {
+        double score = 0;
+
+        String prePos = null;
+        String[] morphAndTags = data.split(" ");
+        for(int i=0; i<morphAndTags.length; i++) {
+            String morphAndTag = morphAndTags[i];
+            String[] columns = morphAndTag.split("/");
+            CharSequence morphJaso = JasoParser.parseAsString(columns[0]);
+            String pos = columns[1];
+
+            CharSequence dicResult = trie.getFully(morphJaso);
+            if(dicResult == null) dicResult = "";
+
+            Map<String, Double> posScoreMap = parseWordDicResult((String)dicResult);
+            Double tmpScore = posScoreMap.get(pos);
+            if(tmpScore != null) {
+                // plus Emission score ...
+                score += tmpScore;
+            }
+
+            if(prePos != null) {
+                Map<CharSequence, Double> map = transitionMap.get(prePos);
+                Double transitionScore = (map == null) ? 0.0 : map.get(pos);
+                if(transitionScore != null) score += transitionScore;
+            }
+
+            prePos = pos;
+        }
+
+        return score;
+    }
+
+    private Map<String, Double> parseWordDicResult(String dicResult) {
+        Map<String, Double> map = new HashMap<>();
+        if(dicResult.isEmpty()) return map;
+
+        String[] datas = dicResult.split("\t");
+        for(String data : datas) {
+            int slashIndex = data.lastIndexOf('/');
+            int colonIndex = data.lastIndexOf(':');
+            String pos = data.substring(slashIndex+1, colonIndex);
+            double score = Double.parseDouble(data.substring(colonIndex+1));
+            map.put(pos, score);
+        }
+        return map;
     }
 
     @Override

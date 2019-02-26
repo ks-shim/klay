@@ -36,8 +36,7 @@ public class DictionaryBuilder {
 
     public void buildAll() throws Exception {
         Map<CharSequence, Integer> posFreqMap = buildPosFrequencyMap();
-        buildEmissionDictionary(posFreqMap);
-        buildTransitionDictionary(posFreqMap);
+        buildEmissionDictionary(posFreqMap, buildTransitionDictionary(posFreqMap));
     }
 
     private Map<CharSequence, Integer> buildPosFrequencyMap() throws Exception {
@@ -56,44 +55,46 @@ public class DictionaryBuilder {
                 int tabIndex = line.lastIndexOf('\t');
                 if(tabIndex < 0 || tabIndex+1 >= line.length()) continue;
 
+                String pos = line.substring(0, tabIndex);
                 String data = line.substring(tabIndex+1).replaceAll("\\s+", "");
 
                 String[] nextPoses = data.split(",");
                 if(nextPoses.length == 0) continue;
 
+                int sumFreq = 0;
                 for(int i=0; i<nextPoses.length; i++) {
                     String transitionData = nextPoses[i];
                     int colonIndex = transitionData.indexOf(':');
                     if(colonIndex < 0 || colonIndex+1 >= transitionData.length()) continue;
-                    String nextPos = transitionData.substring(0, colonIndex);
-                    Integer frequency = Integer.parseInt(transitionData.substring(colonIndex+1));
-
-                    Integer sumFreq = posFreqMap.get(nextPos);
-                    if(sumFreq == null) sumFreq = 0;
-
-                    posFreqMap.put(nextPos, sumFreq + frequency);
+                    sumFreq += Integer.parseInt(transitionData.substring(colonIndex+1));
                 }
+
+                posFreqMap.put(pos, sumFreq);
             }
         }
 
         return Collections.unmodifiableMap(posFreqMap);
     }
 
-    private void buildEmissionDictionary(Map<CharSequence, Integer> posFreqMap) throws Exception {
+    private void buildEmissionDictionary(Map<CharSequence, Integer> posFreqMap,
+                                         TransitionMapBaseDictionary transitionMapBaseDictionary) throws Exception {
         for(DictionaryTextSource source : emissionSources) {
-            if(DictionaryTextSource.DictionaryType.DIC_WORD != source.getDictionaryType()) continue;
-            source.setPosFreqMap(posFreqMap);
+            if(DictionaryTextSource.DictionaryType.DIC_WORD == source.getDictionaryType())
+                source.setPosFreqMap(posFreqMap);
+            else if(DictionaryTextSource.DictionaryType.DIC_IRREGULAR == source.getDictionaryType())
+                source.setTransitionMap(transitionMapBaseDictionary.getTransitionMap());
         }
 
         EmissionTrieBaseDictionary dictionary = new EmissionTrieBaseDictionary(emissionSources);
         dictionary.save(emissionTarget);
     }
 
-    private void buildTransitionDictionary(Map<CharSequence, Integer> posFreqMap) throws Exception {
+    private TransitionMapBaseDictionary buildTransitionDictionary(Map<CharSequence, Integer> posFreqMap) throws Exception {
         transitionSource.setPosFreqMap(posFreqMap);
 
         TransitionMapBaseDictionary dictionary = new TransitionMapBaseDictionary(transitionSource);
         dictionary.save(transitionTarget);
+        return dictionary;
     }
 
     public static class Builder {
@@ -145,10 +146,11 @@ public class DictionaryBuilder {
 
         // 3. emission related variables.
         DictionaryTextSource[] emissionSources = {
+                // *** must build DIC_WORD first !!
                 new DictionaryTextSource(
-                        Paths.get(config.getProperty("dictionary.irregular.path")), DictionaryTextSource.DictionaryType.DIC_IRREGULAR),
+                        Paths.get(config.getProperty("dictionary.word.path")), DictionaryTextSource.DictionaryType.DIC_WORD),
                 new DictionaryTextSource(
-                        Paths.get(config.getProperty("dictionary.word.path")), DictionaryTextSource.DictionaryType.DIC_WORD)
+                        Paths.get(config.getProperty("dictionary.irregular.path")), DictionaryTextSource.DictionaryType.DIC_IRREGULAR)
         };
         DictionaryBinaryTarget emissionTarget =
                 new DictionaryBinaryTarget(Paths.get(config.getProperty("dictionary.emission.path")));
