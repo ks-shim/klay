@@ -70,6 +70,6 @@ public class Morph {
 
     @Override
     public String toString() {
-        return "[" + tokenNumber + " - " + morphNumber + "] : " + text + "/" + pos;
+        return "[TOKEN : " + tokenNumber + "] - [MORPH : " + morphNumber + "] --> " + text + "/" + pos;
     }
 }

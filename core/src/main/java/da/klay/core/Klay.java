@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-// TODO : 1. 특수문자 pos 맞추기
+// TODO : 1. TOKENIZATION 과정에서 PUNCTUATION 문자 처리하기
 public class Klay {
 
     private final ChainedTokenizationRule tokenizationRule;
@@ -136,7 +136,12 @@ public class Klay {
 
     public static void main(String[] args) throws Exception {
         Klay klay = new Klay(Paths.get("data/configuration/klay.conf"));
-        Morphs morphs = klay.doKlay("대구일보를 기대 안 하고 갔나 재밌게 봤다");
+
+        String text = "개봉했을때부터 지금까지 마음이답답하거나 힘들때 이영화 보고있어요 그때마다 심적인 위로를 받을수있는영화같아요 장면 하나하나가 너무예쁘고 마음에 남아서 진한 여운까지 주는영화 감사합니다";
+        Morphs morphs = klay.doKlay(text);
+
+        System.out.println("\nTEXT : " + text);
+        System.out.println("-----------------------------------------------------------\n");
         Iterator<Morph> iter = morphs.iterator();
         while(iter.hasNext()) {
             System.out.println(iter.next());
