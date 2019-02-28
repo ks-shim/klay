@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 // TODO : 1. TOKENIZATION 과정에서 PUNCTUATION 문자 처리하기
 // TODO : 2. Testcase 작성하기
+// TODO : 3. KLAY Architecture 공유
 public class Klay {
 
     private final ChainedTokenizationRule tokenizationRule;
