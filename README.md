@@ -1,5 +1,6 @@
 # KLAY
 [![Build Status](https://travis-ci.com/ks-shim/klay.svg?branch=master)](https://travis-ci.com/ks-shim/klay)
+[![Coverage Status](https://coveralls.io/repos/github/ks-shim/klay/badge.svg?branch=master)](https://coveralls.io/github/ks-shim/klay?branch=master)
 
 Korean Language AnalYzer using KOMORAN's dictionaries.
 - korean morphology analysis
