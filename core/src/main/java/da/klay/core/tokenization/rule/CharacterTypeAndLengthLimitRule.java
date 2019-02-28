@@ -43,7 +43,7 @@ public class CharacterTypeAndLengthLimitRule extends AbstractChainedTokenization
 
         if(preCharType == null) return true;
 
-        if(curCharType == TokenCharacterType.OTHERS) {
+        if(TokenCharacterType.isSpecialCharacterType(curCharType)) {
             if(preCh != curCh) return false;
             else return true; // keep doing for continuous special characters.
         }
