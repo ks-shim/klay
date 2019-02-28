@@ -28,7 +28,6 @@ import java.util.concurrent.TimeUnit;
 
 // TODO : 1. TOKENIZATION 과정에서 PUNCTUATION 문자 처리하기
 // TODO : 2. Testcase 작성하기
-// TODO : 3. Example module 추가하기
 public class Klay {
 
     private final ChainedTokenizationRule tokenizationRule;
@@ -135,24 +134,5 @@ public class Klay {
         morphs.doNumbering();
 
         return morphs;
-    }
-
-    public static void main(String[] args) throws Exception {
-        Klay klay = new Klay(Paths.get("data/configuration/klay.conf"));
-
-        String text = "밀리언 달러 베이비랑 바람과 함께 사라지다랑 뭐가 더 재밌었어?";
-
-        StopWatch watch = new StopWatch();
-        watch.start();
-        Morphs morphs = klay.doKlay(text);
-        watch.stop();
-        System.out.println("Analysis Time : " + watch.getTime(TimeUnit.MILLISECONDS) + " (ms)");
-
-        System.out.println("\nTEXT : " + text);
-        System.out.println("-----------------------------------------------------------\n");
-        Iterator<Morph> iter = morphs.iterator();
-        while(iter.hasNext()) {
-            System.out.println(iter.next());
-        }
     }
 }
