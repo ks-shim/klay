@@ -22,7 +22,6 @@ import org.apache.commons.lang3.time.StopWatch;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Iterator;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -32,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 public class Klay {
 
     private final ChainedTokenizationRule tokenizationRule;
-    private final AnalysisRule analysisRule;
+    private final ChainedAnalysisRule chainedAnalysisRule;
     private final TransitionMapBaseDictionary transitionDictionary;
 
     private final Properties config;
@@ -46,7 +45,7 @@ public class Klay {
 
         this.transitionDictionary = buildTransitionDictionary();
         this.tokenizationRule = buildTokenizationRule();
-        this.analysisRule = buildAnalysisRule();
+        this.chainedAnalysisRule = buildAnalysisRule();
 
         watch.stop();
         System.out.println("Dictionary Loading Time : " + watch.getTime(TimeUnit.MILLISECONDS) + " (ms)");
@@ -72,7 +71,7 @@ public class Klay {
         return new TransitionMapBaseDictionary(transitionSource);
     }
 
-    private AnalysisRule buildAnalysisRule() throws Exception {
+    private ChainedAnalysisRule buildAnalysisRule() throws Exception {
         DictionaryBinarySource emissionSource =
                 new DictionaryBinarySource(Paths.get(config.getProperty("dictionary.emission.path")));
         EmissionTrieBaseDictionary emissionDictionary = new EmissionTrieBaseDictionary(emissionSource);
@@ -111,7 +110,7 @@ public class Klay {
             }
 
             param.set(tokenNumber++, text, token.getPos(), token.getStartPosition(), token.getEndPosition(), token.canSkipAnalysis());
-            analysisRule.apply(param);
+            chainedAnalysisRule.apply(param);
         }
 
         // 5. connect lastMSeq -> endMSeq

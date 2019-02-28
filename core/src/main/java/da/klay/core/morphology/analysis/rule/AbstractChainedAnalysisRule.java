@@ -2,13 +2,13 @@ package da.klay.core.morphology.analysis.rule;
 
 import da.klay.core.morphology.analysis.rule.param.AnalysisParam;
 
-public abstract class AbstractAnalysisRule implements AnalysisRule {
+public abstract class AbstractChainedAnalysisRule implements ChainedAnalysisRule {
 
-    protected AnalysisRule nextRule;
+    protected ChainedAnalysisRule nextRule;
 
-    protected AbstractAnalysisRule() {}
+    protected AbstractChainedAnalysisRule() {}
 
-    protected AbstractAnalysisRule(AnalysisRule nextRule) {
+    protected AbstractChainedAnalysisRule(ChainedAnalysisRule nextRule) {
         this.nextRule = nextRule;
     }
 

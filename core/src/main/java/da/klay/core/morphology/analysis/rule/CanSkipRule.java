@@ -6,7 +6,7 @@ import da.klay.core.morphology.analysis.sequence.MorphSequence;
 import da.klay.core.morphology.analysis.sequence.SingleMorphSequence;
 import da.klay.dictionary.mapbase.TransitionMapBaseDictionary;
 
-public class CanSkipRule extends AbstractAnalysisRule {
+public class CanSkipRule extends AbstractChainedAnalysisRule {
 
     private final TransitionMapBaseDictionary transitionDictionary;
     public CanSkipRule(TransitionMapBaseDictionary transitionDictionary) {
@@ -14,7 +14,7 @@ public class CanSkipRule extends AbstractAnalysisRule {
     }
 
     public CanSkipRule(TransitionMapBaseDictionary transitionDictionary,
-                       AnalysisRule nextRule) {
+                       ChainedAnalysisRule nextRule) {
         super(nextRule);
         this.transitionDictionary = transitionDictionary;
     }

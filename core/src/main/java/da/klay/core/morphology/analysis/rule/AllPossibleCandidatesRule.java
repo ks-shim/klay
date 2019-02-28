@@ -8,7 +8,7 @@ import da.klay.core.morphology.analysis.sequence.MultiMorphSequence;
 import da.klay.dictionary.mapbase.TransitionMapBaseDictionary;
 import da.klay.dictionary.triebase.system.EmissionTrieBaseDictionary;
 
-public class AllPossibleCandidatesRule extends AbstractAnalysisRule {
+public class AllPossibleCandidatesRule extends AbstractChainedAnalysisRule {
 
     private final EmissionTrieBaseDictionary emissionDictionary;
     private final TransitionMapBaseDictionary transitionDictionary;
@@ -20,7 +20,7 @@ public class AllPossibleCandidatesRule extends AbstractAnalysisRule {
 
     public AllPossibleCandidatesRule(EmissionTrieBaseDictionary emissionDictionary,
                                      TransitionMapBaseDictionary transitionDictionary,
-                                     AnalysisRule nextRule) {
+                                     ChainedAnalysisRule nextRule) {
 
         super(nextRule);
         this.emissionDictionary = emissionDictionary;

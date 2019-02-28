@@ -7,7 +7,7 @@ import da.klay.core.morphology.analysis.sequence.MultiMorphSequence;
 import da.klay.dictionary.mapbase.TransitionMapBaseDictionary;
 import da.klay.dictionary.triebase.user.FWDUserTrieBaseDictionary;
 
-public class FWDRule extends AbstractAnalysisRule {
+public class FWDRule extends AbstractChainedAnalysisRule {
 
     private final FWDUserTrieBaseDictionary fwdDictionary;
     private final TransitionMapBaseDictionary transitionDictionary;
@@ -19,7 +19,7 @@ public class FWDRule extends AbstractAnalysisRule {
 
     public FWDRule(FWDUserTrieBaseDictionary dictionary,
                    TransitionMapBaseDictionary transitionDictionary,
-                   AnalysisRule nextRule) {
+                   ChainedAnalysisRule nextRule) {
         super(nextRule);
         this.fwdDictionary = dictionary;
         this.transitionDictionary = transitionDictionary;

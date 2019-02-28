@@ -7,7 +7,7 @@ import da.klay.core.morphology.analysis.sequence.MorphSequence;
 import da.klay.core.morphology.analysis.sequence.SingleMorphSequence;
 import da.klay.dictionary.mapbase.TransitionMapBaseDictionary;
 
-public class NARule extends AbstractAnalysisRule {
+public class NARule extends AbstractChainedAnalysisRule {
 
     private final TransitionMapBaseDictionary transitionDictionary;
     public NARule(TransitionMapBaseDictionary transitionDictionary) {
