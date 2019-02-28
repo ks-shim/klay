@@ -1,2 +1,5 @@
 # .travis.yml
 language: java
+
+after_success:
+  - coveralls
