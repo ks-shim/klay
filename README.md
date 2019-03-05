@@ -3,7 +3,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/ks-shim/klay/badge.svg?branch=master)](https://coveralls.io/github/ks-shim/klay?branch=master)
 [ ![Download](https://api.bintray.com/packages/dwayne/nlp/klay/images/download.svg) ](https://bintray.com/dwayne/nlp/klay/_latestVersion)
 
-Korean Language AnalYzer using KOMORAN's dictionaries.
+**K**orean **L**anguage **A**nal**Y**zer using KOMORAN's dictionaries.
 - korean morphology analysis
 - 한국어 형태소 분석기 입니다.
 - 개발 시작일 : 2019. 02 ~
@@ -15,3 +15,32 @@ Korean Language AnalYzer using KOMORAN's dictionaries.
 
 # Architecture
 Performance와 동시에 확장성을 고려하였습니다. 그래서 조금 더 자바(Java)스럽게 Design하였습니다.
+
+# Example
+```java
+    //***********************************************************************
+    // 1. configuration and creating Klay object ...
+    //***********************************************************************
+    Klay klay = new Klay(Paths.get("data/configuration/klay.conf"));
+
+    //***********************************************************************
+    // 2. start morphological analysis.
+    //***********************************************************************
+    String text = "너무기대안하고갔나....................재밌게봤다";
+
+    StopWatch watch = new StopWatch();
+    watch.start();
+    Morphs morphs = klay.doKlay(text);
+    watch.stop();
+    System.out.println("Analysis Time : " + watch.getTime(TimeUnit.MILLISECONDS) + " (ms)");
+
+    //***********************************************************************
+    // 3. print result.
+    //***********************************************************************
+    System.out.println("\nTEXT : " + text);
+    System.out.println("-----------------------------------------------------------\n");
+    Iterator<Morph> iter = morphs.iterator();
+    while(iter.hasNext()) {
+        System.out.println(iter.next());
+    }
+```
