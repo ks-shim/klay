@@ -11,6 +11,18 @@
 
     <artifactId>da-klay-core</artifactId>
 
+    <properties>
+        <bintray.repo>ks-shim/klay</bintray.repo>
+        <bintray.package>da-klay-core</bintray.package>
+    </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>da-klay-core</id>
+            <url>https://api.bintray.com/maven/dwayne/nlp/da-klay-core/;publish=1</url>
+        </repository>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>da.klay</groupId>
