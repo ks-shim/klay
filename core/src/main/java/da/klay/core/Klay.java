@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 // TODO : 1. Testcase 작성하기
 // TODO : 2. KLAY Architecture 공유
+// TODO : 3. maven repository upload
 public class Klay {
 
     private final ChainedTokenizationRule tokenizationRule;
