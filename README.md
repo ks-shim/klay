@@ -27,18 +27,11 @@ Performance와 동시에 확장성을 고려하였습니다. 그래서 조금 �
     // 2. start morphological analysis.
     //***********************************************************************
     String text = "너무기대안하고갔나....................재밌게봤다";
-
-    StopWatch watch = new StopWatch();
-    watch.start();
     Morphs morphs = klay.doKlay(text);
-    watch.stop();
-    System.out.println("Analysis Time : " + watch.getTime(TimeUnit.MILLISECONDS) + " (ms)");
 
     //***********************************************************************
     // 3. print result.
     //***********************************************************************
-    System.out.println("\nTEXT : " + text);
-    System.out.println("-----------------------------------------------------------\n");
     Iterator<Morph> iter = morphs.iterator();
     while(iter.hasNext()) {
         System.out.println(iter.next());
