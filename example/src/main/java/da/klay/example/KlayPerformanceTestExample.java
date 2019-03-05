@@ -30,6 +30,7 @@ public class KlayPerformanceTestExample {
             }
         }
         watch.stop();
-        System.out.println("Analysis Time : " + watch.getTime(TimeUnit.MILLISECONDS) + " (ms)");
+        System.out.println("Analysis Time : " + watch.getTime(TimeUnit.MILLISECONDS) / 1000.0 + " (s)");
     }
 }
+// 36143 (ms)
