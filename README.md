@@ -14,14 +14,24 @@
 
 
 # 2. Architecture
-Performance와 동시에 확장성을 고려하였습니다. 그래서 조금 더 자바(Java)스럽게 Design하였습니다.
+Performance와 동시에 확장성을 고려하였으며 Readability에 많은 신경을 썼습니다. 그래서 조금 더 자바(Java)스럽게 Design하였습니다.
 ## 2-1. Tokenization
 Chain of Responsibiility 패턴을 사용하여 구현하였습니다. ChainedTokenizationRule 인터페이스를 구현하여 Rule을 쉽게
 추가할 수 있습니다. 현재는 아래와 같은 Rule을 순차적으로 적용하고 있습니다.
- - 사용자 사전 Rule
- - 문자타입 및 길이 limit Rule
+ - UserDictionaryMatchRule : 사용자 사전에 매칭하는 Rule
+ - CharacterTypeAndLengthLimitRule : 문자타입 및 길이 제한 Rule
 
 ![tokenization_diagram](data/image/tokenization_diagram.png)
+
+## 2-2. Analysis
+마찬가지로 Chain of Responsibility 패턴을 사용하여 구현하였습니다. ChainedAnalysisRule 인터페이스를 구현하여 Rule을 쉽게
+추가할 수 있습니다. 현재는 아래와 같은 Rule을 순차적으로 적용하고 있습니다.
+ - CanSkipRule : 분석없이 생략할 수 있는 Rule
+ - FWDRule : 기분석 사전으로 Fully 매칭하는 Rule
+ - AllPossibleCandidateRule : 미등록어 추정 Rule
+ - NARule : 분석 불가 Rule
+HMM(Viterbi)는 MorphSequence 클래스를 사용하여 계산되어집니다.
+![analysis_diagram](data/image/analysis_diagram.png)
 
 # Example
 ```java
