@@ -1,4 +1,4 @@
-# KLAY
+# 1. KLAY
 [![Build Status](https://travis-ci.com/ks-shim/klay.svg?branch=master)](https://travis-ci.com/ks-shim/klay)
 [![Coverage Status](https://coveralls.io/repos/github/ks-shim/klay/badge.svg?branch=master)](https://coveralls.io/github/ks-shim/klay?branch=master)
 [ ![Download](https://api.bintray.com/packages/dwayne/nlp/klay/images/download.svg) ](https://bintray.com/dwayne/nlp/klay/_latestVersion)
@@ -13,11 +13,14 @@
 - KLAY is a thread-safe analyzer. (멀티 쓰레드 환경에서의 사용을 권장합니다.)
 
 
-# Architecture
+# 2. Architecture
 Performance와 동시에 확장성을 고려하였습니다. 그래서 조금 더 자바(Java)스럽게 Design하였습니다.
-## - Tokenization
+## 2-1. Tokenization
 Chain of Responsibiility 패턴을 사용하여 구현하였습니다. ChainedTokenizationRule 인터페이스를 구현하여 Rule을 쉽게
-추가할 수 있습니다. 현재는 사용자 사전 Rule --> 문자타입 및 길이 limit Rule 순으로 토크닝을하고 있습니다.
+추가할 수 있습니다. 현재는 아래와 같은 Rule을 순차적으로 적용하고 있습니다.
+ - 사용자 사전 Rule
+ - 문자타입 및 길이 limit Rule
+
 ![tokenization_diagram](data/image/tokenization_diagram.png)
 
 # Example
