@@ -1,7 +1,7 @@
 package klay.core.morphology.analysis.rule;
 
-import klay.core.morphology.analysis.rule.param.AnalysisParam;
 import klay.core.morphology.analysis.Morph;
+import klay.core.morphology.analysis.rule.param.AnalysisParam;
 import klay.core.morphology.analysis.sequence.MorphSequence;
 import klay.core.morphology.analysis.sequence.MultiMorphSequence;
 import klay.dictionary.mapbase.TransitionMapBaseDictionary;
@@ -43,31 +43,36 @@ public class FWDRule extends AbstractChainedAnalysisRule {
     private MorphSequence parseTrieResultAndCreateMSeqs(AnalysisParam param,
                                                         CharSequence res,
                                                         MorphSequence previousMSeq) {
-
         MorphSequence currentMSeq = new MultiMorphSequence();
 
         // ex) 흘리/VV 었/EP 어요/EC
-        int textStartIndex = 0;
-        int slashIndex = 0;
+        StringBuilder infoSb = param.getTextSb();
+        infoSb.setLength(0);
+
         int resLength = res.length();
         for(int i=0; i<resLength; i++) {
 
             char ch = res.charAt(i);
             if(ch == '/') {
-                slashIndex = i;
+                infoSb = param.getPosSb();
+                infoSb.setLength(0);
             } else if(ch == ' ') {
-                CharSequence text = res.subSequence(textStartIndex, slashIndex);
-                CharSequence pos = res.subSequence(slashIndex+1, i);
-                textStartIndex = i+1;
+                CharSequence text = param.getTextSb().toString();
+                CharSequence pos = param.getPosSb().toString();
+                infoSb = param.getTextSb();
+                infoSb.setLength(0);
 
                 Morph morph = new Morph(param.getTokenNumber(), text, pos);
                 currentMSeq.addMorph(morph);
             } else if(i == resLength - 1) {
-                CharSequence text = res.subSequence(textStartIndex, slashIndex);
-                CharSequence pos = res.subSequence(slashIndex+1, i+1);
+                infoSb.append(ch);
+                CharSequence text = param.getTextSb().toString();
+                CharSequence pos = param.getPosSb().toString();
 
                 Morph morph = new Morph(param.getTokenNumber(), text, pos);
                 currentMSeq.addMorph(morph);
+            } else {
+                infoSb.append(ch);
             }
         }
 

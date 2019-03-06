@@ -1,8 +1,8 @@
 package klay.dictionary.triebase;
 
-import klay.common.dictionary.structure.TrieResult;
 import klay.common.dictionary.structure.Trie;
 import klay.common.dictionary.structure.TrieLoadSaveHelper;
+import klay.common.dictionary.structure.TrieResult;
 import klay.dictionary.Dictionary;
 import klay.dictionary.param.DictionaryBinarySource;
 import klay.dictionary.param.DictionaryBinaryTarget;

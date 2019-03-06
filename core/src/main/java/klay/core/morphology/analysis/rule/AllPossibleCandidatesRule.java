@@ -1,8 +1,8 @@
 package klay.core.morphology.analysis.rule;
 
 import klay.common.dictionary.structure.TrieResult;
-import klay.core.morphology.analysis.rule.param.AnalysisParam;
 import klay.core.morphology.analysis.Morph;
+import klay.core.morphology.analysis.rule.param.AnalysisParam;
 import klay.core.morphology.analysis.sequence.MorphSequence;
 import klay.core.morphology.analysis.sequence.MultiMorphSequence;
 import klay.dictionary.mapbase.TransitionMapBaseDictionary;
@@ -61,8 +61,9 @@ public class AllPossibleCandidatesRule extends AbstractChainedAnalysisRule {
                                              TrieResult[] results,
                                              AnalysisParam param,
                                              MorphSequence currentMSeq) {
-
-        for(TrieResult result : results) {
+        int resultLength = results.length;
+        for(int i=0; i<resultLength; i++) {
+            TrieResult result = results[i];
             if(!result.hasResult()) continue;
 
             int insertIndex = currentJasoPos + result.length();
@@ -81,45 +82,53 @@ public class AllPossibleCandidatesRule extends AbstractChainedAnalysisRule {
         MorphSequence vPreviousMSeq = nextMSeq;
         MorphSequence vNextMSeq = new MultiMorphSequence();
 
+        StringBuilder infoSb = param.getTextSb();
+        infoSb.setLength(0);
+
         // ex) 달/VV ㄴ/ETM:18	달/VA ㄴ/ETM:4
-        int textStartIndex = 0;
-        int slashIndex = 0;
-        int colonIndex = 0;
         int resLength = res.length();
         for(int i=0; i<resLength; i++) {
 
             char ch = res.charAt(i);
             if(ch == '/') {
-                slashIndex = i;
+                infoSb = param.getPosSb();
+                infoSb.setLength(0);
             } else if(ch == ' ') {
-                CharSequence text = res.subSequence(textStartIndex, slashIndex);
-                CharSequence pos = res.subSequence(slashIndex+1, i);
-                textStartIndex = i+1;
+                CharSequence text = param.getTextSb().toString();
+                CharSequence pos = param.getPosSb().toString();
+                infoSb = param.getTextSb();
+                infoSb.setLength(0);
 
                 Morph morph = new Morph(param.getTokenNumber(), text, pos);
                 vNextMSeq.addMorph(morph);
             } else if (ch == ':') {
-                CharSequence text = res.subSequence(textStartIndex, slashIndex);
-                CharSequence pos = res.subSequence(slashIndex+1, i);
-                colonIndex = i;
+                CharSequence text = param.getTextSb().toString();
+                CharSequence pos = param.getPosSb().toString();
+                infoSb = param.getScoreSb();
+                infoSb.setLength(0);
 
                 Morph morph = new Morph(param.getTokenNumber(), text, pos);
                 vNextMSeq.addMorph(morph);
             } else if(ch == '\t') {
-                textStartIndex = i+1;
-                double emissionScore = Double.parseDouble((String)res.subSequence(colonIndex+1, i));
+                double emissionScore = Double.parseDouble(infoSb.toString());
                 vNextMSeq.setEmissionScore(emissionScore);
                 calculateScore(currentMSeq, vNextMSeq);
                 vNextMSeq.setVPreviousMSeq(vPreviousMSeq);
                 vPreviousMSeq = vNextMSeq;
 
+                infoSb = param.getTextSb();
+                infoSb.setLength(0);
+
                 vNextMSeq = new MultiMorphSequence();
             } else if(i == resLength-1) {
-                double emissionScore = Double.parseDouble((String)res.subSequence(colonIndex+1, i+1));
+                infoSb.append(ch);
+                double emissionScore = Double.parseDouble(infoSb.toString());
                 vNextMSeq.setEmissionScore(emissionScore);
                 calculateScore(currentMSeq, vNextMSeq);
                 vNextMSeq.setVPreviousMSeq(vPreviousMSeq);
                 vPreviousMSeq = vNextMSeq;
+            } else {
+                infoSb.append(ch);
             }
         }
 

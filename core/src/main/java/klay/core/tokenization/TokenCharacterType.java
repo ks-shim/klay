@@ -40,6 +40,8 @@ public enum TokenCharacterType {
     private final static Set<Character> MARK_SP_SET;
     private final static Set<Character> MARK_SO_SET;
 
+    private final static Set<TokenCharacterType> SPECIAL_TOKEN_CHARACTER_TYPE_SET;
+
     static {
         HANGUL_UNICODE_BLOCK_SET = new HashSet<>();
         HANGUL_UNICODE_BLOCK_SET.add(Character.UnicodeBlock.HANGUL_COMPATIBILITY_JAMO);
@@ -101,6 +103,14 @@ public enum TokenCharacterType {
 
         MARK_SO_SET = new HashSet<>();
         MARK_SO_SET.add('~');
+
+        SPECIAL_TOKEN_CHARACTER_TYPE_SET = new HashSet<>();
+        SPECIAL_TOKEN_CHARACTER_TYPE_SET.add(OTHERS);
+        SPECIAL_TOKEN_CHARACTER_TYPE_SET.add(MARK_SS);
+        SPECIAL_TOKEN_CHARACTER_TYPE_SET.add(MARK_SF);
+        SPECIAL_TOKEN_CHARACTER_TYPE_SET.add(MARK_SW);
+        SPECIAL_TOKEN_CHARACTER_TYPE_SET.add(MARK_SP);
+        SPECIAL_TOKEN_CHARACTER_TYPE_SET.add(MARK_SO);
     }
 
     public static TokenCharacterType getCharType(Character.UnicodeBlock unicodeBlock,
@@ -120,7 +130,6 @@ public enum TokenCharacterType {
     }
 
     public static boolean isSpecialCharacterType(TokenCharacterType characterType) {
-        return characterType == OTHERS || characterType == MARK_SS || characterType == MARK_SF ||
-                characterType == MARK_SW || characterType == MARK_SP || characterType == MARK_SO;
+        return SPECIAL_TOKEN_CHARACTER_TYPE_SET.contains(characterType);
     }
 }

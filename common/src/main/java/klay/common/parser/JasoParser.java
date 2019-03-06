@@ -1,7 +1,6 @@
 package klay.common.parser;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class JasoParser {

@@ -1,7 +1,7 @@
 package klay.core.tokenization.rule;
 
-import klay.core.tokenization.TokenCharacterType;
 import klay.core.tokenization.Token;
+import klay.core.tokenization.TokenCharacterType;
 
 /**
  * This rule must be the last one.

@@ -1,7 +1,7 @@
 package klay.core.morphology.analysis.rule;
 
-import klay.core.morphology.analysis.rule.param.AnalysisParam;
 import klay.core.morphology.analysis.Morph;
+import klay.core.morphology.analysis.rule.param.AnalysisParam;
 import klay.core.morphology.analysis.sequence.MorphSequence;
 import klay.core.morphology.analysis.sequence.SingleMorphSequence;
 import klay.dictionary.mapbase.TransitionMapBaseDictionary;

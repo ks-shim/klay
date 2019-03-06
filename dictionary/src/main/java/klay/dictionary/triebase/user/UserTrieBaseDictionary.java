@@ -3,8 +3,8 @@ package klay.dictionary.triebase.user;
 import klay.common.dictionary.structure.Trie;
 import klay.common.pos.Pos;
 import klay.dictionary.param.DictionaryBinarySource;
-import klay.dictionary.triebase.AbstractTrieBaseDictionary;
 import klay.dictionary.param.DictionaryTextSource;
+import klay.dictionary.triebase.AbstractTrieBaseDictionary;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
