@@ -34,7 +34,7 @@ HMM(Viterbi)는 MorphSequence 클래스를 사용하여 계산되어집니다.
 
 ![analysis_diagram](data/image/analysis_diagram.png)
 
-# Example
+# 3. Example
 ```java
     //***********************************************************************
     // 1. configuration and creating Klay object ...
