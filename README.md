@@ -15,6 +15,10 @@
 
 # Architecture
 Performance와 동시에 확장성을 고려하였습니다. 그래서 조금 더 자바(Java)스럽게 Design하였습니다.
+## - Tokenization
+Chain of Responsibiility 패턴을 사용하여 구현하였습니다. ChainedTokenizationRule 인터페이스를 구현하여 Rule을 쉽게
+추가할 수 있습니다. 현재는 사용자 사전 Rule --> 문자타입 및 길이 limit Rule 순으로 토크닝을하고 있습니다.
+![tokenization_diagram](data/image/tokenization_diagram.png)
 
 # Example
 ```java
