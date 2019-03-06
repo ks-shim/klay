@@ -56,13 +56,14 @@ HMM(Viterbi)는 MorphSequence 클래스를 사용하여 계산되어집니다.
     }
 ```
 # 4. Performance
+## 4-1. 사양 및 데이터
  - 프로세서 : Intel(R) Core(TM) i7-6700K CPU @ 4.00GHz, 4008Mhz, 4코어, 8 논리 프로세서
  - 메모리 : 32.0 GB
  - 분석 데이터 위치 : data/performance/test.txt
  - 분석 데이터 건수 : 199,992 건
- - 결과
-  - 사전 로딩 : 0.284 (s)
-  - 분석 시간 : 36.779 (s)
+## 4-2. 결과 및 코드
+ - 사전 로딩 : 0.284 (s)
+ - 분석 시간 : 36.779 (s)
 ```java
     String src = "data/performance/test.txt";
     Klay klay = new Klay(Paths.get("data/configuration/klay.conf"));
