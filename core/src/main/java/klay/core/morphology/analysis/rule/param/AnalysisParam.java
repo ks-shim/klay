@@ -11,10 +11,7 @@ public class AnalysisParam {
 
     private int tokenNumber;
     private CharSequence text;
-    private StringBuilder textSb;
     private CharSequence pos;
-    private StringBuilder posSb;
-    private StringBuilder scoreSb;
     private int from;
     private int to;
     private boolean canSkip;
@@ -27,25 +24,10 @@ public class AnalysisParam {
 
     public AnalysisParam() {
         candidateMSeqSlot = new HashMap<>();
-        textSb = new StringBuilder();
-        posSb = new StringBuilder();
-        scoreSb = new StringBuilder();
     }
 
     public CharSequence getText() {
         return text;
-    }
-
-    public StringBuilder getTextSb() {
-        return textSb;
-    }
-
-    public StringBuilder getPosSb() {
-        return posSb;
-    }
-
-    public StringBuilder getScoreSb() {
-        return scoreSb;
     }
 
     public int getFrom() {
