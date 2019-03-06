@@ -3,18 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>da-klay</artifactId>
-        <groupId>da.klay</groupId>
+        <groupId>io.github.ks-shim.klay</groupId>
+        <artifactId>klay</artifactId>
         <version>0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>da-klay-dictionary</artifactId>
+    <artifactId>klay-dictionary</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>da.klay</groupId>
-            <artifactId>da-klay-common</artifactId>
+            <groupId>io.github.ks-shim.klay</groupId>
+            <artifactId>klay-common</artifactId>
             <version>0.1</version>
         </dependency>
 
