@@ -46,33 +46,27 @@ public class FWDRule extends AbstractChainedAnalysisRule {
         MorphSequence currentMSeq = new MultiMorphSequence();
 
         // ex) 흘리/VV 었/EP 어요/EC
-        StringBuilder infoSb = param.getTextSb();
-        infoSb.setLength(0);
-
+        int textStartIndex = 0;
+        int slashIndex = 0;
         int resLength = res.length();
         for(int i=0; i<resLength; i++) {
 
             char ch = res.charAt(i);
             if(ch == '/') {
-                infoSb = param.getPosSb();
-                infoSb.setLength(0);
+                slashIndex = i;
             } else if(ch == ' ') {
-                CharSequence text = param.getTextSb().toString();
-                CharSequence pos = param.getPosSb().toString();
-                infoSb = param.getTextSb();
-                infoSb.setLength(0);
+                CharSequence text = res.subSequence(textStartIndex, slashIndex);
+                CharSequence pos = res.subSequence(slashIndex+1, i);
+                textStartIndex = i+1;
 
                 Morph morph = new Morph(param.getTokenNumber(), text, pos);
                 currentMSeq.addMorph(morph);
             } else if(i == resLength - 1) {
-                infoSb.append(ch);
-                CharSequence text = param.getTextSb().toString();
-                CharSequence pos = param.getPosSb().toString();
+                CharSequence text = res.subSequence(textStartIndex, slashIndex);
+                CharSequence pos = res.subSequence(slashIndex+1, i+1);
 
                 Morph morph = new Morph(param.getTokenNumber(), text, pos);
                 currentMSeq.addMorph(morph);
-            } else {
-                infoSb.append(ch);
             }
         }
 
