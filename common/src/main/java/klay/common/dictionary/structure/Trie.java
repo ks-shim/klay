@@ -319,17 +319,7 @@ public class Trie {
         add(key, cmd, true);
     }
 
-    /**
-     * Remove empty rows from the given Trie and return the newly reduced Trie.
-     *
-     * @param by the Trie to reduce
-     * @return the newly reduced Trie
-     */
-    public Trie reduce(Reduce by) {
-        return by.optimize(this);
-    }
-
-    /** writes debugging info to the printstream */
+     /** writes debugging info to the printstream */
     public void printInfo(PrintStream out, CharSequence prefix) {
         out.println(prefix + "nds " + rows.size() + " cmds " + cmds.size()
                 + " cells " + getCells() + " valcells " + getCellsVal() + " pntcells "

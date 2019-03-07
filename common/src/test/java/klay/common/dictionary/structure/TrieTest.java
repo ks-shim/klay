@@ -39,11 +39,6 @@ class TrieTest {
         TrieLoadSaveHelper.store(t, Paths.get("src/test/resources/defaultTrie.dic"));
         TrieResult cs = t.getLastOnPath("트리케라톱스");
         assertEquals("초식공룡", cs.getData());
-
-        t = t.reduce(new Optimizer());
-        TrieLoadSaveHelper.store(t, Paths.get("src/test/resources/reducedTrie.dic"));
-        cs = t.getLastOnPath("트리케라톱스");
-        assertEquals("초식공룡", cs.getData());
     }
 
     @Test
