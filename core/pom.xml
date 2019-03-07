@@ -13,13 +13,13 @@
 
     <properties>
         <bintray.repo>ks-shim/klay</bintray.repo>
-        <bintray.package>klay</bintray.package>
+        <bintray.package>io.github.ks-shim.klay:klay-core</bintray.package>
     </properties>
 
     <distributionManagement>
         <repository>
-            <id>klay</id>
-            <url>https://api.bintray.com/maven/dwayne/nlp/klay/;publish=1</url>
+            <id>klay-core</id>
+            <url>https://api.bintray.com/maven/dwayne/nlp/io.github.ks-shim.klay:klay-core/;publish=1</url>
         </repository>
     </distributionManagement>
 
