@@ -83,3 +83,12 @@ HMM(Viterbi)는 MorphSequence 클래스를 사용하여 계산되어집니다.
     watch.stop();
     System.out.println("Analysis Time : " + watch.getTime(TimeUnit.MILLISECONDS) / 1000.0 + " (s)");
 ```
+# 5. Maven
+```
+<dependency>
+  <groupId>io.github.ks-shim.klay</groupId>
+  <artifactId>klay-core</artifactId>
+  <version>0.1</version>
+  <type>pom</type>
+</dependency>
+```
