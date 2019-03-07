@@ -29,6 +29,7 @@ Chain of Responsibiility 패턴을 사용하여 구현하였습니다. ChainedTo
  - FWDRule : 기분석 사전으로 Fully 매칭하는 Rule
  - AllPossibleCandidateRule : 미등록어 추정 Rule
  - NARule : 분석 불가 Rule
+
 HMM(Viterbi)는 MorphSequence 클래스를 사용하여 계산되어집니다.
 
 ![analysis_diagram](data/image/analysis_diagram.png)
