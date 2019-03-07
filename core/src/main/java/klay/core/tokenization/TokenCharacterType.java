@@ -8,6 +8,7 @@ import java.util.Set;
 public enum TokenCharacterType {
 
     KOREAN(null),
+    KOREAN_JAMO(Pos.NA.label()),
     ENGLISH(Pos.SL.label()),
     CHINESE(Pos.SH.label()),
     JAPANESE(Pos.SL.label()),
@@ -30,6 +31,7 @@ public enum TokenCharacterType {
     }
 
     private final static Set<Character.UnicodeBlock> HANGUL_UNICODE_BLOCK_SET;
+    private final static Set<Character.UnicodeBlock> HANGUL_JAMO_UNICODE_BLOCK_SET;
     private final static Set<Character.UnicodeBlock> ENGLISH_UNICODE_BLOCK_SET;
     private final static Set<Character.UnicodeBlock> CHINESE_UNICODE_BLOCK_SET;
     private final static Set<Character.UnicodeBlock> JAPANESE_UNICODE_BLOCK_SET;
@@ -44,9 +46,11 @@ public enum TokenCharacterType {
 
     static {
         HANGUL_UNICODE_BLOCK_SET = new HashSet<>();
-        HANGUL_UNICODE_BLOCK_SET.add(Character.UnicodeBlock.HANGUL_COMPATIBILITY_JAMO);
-        HANGUL_UNICODE_BLOCK_SET.add(Character.UnicodeBlock.HANGUL_JAMO);
         HANGUL_UNICODE_BLOCK_SET.add(Character.UnicodeBlock.HANGUL_SYLLABLES);
+
+        HANGUL_JAMO_UNICODE_BLOCK_SET = new HashSet<>();
+        HANGUL_JAMO_UNICODE_BLOCK_SET.add(Character.UnicodeBlock.HANGUL_COMPATIBILITY_JAMO);
+        HANGUL_JAMO_UNICODE_BLOCK_SET.add(Character.UnicodeBlock.HANGUL_JAMO);
 
         ENGLISH_UNICODE_BLOCK_SET = new HashSet<>();
         ENGLISH_UNICODE_BLOCK_SET.add(Character.UnicodeBlock.BASIC_LATIN);
@@ -116,6 +120,7 @@ public enum TokenCharacterType {
     public static TokenCharacterType getCharType(Character.UnicodeBlock unicodeBlock,
                                                  char ch) {
         if(HANGUL_UNICODE_BLOCK_SET.contains(unicodeBlock)) return KOREAN;
+        else if(HANGUL_JAMO_UNICODE_BLOCK_SET.contains(unicodeBlock)) return KOREAN_JAMO;
         else if(ENGLISH_UNICODE_BLOCK_SET.contains(unicodeBlock) && Character.isAlphabetic(ch)) return ENGLISH;
         else if(CHINESE_UNICODE_BLOCK_SET.contains(unicodeBlock)) return CHINESE;
         else if(JAPANESE_UNICODE_BLOCK_SET.contains(unicodeBlock)) return JAPANESE;
