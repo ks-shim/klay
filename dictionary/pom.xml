@@ -11,6 +11,18 @@
 
     <artifactId>klay-dictionary</artifactId>
 
+    <properties>
+        <bintray.repo>ks-shim/klay</bintray.repo>
+        <bintray.package>io.github.ks-shim.klay:klay-dictionary</bintray.package>
+    </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>klay-dictionary</id>
+            <url>https://api.bintray.com/maven/dwayne/nlp/io.github.ks-shim.klay:klay-dictionary/;publish=1</url>
+        </repository>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>io.github.ks-shim.klay</groupId>

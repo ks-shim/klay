@@ -13,4 +13,16 @@
 
     <artifactId>klay-common</artifactId>
 
+    <properties>
+        <bintray.repo>ks-shim/klay</bintray.repo>
+        <bintray.package>io.github.ks-shim.klay:klay-common</bintray.package>
+    </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>klay-common</id>
+            <url>https://api.bintray.com/maven/dwayne/nlp/io.github.ks-shim.klay:klay-common/;publish=1</url>
+        </repository>
+    </distributionManagement>
+
 </project>
