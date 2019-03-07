@@ -1,7 +1,6 @@
 # 1. KLAY
 [![Build Status](https://travis-ci.com/ks-shim/klay.svg?branch=master)](https://travis-ci.com/ks-shim/klay)
 [![Coverage Status](https://coveralls.io/repos/github/ks-shim/klay/badge.svg?branch=master)](https://coveralls.io/github/ks-shim/klay?branch=master)
-[ ![Download](https://api.bintray.com/packages/dwayne/nlp/klay/images/download.svg) ](https://bintray.com/dwayne/nlp/klay/_latestVersion)
 
 **K**orean **L**anguage **A**nal**Y**zer using KOMORAN's dictionaries.
 - korean morphology analysis
