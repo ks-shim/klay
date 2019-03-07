@@ -63,7 +63,7 @@ HMM(Viterbi)는 MorphSequence 클래스를 사용하여 계산되어집니다.
  - 분석 데이터 건수 : 199,992 건
 ## 4-2. 결과 및 코드
  - 사전 로딩 : 0.284 (s)
- - 분석 시간 : 17.009 (s)
+ - 분석 시간 : 16.815 (s)
 ```java
     String src = "data/performance/test.txt";
     Klay klay = new Klay(Paths.get("data/configuration/klay.conf"));
@@ -88,8 +88,24 @@ HMM(Viterbi)는 MorphSequence 클래스를 사용하여 계산되어집니다.
 ```
 <dependency>
   <groupId>io.github.ks-shim.klay</groupId>
+  <artifactId>klay-common</artifactId>
+  <version>0.2</version>
+  <type>pom</type>
+</dependency>
+```
+```
+<dependency>
+  <groupId>io.github.ks-shim.klay</groupId>
+  <artifactId>klay-dictionary</artifactId>
+  <version>0.2</version>
+  <type>pom</type>
+</dependency>
+```
+```
+<dependency>
+  <groupId>io.github.ks-shim.klay</groupId>
   <artifactId>klay-core</artifactId>
-  <version>0.1</version>
+  <version>0.2</version>
   <type>pom</type>
 </dependency>
 ```
