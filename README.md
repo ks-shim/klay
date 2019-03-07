@@ -34,6 +34,11 @@ HMM(Viterbi)는 MorphSequence 클래스를 사용하여 계산되어집니다.
 
 ![analysis_diagram](data/image/analysis_diagram.png)
 
+## 2-3. Dictionary
+Lucene의 Trie를 변형하여 적용하였습니다.
+
+![dictionary_diagram](data/image/dictionary_diagram.png)
+
 # 3. Example
 ```java
     //***********************************************************************
