@@ -11,7 +11,7 @@ class TrieTest {
 
     @Test
     public void testTrie() {
-        Trie t = new Trie(true);
+        Trie t = new StringValueTrie(true);
 
         String[] keys = {"티라노사우르스", "스테고사우르스", "트리케라톱스"};
         String[] vals = {"육식공룡", "초식공룡", "초식공룡"};
@@ -27,7 +27,7 @@ class TrieTest {
     @Ignore
     @Test
     public void testReduce() throws Exception {
-        Trie t = new Trie(true);
+        Trie t = new StringValueTrie(true);
 
         String[] keys = {"티라노사우르스", "스테고사우르스", "트리케라톱스"};
         String[] vals = {"육식공룡", "초식공룡", "초식공룡"};
@@ -43,11 +43,11 @@ class TrieTest {
 
     @Test
     public void testLoadingDictionary() throws Exception {
-        Trie t = TrieLoadSaveHelper.load(Paths.get("src/test/resources/defaultTrie.dic"));
+        Trie t = TrieLoadSaveHelper.load(Paths.get("src/test/resources/defaultTrie.dic"), TrieDataType.STRING);
         TrieResult cs = t.getLastOnPath("트리케라톱스");
         assertEquals("초식공룡", cs.getData());
 
-        t = TrieLoadSaveHelper.load(Paths.get("src/test/resources/defaultTrie.dic"));
+        t = TrieLoadSaveHelper.load(Paths.get("src/test/resources/defaultTrie.dic"), TrieDataType.STRING);
         cs = t.getLastOnPath("티라노사우르스");
         assertEquals("육식공룡", cs.getData());
     }

@@ -9,12 +9,13 @@ import java.nio.file.Path;
 
 public class TrieLoadSaveHelper {
 
-    public static Trie load(Path filePath) throws Exception {
+    public static Trie load(Path filePath,
+                            TrieDataType trieDataType) throws Exception {
 
         try (DataInputStream dis = new DataInputStream(
                 new BufferedInputStream(Files.newInputStream(filePath)))) {
 
-            return new Trie(dis);
+            return trieDataType == TrieDataType.STRING ? new StringValueTrie(dis) : new ItemValueTrie(dis);
         }
     }
 

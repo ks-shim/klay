@@ -1,5 +1,7 @@
 package klay.core.morphology.analysis.rule;
 
+import klay.common.dictionary.structure.Item;
+import klay.common.dictionary.structure.ItemData;
 import klay.common.dictionary.structure.TrieResult;
 import klay.core.morphology.analysis.Morph;
 import klay.core.morphology.analysis.rule.param.AnalysisParam;
@@ -38,7 +40,7 @@ public class AllPossibleCandidatesRule extends AbstractChainedAnalysisRule {
             MorphSequence currentMSeq = (i == 0) ? param.lastMSeq() : param.slotAt(i);
             if(i > 0 && currentMSeq == null) continue;
 
-            TrieResult[] results = emissionDictionary.getAll(jaso, i);
+            TrieResult<Item[]>[] results = emissionDictionary.getAll(jaso, i);
             if(results == null && i == 0) break;
             else if(results == null) {
                 param.removeSlot(i);
@@ -58,12 +60,12 @@ public class AllPossibleCandidatesRule extends AbstractChainedAnalysisRule {
     }
 
     private void assignSlotAndCalculateScore(int currentJasoPos,
-                                             TrieResult[] results,
+                                             TrieResult<Item[]>[] results,
                                              AnalysisParam param,
                                              MorphSequence currentMSeq) {
         int resultLength = results.length;
         for(int i=0; i<resultLength; i++) {
-            TrieResult result = results[i];
+            TrieResult<Item[]> result = results[i];
             if(!result.hasResult()) continue;
 
             int insertIndex = currentJasoPos + result.length();
@@ -75,7 +77,7 @@ public class AllPossibleCandidatesRule extends AbstractChainedAnalysisRule {
     }
 
     private MorphSequence parseTrieResultAndCreateMSeqs(AnalysisParam param,
-                                                        CharSequence res,
+                                                        Item[] res,
                                                         MorphSequence currentMSeq,
                                                         MorphSequence nextMSeq) {
 
@@ -83,46 +85,23 @@ public class AllPossibleCandidatesRule extends AbstractChainedAnalysisRule {
         MorphSequence vNextMSeq = new MultiMorphSequence();
 
         // ex) 달/VV ㄴ/ETM:18	달/VA ㄴ/ETM:4
-        int textStartIndex = 0;
-        int slashIndex = 0;
-        int colonIndex = 0;
-        int resLength = res.length();
+        int resLength = res.length;
         for(int i=0; i<resLength; i++) {
 
-            char ch = res.charAt(i);
-            if(ch == '/') {
-                slashIndex = i;
-            } else if(ch == ' ') {
-                CharSequence text = res.subSequence(textStartIndex, slashIndex);
-                CharSequence pos = res.subSequence(slashIndex+1, i);
-                textStartIndex = i+1;
-
-                Morph morph = new Morph(param.getTokenNumber(), text, pos);
-                vNextMSeq.addMorph(morph);
-            } else if (ch == ':') {
-                CharSequence text = res.subSequence(textStartIndex, slashIndex);
-                CharSequence pos = res.subSequence(slashIndex+1, i);
-                colonIndex = i;
-
-                Morph morph = new Morph(param.getTokenNumber(), text, pos);
-                vNextMSeq.addMorph(morph);
-            } else if(ch == '\t') {
-                textStartIndex = i+1;
-                double emissionScore = Double.parseDouble((String)res.subSequence(colonIndex+1, i));
-                vNextMSeq.setEmissionScore(emissionScore);
-                calculateScore(currentMSeq, vNextMSeq);
-                vNextMSeq.setVPreviousMSeq(vPreviousMSeq);
-                vPreviousMSeq = vNextMSeq;
-
-                vNextMSeq = new MultiMorphSequence();
-            } else if(i == resLength-1) {
-                double emissionScore = Double.parseDouble((String)res.subSequence(colonIndex+1, i+1));
-                vNextMSeq.setEmissionScore(emissionScore);
-                calculateScore(currentMSeq, vNextMSeq);
-                vNextMSeq.setVPreviousMSeq(vPreviousMSeq);
-                vPreviousMSeq = vNextMSeq;
+            Item item = res[i];
+            int itemDataLength = item.size();
+            for(int j=0; j<itemDataLength; j++) {
+                ItemData itemData = item.getItemAt(j);
+                vNextMSeq.addMorph(new Morph(param.getTokenNumber(), itemData.getWord(), itemData.getPos()));
             }
-        }
+
+            vNextMSeq.setEmissionScore(item.getScore());
+            calculateScore(currentMSeq, vNextMSeq);
+            vNextMSeq.setVPreviousMSeq(vPreviousMSeq);
+            vPreviousMSeq = vNextMSeq;
+
+            if(i < resLength-1) vNextMSeq = new MultiMorphSequence();
+         }
 
         return vPreviousMSeq;
     }

@@ -1,7 +1,6 @@
 package klay.dictionary.triebase.system;
 
-import klay.common.dictionary.structure.Trie;
-import klay.common.dictionary.structure.TrieLoadSaveHelper;
+import klay.common.dictionary.structure.*;
 import klay.common.parser.JasoParser;
 import klay.dictionary.exception.DataFormatException;
 import klay.dictionary.param.DictionaryBinarySource;
@@ -11,10 +10,9 @@ import klay.dictionary.triebase.AbstractTrieBaseDictionary;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
+public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary<Item[]> {
 
     public EmissionTrieBaseDictionary(DictionaryTextSource source) throws Exception {
         super(source);
@@ -29,21 +27,22 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
     }
 
     @Override
-    protected Trie loadText(DictionaryTextSource source) throws Exception {
+    protected Trie<Item[]> loadText(DictionaryTextSource source) throws Exception {
 
-        Trie trie = new Trie(true);
+        Trie<Item[]> trie = new ItemValueTrie(true);
         loadText(trie, source);
         return trie;
     }
 
-    private void loadText(Trie trie,
+    private void loadText(Trie<Item[]> trie,
                           DictionaryTextSource source) throws Exception {
 
         try (BufferedReader in = new BufferedReader(
                 new InputStreamReader(
                         Files.newInputStream(source.getFilePath()), source.getCharSet()))) {
 
-            StringBuilder reformSb = new StringBuilder();
+            List<Item> itemList = new ArrayList<>();
+            List<ItemData> itemDataList = new ArrayList<>();
             String line = null;
             while((line = in.readLine()) != null) {
                 line = line.trim();
@@ -52,20 +51,20 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
                 int tabIndex = line.indexOf('\t');
                 if(tabIndex < 0 || tabIndex+1 >= line.length()) continue;
 
-                reformSb.setLength(0);
+                itemList.clear();
                 CharSequence word = line.substring(0, tabIndex);
                 CharSequence morph = JasoParser.parseAsString(word);
-                CharSequence data = (source.getDictionaryType() == DictionaryTextSource.DictionaryType.DIC_WORD) ?
-                        validateAndReformForWord(line.substring(tabIndex+1), word, reformSb, source.getPosFreqMap()) :
-                        validateAndReformForIrregular(line.substring(tabIndex+1), reformSb, trie, source.getTransitionMap());
+                Item[] data = (source.getDictionaryType() == DictionaryTextSource.DictionaryType.DIC_WORD) ?
+                        validateAndReformForWord(line.substring(tabIndex+1), word, itemList, source.getPosFreqMap()) :
+                        validateAndReformForIrregular(line.substring(tabIndex+1), itemList, itemDataList, trie, source.getTransitionMap());
                 trie.addIfNotExist(morph, data);
             }
         }
     }
 
     @Override
-    protected Trie loadText(DictionaryTextSource[] sources) throws Exception {
-        Trie trie = new Trie(true);
+    protected Trie<Item[]> loadText(DictionaryTextSource[] sources) throws Exception {
+        Trie<Item[]> trie = new ItemValueTrie(true);
 
         for(DictionaryTextSource source : sources)
             loadText(trie, source);
@@ -76,46 +75,47 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
     //*********************************************************************************************************
     // validateAndReformForWord method related ...
     //*********************************************************************************************************
-    private CharSequence validateAndReformForWord(String data,
-                                                  CharSequence word,
-                                                  StringBuilder reformSb,
-                                                  Map<CharSequence, Integer> posFreqMap) throws DataFormatException {
+    private Item[] validateAndReformForWord(String data,
+                                            CharSequence word,
+                                            List<Item> itemList,
+                                            Map<CharSequence, Integer> posFreqMap) throws DataFormatException {
 
         String[] poses = data.split("\t");
         for(int i=0; i<poses.length; i++) {
             String[] values = poses[i].trim().split(":");
 
             if(values.length != 2 || values[0].isEmpty() || values[1].isEmpty()) throw new DataFormatException();
+            String pos = values[0];
+            double score = changeProbability(pos, values[1], posFreqMap);
 
-            changeProbability(poses, i, values, posFreqMap);
+            Item item = new Item(1);
+            item.setScore(score);
+            itemList.add(item);
+            item.addItemAt(0, new ItemData(word, pos));
         }
 
-        for(int i=0; i<poses.length; i++) {
-            if(reformSb.length() != 0) reformSb.append('\t');
-
-            reformSb.append(word).append('/').append(poses[i].trim());
-        }
-        return reformSb.toString();
+        return itemList.toArray(new Item[itemList.size()]);
     }
 
-    private void changeProbability(String[] poses, int index,
-                                   String[] values,
-                                   Map<CharSequence, Integer> posFreqMap) {
-        String pos = values[0];
-        Integer freq = Integer.parseInt(values[1]);
+    private double changeProbability(String pos,
+                                     String freqStr,
+                                     Map<CharSequence, Integer> posFreqMap) {
+        Integer freq = Integer.parseInt(freqStr);
         Integer totalFreq = posFreqMap.get(pos);
         double score = Math.log10((double)freq/(double)totalFreq);
-        poses[index] = pos + ':' + score;
+        return score;
     }
 
     //*********************************************************************************************************
     // validateAndReformForIrregular method related ...
     //*********************************************************************************************************
-    private CharSequence validateAndReformForIrregular(String data,
-                                                       StringBuilder reformSb,
-                                                       Trie trie,
-                                                       Map<CharSequence, Map<CharSequence, Double>> transitionMap) throws DataFormatException {
+    private Item[] validateAndReformForIrregular(String data,
+                                                 List<Item> itemList,
+                                                 List<ItemData> itemDataList,
+                                                 Trie<Item[]> trie,
+                                                 Map<CharSequence, Map<CharSequence, Double>> transitionMap) throws DataFormatException {
 
+        // 앞당기/VV 어야/EC:1
         String[] poses = data.split("\t");
         for(int i=0; i<poses.length; i++) {
             String[] values = poses[i].trim().split(":");
@@ -131,20 +131,20 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
             //******************************************
             if(poses.length > 1 && freq < 2) continue;
 
-            double score = scoreForIrregular(pos, freq, trie, transitionMap);
-            poses[i] = pos + ':' + score;
+            itemDataList.clear();
+            double score = scoreForIrregular(pos, itemDataList, trie, transitionMap);
 
-            if(reformSb.length() != 0) reformSb.append('\t');
-            reformSb.append(pos).append(':').append(score);
+            Item item = new Item(itemDataList);
+            itemList.add(item);
         }
 
-        return reformSb.toString();
+        return itemList.toArray(new Item[itemList.size()]);
     }
 
     private double scoreForIrregular(String data,
-                                     int freq,
-                                     Trie trie,
-                                     Map<CharSequence, Map<CharSequence, Double>> transitionMap) {
+                                   List<ItemData> itemDataList,
+                                   Trie<Item[]> trie,
+                                   Map<CharSequence, Map<CharSequence, Double>> transitionMap) {
         double score = 0;
 
         String prePos = null;
@@ -152,13 +152,14 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
         for(int i=0; i<morphAndTags.length; i++) {
             String morphAndTag = morphAndTags[i];
             String[] columns = morphAndTag.split("/");
-            CharSequence morphJaso = JasoParser.parseAsString(columns[0]);
+            String word = columns[0];
+            CharSequence morphJaso = JasoParser.parseAsString(word);
             String pos = columns[1];
 
-            CharSequence dicResult = trie.getFully(morphJaso);
-            if(dicResult == null) dicResult = "";
+            itemDataList.add(new ItemData(word, pos));
 
-            Map<String, Double> posScoreMap = parseWordDicResult((String)dicResult);
+            Item[] searchedItems = trie.getFully(morphJaso);
+            Map<String, Double> posScoreMap = parseWordDicResult(searchedItems);
             Double tmpScore = posScoreMap.get(pos);
             if(tmpScore != null) {
                 // plus Emission score ...
@@ -177,23 +178,22 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary {
         return score;
     }
 
-    private Map<String, Double> parseWordDicResult(String dicResult) {
+    private Map<String, Double> parseWordDicResult(Item[] items) {
         Map<String, Double> map = new HashMap<>();
-        if(dicResult.isEmpty()) return map;
+        if(items == null) return map;
 
-        String[] datas = dicResult.split("\t");
-        for(String data : datas) {
-            int slashIndex = data.lastIndexOf('/');
-            int colonIndex = data.lastIndexOf(':');
-            String pos = data.substring(slashIndex+1, colonIndex);
-            double score = Double.parseDouble(data.substring(colonIndex+1));
-            map.put(pos, score);
+        for(Item item : items) {
+            ItemData data = item.getLast();
+            if(data == null) continue;
+
+            map.put(data.getPos().toString(), item.getScore());
         }
+
         return map;
     }
 
     @Override
-    protected Trie loadBinary(DictionaryBinarySource source) throws Exception {
-        return TrieLoadSaveHelper.load(source.getFilePath());
+    protected Trie<Item[]> loadBinary(DictionaryBinarySource source) throws Exception {
+        return TrieLoadSaveHelper.load(source.getFilePath(), TrieDataType.ITEM);
     }
 }

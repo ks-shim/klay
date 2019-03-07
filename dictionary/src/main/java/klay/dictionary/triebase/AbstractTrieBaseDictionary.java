@@ -10,9 +10,9 @@ import klay.dictionary.param.DictionaryTextSource;
 import lombok.Data;
 
 @Data
-public abstract class AbstractTrieBaseDictionary implements Dictionary<CharSequence> {
+public abstract class AbstractTrieBaseDictionary<T> implements Dictionary {
 
-    protected final Trie trie;
+    protected final Trie<T> trie;
 
     protected AbstractTrieBaseDictionary(DictionaryTextSource source) throws Exception {
         this.trie = loadText(source);
@@ -28,12 +28,12 @@ public abstract class AbstractTrieBaseDictionary implements Dictionary<CharSeque
     }
 
     @Override
-    public CharSequence getFully(CharSequence key) {
+    public T getFully(CharSequence key) {
         return getFully(key, 0, key.length());
     }
 
     @Override
-    public CharSequence getFully(CharSequence key, int from, int keyLength) {
+    public T getFully(CharSequence key, int from, int keyLength) {
         return trie.getFully(key, from, keyLength);
     }
 
@@ -42,27 +42,27 @@ public abstract class AbstractTrieBaseDictionary implements Dictionary<CharSeque
         TrieLoadSaveHelper.store(trie, target.getFilePath());
     }
 
-    public TrieResult getLastOnPath(CharSequence key) {
+    public TrieResult<T> getLastOnPath(CharSequence key) {
         return trie.getLastOnPath(key);
     }
 
-    public TrieResult getLastOnPath(CharSequence key, int from) {
+    public TrieResult<T> getLastOnPath(CharSequence key, int from) {
         return trie.getLastOnPath(key, from);
     }
 
-    public TrieResult[] getAll(CharSequence key) {
+    public TrieResult<T>[] getAll(CharSequence key) {
         return getAll(key, 0);
     }
 
-    public TrieResult[] getAll(CharSequence key, int from) {
+    public TrieResult<T>[] getAll(CharSequence key, int from) {
         return trie.getAll(key, from);
     }
 
-    protected abstract Trie loadText(DictionaryTextSource source) throws Exception;
+    protected abstract Trie<T> loadText(DictionaryTextSource source) throws Exception;
 
-    protected abstract Trie loadText(DictionaryTextSource[] sources) throws Exception;
+    protected abstract Trie<T> loadText(DictionaryTextSource[] sources) throws Exception;
 
-    protected abstract Trie loadBinary(DictionaryBinarySource source) throws Exception;
+    protected abstract Trie<T> loadBinary(DictionaryBinarySource source) throws Exception;
 
 
 }

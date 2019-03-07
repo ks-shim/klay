@@ -15,29 +15,15 @@ import java.util.List;
  * read from right to left). This property will vary depending on the language
  * for which a Trie is constructed.
  */
-public class Trie {
-    List<Row> rows = new ArrayList<>();
-    List<CharSequence> cmds = new ArrayList<>();
-    int root;
+public abstract class Trie<T> {
 
-    boolean forward = false;
+    protected List<Row> rows = new ArrayList<>();
+    protected List<T> cmds = new ArrayList<>();
+    protected int root;
 
-    /**
-     * Constructor for the Trie object.
-     *
-     * @param is the input stream
-     * @exception IOException if an I/O error occurs
-     */
-    public Trie(DataInput is) throws IOException {
-        forward = is.readBoolean();
-        root = is.readInt();
-        for (int i = is.readInt(); i > 0; i--) {
-            cmds.add(is.readUTF());
-        }
-        for (int i = is.readInt(); i > 0; i--) {
-            rows.add(new Row(is));
-        }
-    }
+    protected boolean forward = false;
+
+    protected Trie() {}
 
     /**
      * Constructor for the Trie object.
@@ -51,28 +37,12 @@ public class Trie {
     }
 
     /**
-     * Constructor for the Trie object.
-     *
-     * @param forward <tt>true</tt> if read left to right, <tt>false</tt> if read
-     *          right to left
-     * @param root index of the row that is the root node
-     * @param cmds the patch commands to store
-     * @param rows a Vector of Vectors. Each inner Vector is a node of this Trie
-     */
-    public Trie(boolean forward, int root, List<CharSequence> cmds, List<Row> rows) {
-        this.rows = rows;
-        this.cmds = cmds;
-        this.root = root;
-        this.forward = forward;
-    }
-
-    /**
      * Gets the all attribute of the Trie object
      *
      * @param key Description of the Parameter
      * @return The all value
      */
-    public TrieResult[] getAll(CharSequence key, int from) {
+    public TrieResult<T>[] getAll(CharSequence key, int from) {
         int[] res = new int[key.length()];
         int[] resPos = new int[key.length()];
         int resc = 0;
@@ -152,7 +122,7 @@ public class Trie {
         return size;
     }
 
-    public CharSequence getFully(CharSequence key, int from, int keyLength) {
+    public T getFully(CharSequence key, int from, int keyLength) {
         Row now = getRow(root);
         int w;
         Cell c;
@@ -197,11 +167,11 @@ public class Trie {
      * @param key the key
      * @return the associated element
      */
-    public CharSequence getFully(CharSequence key) {
+    public T getFully(CharSequence key) {
         return getFully(key, 0, key.length());
     }
 
-    public TrieResult getLastOnPath(CharSequence key) {
+    public TrieResult<T> getLastOnPath(CharSequence key) {
         return getLastOnPath(key, 0);
     }
 
@@ -212,11 +182,11 @@ public class Trie {
      * @param key the key associated with the desired element
      * @return the last on path element
      */
-    public TrieResult getLastOnPath(CharSequence key,
-                                    int from) {
+    public TrieResult<T> getLastOnPath(CharSequence key,
+                                       int from) {
         Row now = getRow(root);
         int w;
-        CharSequence last = null;
+        T last = null;
         StrEnum e = new StrEnum(key, from, key.length() - from, forward);
 
         int i = from;
@@ -250,23 +220,7 @@ public class Trie {
         return rows.get(index);
     }
 
-    /**
-     * Write this Trie to the given output stream.
-     *
-     * @param os the output stream
-     * @exception IOException if an I/O error occurs
-     */
-    public void store(DataOutput os) throws IOException {
-        os.writeBoolean(forward);
-        os.writeInt(root);
-        os.writeInt(cmds.size());
-        for (CharSequence cmd : cmds)
-            os.writeUTF(cmd.toString());
-
-        os.writeInt(rows.size());
-        for (Row row : rows)
-            row.store(os);
-    }
+    public abstract void store(DataOutput os) throws IOException;
 
     /**
      * Add the given key associated with the given patch command. If either
@@ -275,13 +229,8 @@ public class Trie {
      * @param key the key
      * @param cmd the patch command
      */
-    public void add(CharSequence key, CharSequence cmd, boolean addIfNotExist) {
-        if (key == null || cmd == null) {
-            return;
-        }
-        if (cmd.length() == 0) {
-            return;
-        }
+    protected void add(CharSequence key, T cmd, boolean addIfNotExist) {
+
         int id_cmd = cmds.indexOf(cmd);
         if (id_cmd == -1) {
             id_cmd = cmds.size();
@@ -311,11 +260,11 @@ public class Trie {
         else r.setCmd(e.next(), id_cmd);
     }
 
-    public void add(CharSequence key, CharSequence cmd) {
+    public void add(CharSequence key, T cmd) {
         add(key, cmd, false);
     }
 
-    public void addIfNotExist(CharSequence key, CharSequence cmd) {
+    public void addIfNotExist(CharSequence key, T cmd) {
         add(key, cmd, true);
     }
 

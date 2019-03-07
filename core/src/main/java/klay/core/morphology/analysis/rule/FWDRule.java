@@ -1,5 +1,7 @@
 package klay.core.morphology.analysis.rule;
 
+import klay.common.dictionary.structure.Item;
+import klay.common.dictionary.structure.ItemData;
 import klay.core.morphology.analysis.Morph;
 import klay.core.morphology.analysis.rule.param.AnalysisParam;
 import klay.core.morphology.analysis.sequence.MorphSequence;
@@ -30,8 +32,8 @@ public class FWDRule extends AbstractChainedAnalysisRule {
 
         MorphSequence previousMSeq = param.lastMSeq();
 
-        CharSequence result = fwdDictionary.getFully(param.getText(), param.getFrom(), param.getKeyLength());
-        if(result == null) {
+        Item[] result = fwdDictionary.getFully(param.getText(), param.getFrom(), param.getKeyLength());
+        if(result == null || result.length == 0) {
             super.apply(param);
             return;
         }
@@ -41,37 +43,23 @@ public class FWDRule extends AbstractChainedAnalysisRule {
     }
 
     private MorphSequence parseTrieResultAndCreateMSeqs(AnalysisParam param,
-                                                        CharSequence res,
+                                                        Item[] res,
                                                         MorphSequence previousMSeq) {
         MorphSequence currentMSeq = new MultiMorphSequence();
 
         // ex) 흘리/VV 었/EP 어요/EC
-        int textStartIndex = 0;
-        int slashIndex = 0;
-        int resLength = res.length();
+        int resLength = res.length;
         for(int i=0; i<resLength; i++) {
+            Item item = res[i];
+            int itemDataLength = item.size();
 
-            char ch = res.charAt(i);
-            if(ch == '/') {
-                slashIndex = i;
-            } else if(ch == ' ') {
-                CharSequence text = res.subSequence(textStartIndex, slashIndex);
-                CharSequence pos = res.subSequence(slashIndex+1, i);
-                textStartIndex = i+1;
-
-                Morph morph = new Morph(param.getTokenNumber(), text, pos);
-                currentMSeq.addMorph(morph);
-            } else if(i == resLength - 1) {
-                CharSequence text = res.subSequence(textStartIndex, slashIndex);
-                CharSequence pos = res.subSequence(slashIndex+1, i+1);
-
-                Morph morph = new Morph(param.getTokenNumber(), text, pos);
-                currentMSeq.addMorph(morph);
+            for(int j=0; j<itemDataLength; j++) {
+                ItemData itemData = item.getItemAt(j);
+                currentMSeq.addMorph(new Morph(param.getTokenNumber(), itemData.getWord(), itemData.getPos()));
             }
         }
 
         calculateScore(previousMSeq, currentMSeq);
-
         return currentMSeq;
     }
 

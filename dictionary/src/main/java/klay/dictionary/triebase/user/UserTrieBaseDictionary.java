@@ -1,5 +1,6 @@
 package klay.dictionary.triebase.user;
 
+import klay.common.dictionary.structure.StringValueTrie;
 import klay.common.dictionary.structure.Trie;
 import klay.common.pos.Pos;
 import klay.dictionary.param.DictionaryBinarySource;
@@ -10,16 +11,16 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 
-public class UserTrieBaseDictionary extends AbstractTrieBaseDictionary {
+public class UserTrieBaseDictionary extends AbstractTrieBaseDictionary<CharSequence> {
 
     public UserTrieBaseDictionary(DictionaryTextSource source) throws Exception {
         super(source);
     }
 
     @Override
-    protected Trie loadText(DictionaryTextSource source) throws Exception {
+    protected Trie<CharSequence> loadText(DictionaryTextSource source) throws Exception {
 
-        Trie trie = new Trie(true);
+        Trie trie = new StringValueTrie(true);
 
         try (BufferedReader in = new BufferedReader(
                 new InputStreamReader(

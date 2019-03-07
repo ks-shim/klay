@@ -1,6 +1,7 @@
 package klay.example;
 
 import klay.core.Klay;
+import klay.core.morphology.analysis.Morphs;
 import org.apache.commons.lang3.time.StopWatch;
 
 import java.io.BufferedReader;
@@ -24,7 +25,7 @@ public class KlayPerformanceTestExample {
                 line = line.trim();
                 if(line.isEmpty()) continue;
 
-                klay.doKlay(line);
+                Morphs morhps = klay.doKlay(line);
                 System.out.print("\r" + ++count);
             }
         }

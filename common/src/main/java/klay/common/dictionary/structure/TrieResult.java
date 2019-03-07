@@ -5,13 +5,13 @@ import lombok.ToString;
 
 @Data
 @ToString
-public class TrieResult {
+public class TrieResult<T> {
 
-    private CharSequence data;
+    private T data;
     private int startPosition;
     private int endPosition;
 
-    public TrieResult(CharSequence data,
+    public TrieResult(T data,
                       int startPosition,
                       int endPosition) {
         this.data = data;

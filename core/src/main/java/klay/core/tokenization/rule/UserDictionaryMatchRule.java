@@ -17,7 +17,7 @@ public class UserDictionaryMatchRule extends AbstractChainedTokenizationRule {
     @Override
     public void apply(CharSequence cs, Token token) {
 
-        TrieResult result = dictionary.getLastOnPath(cs, token.getEndPosition());
+        TrieResult<CharSequence> result = dictionary.getLastOnPath(cs, token.getEndPosition());
         if(result.hasResult()) {
             token.set(result.getStartPosition(), result.getEndPosition(), result.getData());
             return;
