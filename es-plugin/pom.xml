@@ -11,5 +11,24 @@
 
     <artifactId>klay-es-plugin</artifactId>
 
+    <properties>
+        <elasticsearch.version>6.2.2</elasticsearch.version>
+        <log4j.version>2.9.1</log4j.version>
+    </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>${elasticsearch.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>
