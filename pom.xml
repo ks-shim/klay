@@ -15,6 +15,7 @@
         <module>core</module>
         <module>dictionary-build</module>
         <module>example</module>
+        <module>es-plugin</module>
     </modules>
 
     <properties>
