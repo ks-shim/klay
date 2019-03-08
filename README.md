@@ -89,7 +89,11 @@ Lucene의 Trie를 변형하여 적용하였습니다.
     watch.stop();
     System.out.println("Analysis Time : " + watch.getTime(TimeUnit.MILLISECONDS) / 1000.0 + " (s)");
 ```
-# 5. Maven
+
+# 5. Elasticsearch Plugin
+ - 개발중 ...
+ 
+# 6. Maven
 ```
 <dependency>
   <groupId>io.github.ks-shim.klay</groupId>
