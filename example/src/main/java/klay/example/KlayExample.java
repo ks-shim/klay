@@ -16,12 +16,15 @@ public class KlayExample {
         //***********************************************************************
         // 1. configuration and creating Klay object ...
         //***********************************************************************
+        long startMem = Runtime.getRuntime().freeMemory();
         Klay klay = new Klay(Paths.get("data/configuration/klay.conf"));
+        long endMem = Runtime.getRuntime().freeMemory();
+        System.out.println((startMem - endMem)/(1024.0 * 1024.0) + " (MB)");
 
         //***********************************************************************
         // 2. start morphological analysis.
         //***********************************************************************
-        String text = "너무기대안하고갔나ㄱㄴ...........ㅇㄴㅏ.........재밌게봤다";
+        String text = "임대인 너무기대안하고갔나ㄱㄴ...........ㅇㄴㅏ.........재밌게봤다";
 
         StopWatch watch = new StopWatch();
         watch.start();
