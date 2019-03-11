@@ -24,7 +24,7 @@ public class KlayExample {
         //***********************************************************************
         // 2. start morphological analysis.
         //***********************************************************************
-        String text = "임대인 너무기대안하고갔나ㄱㄴ...........ㅇㄴㅏ.........재밌게봤다";
+        String text = "ㄱㅐOOO같은영화 뭐가무섭다는건지ㅡㅡ";
 
         StopWatch watch = new StopWatch();
         watch.start();
