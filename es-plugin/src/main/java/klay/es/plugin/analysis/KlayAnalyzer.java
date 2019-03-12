@@ -11,10 +11,9 @@ import java.nio.file.Path;
 public class KlayAnalyzer extends Analyzer {
 
     private final Klay klay;
-
     public KlayAnalyzer(Path configFilePath) {
         try {
-            this.klay = new Klay(configFilePath);
+            klay = new Klay(configFilePath);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -22,7 +21,7 @@ public class KlayAnalyzer extends Analyzer {
 
     @Override
     protected TokenStreamComponents createComponents(String fieldName) {
-        KlayTokenizer tokenizer = new KlayTokenizer();
+        KlayTokenizer tokenizer = new KlayTokenizer(klay);
         return new TokenStreamComponents(tokenizer, new LowerCaseFilter(tokenizer));
     }
 
