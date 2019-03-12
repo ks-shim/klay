@@ -25,7 +25,7 @@ public class KlayPerformanceTestExample {
                 line = line.trim();
                 if(line.isEmpty()) continue;
 
-                Morphs morhps = klay.doKlay(line);
+                klay.doKlay(line);
                 System.out.print("\r" + ++count);
             }
         }

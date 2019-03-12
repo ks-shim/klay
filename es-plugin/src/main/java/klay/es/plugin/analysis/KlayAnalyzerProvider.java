@@ -7,6 +7,8 @@ import org.elasticsearch.env.Environment;
 import org.elasticsearch.index.IndexSettings;
 import org.elasticsearch.index.analysis.AbstractIndexAnalyzerProvider;
 
+import java.nio.file.Paths;
+
 public class KlayAnalyzerProvider extends AbstractIndexAnalyzerProvider<KlayAnalyzer> {
 
     private final KlayAnalyzer analyzer;
@@ -14,7 +16,7 @@ public class KlayAnalyzerProvider extends AbstractIndexAnalyzerProvider<KlayAnal
     @Inject
     public KlayAnalyzerProvider(IndexSettings indexSettings, Environment env, @Assisted String name, @Assisted Settings settings) {
         super(indexSettings, name, settings);
-        this.analyzer = new KlayAnalyzer();
+        this.analyzer = new KlayAnalyzer(Paths.get("./klay.conf"));
     }
 
     @Override
