@@ -114,6 +114,10 @@ public class AnalysisParam {
         return jaso;
     }
 
+    public int getSyllableOffsetAt(int index) {
+        return jasoToSyllablePosition.get(index);
+    }
+
     public void clearJasoAndSlot() {
         jaso = null;
         candidateMSeqSlot.clear();

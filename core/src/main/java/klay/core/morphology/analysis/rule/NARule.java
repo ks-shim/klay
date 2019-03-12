@@ -20,7 +20,7 @@ public class NARule extends AbstractChainedAnalysisRule {
         MorphSequence previousMSeq = param.lastMSeq();
 
         MorphSequence mSeq = new SingleMorphSequence(
-                new Morph(param.getTokenNumber(), param.getSubCharSequence(), Pos.NA.label()));
+                new Morph(param.getTokenNumber(), param.getSubCharSequence(), Pos.NA.label(), param.getFrom(), param.getTo()-1));
         while(true) {
 
             mSeq.compareScoreAndSetPreviousMSeq(previousMSeq, transitionDictionary);

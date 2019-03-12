@@ -63,14 +63,18 @@ public class AllPossibleCandidatesRule extends AbstractChainedAnalysisRule {
                                              TrieResult<Item[]>[] results,
                                              AnalysisParam param,
                                              MorphSequence currentMSeq) {
+
+        int startSyllableIndex = param.getSyllableOffsetAt(currentJasoPos);
+
         int resultLength = results.length;
         for(int i=0; i<resultLength; i++) {
             TrieResult<Item[]> result = results[i];
             if(!result.hasResult()) continue;
 
             int insertIndex = currentJasoPos + result.length();
+            int endSyllableIndex = param.getSyllableOffsetAt(insertIndex-1);
             MorphSequence nextMSeq = param.slotAt(insertIndex);
-            nextMSeq = parseTrieResultAndCreateMSeqs(param, result.getData(), currentMSeq, nextMSeq);
+            nextMSeq = parseTrieResultAndCreateMSeqs(param, result.getData(), currentMSeq, nextMSeq, startSyllableIndex, endSyllableIndex);
 
             param.setSlotAt(insertIndex, nextMSeq);
         }
@@ -79,7 +83,9 @@ public class AllPossibleCandidatesRule extends AbstractChainedAnalysisRule {
     private MorphSequence parseTrieResultAndCreateMSeqs(AnalysisParam param,
                                                         Item[] res,
                                                         MorphSequence currentMSeq,
-                                                        MorphSequence nextMSeq) {
+                                                        MorphSequence nextMSeq,
+                                                        int startSyllableIndex,
+                                                        int endSyllableIndex) {
 
         MorphSequence vPreviousMSeq = nextMSeq;
         MorphSequence vNextMSeq = new MultiMorphSequence();
@@ -92,7 +98,7 @@ public class AllPossibleCandidatesRule extends AbstractChainedAnalysisRule {
             int itemDataLength = item.size();
             for(int j=0; j<itemDataLength; j++) {
                 ItemData itemData = item.getItemAt(j);
-                vNextMSeq.addMorph(new Morph(param.getTokenNumber(), itemData.getWord(), itemData.getPos()));
+                vNextMSeq.addMorph(new Morph(param.getTokenNumber(), itemData.getWord(), itemData.getPos(), startSyllableIndex, endSyllableIndex));
             }
 
             vNextMSeq.setEmissionScore(item.getScore());

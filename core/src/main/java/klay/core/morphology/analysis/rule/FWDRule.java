@@ -55,7 +55,7 @@ public class FWDRule extends AbstractChainedAnalysisRule {
 
             for(int j=0; j<itemDataLength; j++) {
                 ItemData itemData = item.getItemAt(j);
-                currentMSeq.addMorph(new Morph(param.getTokenNumber(), itemData.getWord(), itemData.getPos()));
+                currentMSeq.addMorph(new Morph(param.getTokenNumber(), itemData.getWord(), itemData.getPos(), param.getFrom(), param.getTo()-1));
             }
         }
 
