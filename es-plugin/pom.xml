@@ -5,7 +5,7 @@
     <parent>
         <artifactId>klay</artifactId>
         <groupId>io.github.ks-shim.klay</groupId>
-        <version>0.2</version>
+        <version>0.2.5-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -17,6 +17,7 @@
     </properties>
 
     <dependencies>
+        <!-- elasticsearch -->
         <dependency>
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
@@ -24,6 +25,26 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- klay -->
+        <dependency>
+            <groupId>io.github.ks-shim.klay</groupId>
+            <artifactId>klay-common</artifactId>
+            <version>0.2.5-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.ks-shim.klay</groupId>
+            <artifactId>klay-dictionary</artifactId>
+            <version>0.2.5-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.ks-shim.klay</groupId>
+            <artifactId>klay-core</artifactId>
+            <version>0.2.5-SNAPSHOT</version>
+        </dependency>
+
+        <!-- log4j -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
