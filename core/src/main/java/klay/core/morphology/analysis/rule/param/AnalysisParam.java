@@ -4,7 +4,9 @@ import klay.common.parser.JasoParser;
 import klay.core.morphology.analysis.sequence.MorphSequence;
 import klay.core.morphology.analysis.sequence.MultiMorphSequence;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AnalysisParam {
@@ -17,6 +19,7 @@ public class AnalysisParam {
     private boolean canSkip;
 
     private CharSequence jaso;
+    private List<Integer> jasoToSyllablePosition;
 
     private Map<Integer, MorphSequence> candidateMSeqSlot;
 
@@ -24,6 +27,7 @@ public class AnalysisParam {
 
     public AnalysisParam() {
         candidateMSeqSlot = new HashMap<>();
+        jasoToSyllablePosition = new ArrayList<>();
     }
 
     public CharSequence getText() {
@@ -88,35 +92,40 @@ public class AnalysisParam {
     // Jaso and slot related methods ...
     //**************************************************************************
     public CharSequence jaso() {
-        if(jaso == null) jaso = JasoParser.parseAsString(text, from, to);
+        if(jaso != null) return jaso;
+
+        int preSbLength = 0;
+        StringBuilder sb = new StringBuilder();
+        for(int i=from; i<to; ++i) {
+            char ch = text.charAt(i);
+            JasoParser.parseCharAsString(ch, sb);
+
+            int curSbLength = sb.length() - preSbLength;
+            if(curSbLength == 0) continue;
+
+            for(int s=0; s<curSbLength; ++s) {
+                jasoToSyllablePosition.add(i);
+            }
+
+            preSbLength = sb.length();
+        }
+
+        jaso = sb.toString();
         return jaso;
     }
 
     public void clearJasoAndSlot() {
         jaso = null;
         candidateMSeqSlot.clear();
-    }
-
-    public void clearSlot() {
-        candidateMSeqSlot.clear();
+        jasoToSyllablePosition.clear();
     }
 
     public MorphSequence slotAt(int index) {
         return candidateMSeqSlot.get(index);
     }
 
-    public void printSlot() {
-        System.out.println(candidateMSeqSlot);
-    }
-
     public void removeSlot(int index) {
         candidateMSeqSlot.remove(index);
-    }
-
-    public MorphSequence newSlotAt(int index) {
-        MorphSequence mSeq = new MultiMorphSequence();
-        candidateMSeqSlot.put(index, mSeq);
-        return mSeq;
     }
 
     public void setSlotAt(int index, MorphSequence mSeq) {

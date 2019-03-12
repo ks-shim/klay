@@ -13,8 +13,6 @@ public class Morph {
     private CharSequence text;
     private CharSequence pos;
 
-    private long score;
-
     public Morph(int tokenNumber,
                  CharSequence text,
                  CharSequence pos) {

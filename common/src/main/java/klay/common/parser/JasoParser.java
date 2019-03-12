@@ -16,27 +16,31 @@ public class JasoParser {
             0x313e, 0x313f, 0x3140, 0x3141, 0x3142, 0x3144, 0x3145, 0x3146,
             0x3147, 0x3148, 0x314a, 0x314b, 0x314c, 0x314d, 0x314e};
 
+    public static void parseCharAsString(char ch,
+                                         StringBuilder sb) {
+
+        Character.UnicodeBlock block = Character.UnicodeBlock.of(ch);
+        // cases no needed to parseAsList ...
+        if (block != Character.UnicodeBlock.HANGUL_SYLLABLES) {
+            sb.append(ch);
+            return;
+        }
+
+        int tmp = ch - 0xAC00;
+        int cho = tmp / (21 * 28);
+        tmp = tmp % (21 * 28);
+        int joong = tmp / 28;
+        int jong = tmp % 28;
+        sb.append(CHO_SUNG[cho]);
+        sb.append(JOONG_SUNG[joong]);
+        if (jong != 0) sb.append(JONG_SUNG[jong]);
+    }
+
     public static CharSequence parseAsString(CharSequence s, int from, int to) {
         StringBuilder sb = new StringBuilder();
 
         for (int i = from; i < to; i++) {
-            char ch = s.charAt(i);
-
-            Character.UnicodeBlock block = Character.UnicodeBlock.of(ch);
-            // cases no needed to parseAsList ...
-            if (block != Character.UnicodeBlock.HANGUL_SYLLABLES) {
-                sb.append(ch);
-                continue;
-            }
-
-            int tmp = ch - 0xAC00;
-            int cho = tmp / (21 * 28);
-            tmp = tmp % (21 * 28);
-            int joong = tmp / 28;
-            int jong = tmp % 28;
-            sb.append(CHO_SUNG[cho]);
-            sb.append(JOONG_SUNG[joong]);
-            if (jong != 0) sb.append(JONG_SUNG[jong]);
+            parseCharAsString(s.charAt(i), sb);
         }
 
         return sb.toString();

@@ -30,12 +30,10 @@ public class CanSkipRule extends AbstractChainedAnalysisRule {
 
         MorphSequence mSeq = new SingleMorphSequence(
                 new Morph(param.getTokenNumber(), param.getSubCharSequence(), param.getPos()));
+
         while(true) {
-
             mSeq.compareScoreAndSetPreviousMSeq(previousMSeq, transitionDictionary);
-
             if(!previousMSeq.hasVPreviousMSeq()) break;
-
             previousMSeq = previousMSeq.getVPreviousMSeq();
         }
 
