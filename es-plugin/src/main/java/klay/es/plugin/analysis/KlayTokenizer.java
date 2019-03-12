@@ -9,6 +9,7 @@ import org.apache.lucene.analysis.util.RollingCharBuffer;
 import org.apache.lucene.util.AttributeFactory;
 
 import java.io.IOException;
+import java.io.Reader;
 import java.util.Iterator;
 
 public final class KlayTokenizer extends Tokenizer {
@@ -45,6 +46,10 @@ public final class KlayTokenizer extends Tokenizer {
         }
 
         return false;
+    }
+
+    public void setKlayTokenizerReader(Reader reader) {
+        setReader(reader);
     }
 
     private boolean readNewData() throws IOException {

@@ -17,5 +17,11 @@
             <artifactId>klay-core</artifactId>
             <version>0.2.5-SNAPSHOT</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.github.ks-shim.klay</groupId>
+            <artifactId>klay-es-plugin</artifactId>
+            <version>0.2.5-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>
