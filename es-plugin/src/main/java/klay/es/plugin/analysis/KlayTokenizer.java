@@ -28,9 +28,16 @@ public final class KlayTokenizer extends Tokenizer {
 
     public KlayTokenizer(Klay klay) {
         this.klay = klay;
+        this.bufferSize = MAX_READ_COUNT;
+    }
+
+    public KlayTokenizer(Klay klay, int bufferSize) {
+        this.klay = klay;
+        this.bufferSize = bufferSize;
     }
 
     private final static int MAX_READ_COUNT = Integer.MAX_VALUE / 4;
+    private final int bufferSize;
     private int readCount = 0;
     @Override
     public boolean incrementToken() throws IOException {
@@ -61,7 +68,7 @@ public final class KlayTokenizer extends Tokenizer {
         while((ch = buffer.get(readCount++)) > 0) {
             ++count;
             sb.append((char) ch);
-            if(count >= MAX_READ_COUNT) {
+            if(count >= bufferSize) {
                 buffer.freeBefore(readCount);
                 break;
             }
