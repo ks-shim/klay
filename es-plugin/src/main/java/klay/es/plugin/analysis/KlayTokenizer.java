@@ -6,6 +6,7 @@ import klay.core.morphology.analysis.Morphs;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
+import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
 import org.apache.lucene.analysis.util.RollingCharBuffer;
 import org.apache.lucene.util.AttributeFactory;
 
@@ -23,6 +24,7 @@ public final class KlayTokenizer extends Tokenizer {
 
     private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
     private final OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
+    private final PositionIncrementAttribute posIncrAtt = addAttribute(PositionIncrementAttribute.class);
 
     public KlayTokenizer(Klay klay) {
         this.klay = klay;
@@ -45,6 +47,7 @@ public final class KlayTokenizer extends Tokenizer {
             Morph morph = morphIterator.next();
             termAtt.setEmpty().append(morph.getText());
             offsetAtt.setOffset(morph.getStartOffset(), morph.getEndOffset());
+            posIncrAtt.setPositionIncrement(1);
             return true;
         }
 
