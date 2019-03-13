@@ -5,6 +5,7 @@ import klay.core.morphology.analysis.Morph;
 import klay.core.morphology.analysis.Morphs;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.util.RollingCharBuffer;
 import org.apache.lucene.util.AttributeFactory;
 
@@ -21,12 +22,13 @@ public final class KlayTokenizer extends Tokenizer {
     private final RollingCharBuffer buffer = new RollingCharBuffer();
 
     private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
+    private final OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
 
     public KlayTokenizer(Klay klay) {
         this.klay = klay;
     }
 
-    private final int MAX_READ_COUNT = 10;
+    private final static int MAX_READ_COUNT = Integer.MAX_VALUE / 4;
     private int readCount = 0;
     @Override
     public boolean incrementToken() throws IOException {
@@ -42,23 +44,26 @@ public final class KlayTokenizer extends Tokenizer {
         if(morphIterator.hasNext()) {
             Morph morph = morphIterator.next();
             termAtt.setEmpty().append(morph.getText());
+            offsetAtt.setOffset(morph.getStartOffset(), morph.getEndOffset());
             return true;
         }
 
         return false;
     }
 
-    public void setKlayTokenizerReader(Reader reader) {
-        setReader(reader);
-    }
-
     private boolean readNewData() throws IOException {
         int ch;
         StringBuilder sb = new StringBuilder();
+        int count = 0;
         while((ch = buffer.get(readCount++)) > 0) {
+            ++count;
             sb.append((char) ch);
-            if(readCount >= MAX_READ_COUNT) break;
+            if(count >= MAX_READ_COUNT) {
+                buffer.freeBefore(readCount);
+                break;
+            }
         }
+
         if(sb.length() == 0) return false;
 
         Morphs morphs = klay.doKlay(sb.toString());

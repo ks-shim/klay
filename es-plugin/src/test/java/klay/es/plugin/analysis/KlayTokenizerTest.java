@@ -2,6 +2,7 @@ package klay.es.plugin.analysis;
 
 import klay.core.Klay;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.junit.jupiter.api.Test;
 
 import java.io.Reader;
@@ -10,7 +11,7 @@ import java.nio.file.Paths;
 
 class KlayTokenizerTest {
 
-    @Test
+    //@Test
     void test() throws Exception {
         String[] lines = {
                 "(‘14.8월)의 일환으로 ’15.3.3 상반기중(행복서울대학교 등 활용)",
@@ -26,8 +27,9 @@ class KlayTokenizerTest {
             tokenizer.reset();
 
             CharTermAttribute termAtt = tokenizer.getAttribute(CharTermAttribute.class);
+            OffsetAttribute offsetAtt = tokenizer.getAttribute(OffsetAttribute.class);
             while (tokenizer.incrementToken()) {
-                System.out.println(termAtt.toString());
+                System.out.println(termAtt.toString() + " : " + offsetAtt.startOffset() + " ~ " + offsetAtt.endOffset());
             }
             tokenizer.close();
         }
