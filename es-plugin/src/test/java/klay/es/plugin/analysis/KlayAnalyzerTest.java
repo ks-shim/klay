@@ -10,6 +10,7 @@ import org.apache.lucene.index.*;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.util.BytesRef;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -58,12 +59,16 @@ public class KlayAnalyzerTest {
         Directory directory = FSDirectory.open(Paths.get("src/test/resources/index"));
         IndexReader reader = DirectoryReader.open(directory);
 
-
-        /*int nDoc = reader.maxDoc();
+        int nDoc = reader.maxDoc();
         for(int i=0; i<nDoc; i++) {
-            Document doc = reader.document(i);
-            Terms terms = reader.getTermVector(i, "field2");
-            System.out.println(terms);
-        }*/
+            Terms terms = reader.getTermVector(i, "field3");
+            TermsEnum iter = terms.iterator();
+            BytesRef term = null;
+            while((term = iter.next()) != null) {
+                String termText = term.utf8ToString();
+                long termFreq = iter.totalTermFreq();
+                System.out.println(termText + " : " + termFreq);
+            }
+        }
     }
 }
