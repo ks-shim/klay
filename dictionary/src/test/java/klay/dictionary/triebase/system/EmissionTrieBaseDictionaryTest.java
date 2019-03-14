@@ -2,21 +2,20 @@ package klay.dictionary.triebase.system;
 
 import klay.common.parser.JasoParser;
 import klay.dictionary.param.DictionaryTextSource;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class EmissionTrieBaseDictionaryTest {
+public class EmissionTrieBaseDictionaryTest {
 
     static EmissionTrieBaseDictionary etd;
-    @BeforeAll
-    static void before() throws Exception {
+    @Before
+    public void before() throws Exception {
         Path path = Paths.get("src/test/resources/test.dic.irregular");
         DictionaryTextSource source = new DictionaryTextSource(path, StandardCharsets.UTF_8);
         source.setPosFreqMap(new HashMap<>());
@@ -25,7 +24,7 @@ class EmissionTrieBaseDictionaryTest {
     }
 
     @Test
-    void get() {
+    public void get() {
         // 1. getFully test
         /*CharSequence key = JasoParser.parseAsString("달가우");
         CharSequence result = etd.getFully(key);
@@ -55,7 +54,7 @@ class EmissionTrieBaseDictionaryTest {
     }
 
     @Test
-    void saveAndLoadBinary() throws Exception {
+    public void saveAndLoadBinary() throws Exception {
 
         /*Path filePath = Paths.get("src/test/resources/binary/test.emission.bin");
         if(Files.notExists(filePath)) etd.save(new DictionaryBinaryTarget(filePath));

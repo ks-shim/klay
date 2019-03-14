@@ -5,17 +5,16 @@ import klay.core.tokenization.rule.CharacterTypeAndLengthLimitRule;
 import klay.core.tokenization.rule.UserDictionaryMatchRule;
 import klay.dictionary.param.DictionaryTextSource;
 import klay.dictionary.triebase.user.UserTrieBaseDictionary;
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-class TokenizerTest {
+public class TokenizerTest {
 
     @Test
-    void test() throws Exception {
+    public void test() throws Exception {
 
         // 1. build rule chain.
         Path path = Paths.get("src/test/resources/test.dic.user");
@@ -35,6 +34,6 @@ class TokenizerTest {
             tokenCount++;
         }
 
-        assertEquals(27, tokenCount);
+        Assert.assertEquals(27, tokenCount);
     }
 }

@@ -11,8 +11,8 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.BytesRef;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -22,8 +22,8 @@ public class KlayAnalyzerTest {
 
     static KlayAnalyzer klayAnalyzer;
 
-    @BeforeAll
-    static void beforeAll() throws Exception {
+    @Before
+    public void beforeAll() throws Exception {
         klayAnalyzer = new KlayAnalyzer.Builder()
                 .setConfigFilePath(Paths.get("src/test/resources/configuration/klay.conf"))
                 .usePosFilter(true)
@@ -31,7 +31,7 @@ public class KlayAnalyzerTest {
     }
 
     @Test
-    void indexingTest() throws Exception {
+    public void indexingTest() throws Exception {
 
         IndexWriterConfig config = new IndexWriterConfig(klayAnalyzer);
         config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
@@ -66,7 +66,7 @@ public class KlayAnalyzerTest {
     }
 
     @Test
-    void readingIndexFileTest() throws Exception {
+    public void readingIndexFileTest() throws Exception {
         Directory directory = FSDirectory.open(Paths.get("src/test/resources/index"));
         IndexReader reader = DirectoryReader.open(directory);
 

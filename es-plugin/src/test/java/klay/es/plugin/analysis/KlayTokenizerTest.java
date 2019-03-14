@@ -4,16 +4,16 @@ import klay.core.Klay;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.io.Reader;
 import java.io.StringReader;
 import java.nio.file.Paths;
 
-class KlayTokenizerTest {
+public class KlayTokenizerTest {
 
     @Test
-    void test() throws Exception {
+    public void test() throws Exception {
         String[] lines = {
                 "(‘14.8월)의 일환으로 ’15.3.3 상반기중(행복서울대학교 등 활용)",
                 "ㄱㅐOOO같은영화 뭐가무섭다는건지ㅡㅡ"

@@ -1,13 +1,12 @@
 package klay.common.dictionary.structure;
 
 import jdk.nashorn.internal.ir.annotations.Ignore;
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-class TrieTest {
+public class TrieTest {
 
     @Test
     public void testTrie() {
@@ -19,9 +18,9 @@ class TrieTest {
         for(int i=0; i<keys.length; i++)
             t.add(keys[i], vals[i]);
 
-        assertEquals(0, t.root);
-        assertEquals(18, t.rows.size());
-        assertEquals(2, t.cmds.size());
+        Assert.assertEquals(0, t.root);
+        Assert.assertEquals(18, t.rows.size());
+        Assert.assertEquals(2, t.cmds.size());
     }
 
     @Ignore
@@ -38,17 +37,17 @@ class TrieTest {
 
         TrieLoadSaveHelper.store(t, Paths.get("src/test/resources/defaultTrie.dic"));
         TrieResult cs = t.getLastOnPath("트리케라톱스");
-        assertEquals("초식공룡", cs.getData());
+        Assert.assertEquals("초식공룡", cs.getData());
     }
 
     @Test
     public void testLoadingDictionary() throws Exception {
         Trie t = TrieLoadSaveHelper.load(Paths.get("src/test/resources/defaultTrie.dic"), TrieDataType.STRING);
         TrieResult cs = t.getLastOnPath("트리케라톱스");
-        assertEquals("초식공룡", cs.getData());
+        Assert.assertEquals("초식공룡", cs.getData());
 
         t = TrieLoadSaveHelper.load(Paths.get("src/test/resources/defaultTrie.dic"), TrieDataType.STRING);
         cs = t.getLastOnPath("티라노사우르스");
-        assertEquals("육식공룡", cs.getData());
+        Assert.assertEquals("육식공룡", cs.getData());
     }
 }
