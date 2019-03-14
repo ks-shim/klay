@@ -37,7 +37,7 @@ public class KlayAnalyzerTest {
         try (Directory directory = FSDirectory.open(Paths.get("src/test/resources/index"));
              IndexWriter writer = new IndexWriter(directory, config)) {
 
-            Document doc = new Document();
+            // 1. define file type ...
             FieldType fieldType = new FieldType();
             fieldType.setStoreTermVectors(true);
             fieldType.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS);
@@ -45,11 +45,19 @@ public class KlayAnalyzerTest {
             fieldType.setStored(true);
             fieldType.freeze();
 
+            // 2. add two documents ...
+            Document doc = new Document();
             doc.add(new Field("field1", "안녕하세요 심강섭 입니다.", fieldType));
             doc.add(new Field("field2", "안녕하세요 하임준 입니다.", fieldType));
-            doc.add(new Field("field3", "KLAY es-plugin을개발하고 있습니다.", fieldType));
-
+            doc.add(new Field("field3", "KLAY an es-plugin을개발하고 있습니다.", fieldType));
             writer.addDocument(doc);
+
+            doc = new Document();
+            doc.add(new Field("field1", "안녕하세요 Dwayne 입니다.", fieldType));
+            doc.add(new Field("field2", "안녕하세요 Andrew 입니다.", fieldType));
+            doc.add(new Field("field3", "형태소 분석기로 기여하고 싶습니다.", fieldType));
+            writer.addDocument(doc);
+
             writer.flush();
         }
     }
@@ -62,6 +70,8 @@ public class KlayAnalyzerTest {
         int nDoc = reader.maxDoc();
         for(int i=0; i<nDoc; i++) {
             Terms terms = reader.getTermVector(i, "field3");
+            if(terms == null) continue;
+
             TermsEnum iter = terms.iterator();
             BytesRef term = null;
             while((term = iter.next()) != null) {
@@ -69,6 +79,7 @@ public class KlayAnalyzerTest {
                 long termFreq = iter.totalTermFreq();
                 System.out.println(termText + " : " + termFreq);
             }
+            System.out.println();
         }
     }
 }

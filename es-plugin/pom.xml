@@ -62,6 +62,14 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Elasticsearch test -->
+        <dependency>
+            <groupId>org.elasticsearch.test</groupId>
+            <artifactId>framework</artifactId>
+            <version>${elasticsearch.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
