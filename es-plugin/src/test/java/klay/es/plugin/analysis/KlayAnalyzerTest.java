@@ -24,7 +24,10 @@ public class KlayAnalyzerTest {
 
     @BeforeAll
     static void beforeAll() throws Exception {
-        klayAnalyzer = new KlayAnalyzer(Paths.get("src/test/resources/configuration/klay.conf"));
+        klayAnalyzer = new KlayAnalyzer.Builder()
+                .setConfigFilePath(Paths.get("src/test/resources/configuration/klay.conf"))
+                .usePosFilter(true)
+                .build();
     }
 
     @Test

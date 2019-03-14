@@ -10,6 +10,7 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.core.LowerCaseFilter;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -82,6 +83,7 @@ public class KlayAnalyzer extends Analyzer {
         }
 
         public Builder setAllowedPoses(List<String> allowedPoses) {
+            if(allowedPoses == null) allowedPoses = new ArrayList<>();
             this.allowedPosSet = CharArraySet.unmodifiableSet(new CharArraySet(allowedPoses, true));
             return this;
         }
