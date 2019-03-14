@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>klay-es-plugin</artifactId>
+    <packaging>jar</packaging>
 
     <dependencies>
         <!-- elasticsearch -->
