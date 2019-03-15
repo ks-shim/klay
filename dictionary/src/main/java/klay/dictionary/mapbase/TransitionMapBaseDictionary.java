@@ -1,13 +1,12 @@
 package klay.dictionary.mapbase;
 
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.io.Input;
-import com.esotericsoftware.kryo.serializers.MapSerializer;
 import klay.common.pos.Pos;
 import klay.dictionary.param.DictionaryBinarySource;
 import klay.dictionary.param.DictionaryTextSource;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.util.Collections;
@@ -80,12 +79,22 @@ public class TransitionMapBaseDictionary extends AbstractMapBaseDictionary {
 
     @Override
     protected Map<CharSequence, Map<CharSequence, Double>> loadBinary(DictionaryBinarySource source) throws Exception {
-        Map<CharSequence, Map<CharSequence, Double>> map;
+        Map<CharSequence, Map<CharSequence, Double>> map = new HashMap<>();
 
-        Kryo kryo = new Kryo();
-        kryo.register(Map.class, 24253);
-        try (Input in = new Input(Files.newInputStream(source.getFilePath()))) {
-            map = kryo.readObject(in, HashMap.class);
+        try (DataInputStream dis = new DataInputStream(
+                new BufferedInputStream(Files.newInputStream(source.getFilePath())))) {
+            int mapSize = dis.readInt();
+            for(int i=0; i<mapSize; i++) {
+                CharSequence key = dis.readUTF();
+                Map<CharSequence, Double> innerMap = new HashMap<>();
+                map.put(key, innerMap);
+                int innerMapSize = dis.readInt();
+                for(int m=0; m<innerMapSize; m++) {
+                    CharSequence innerKey = dis.readUTF();
+                    Double value = dis.readDouble();
+                    innerMap.put(innerKey, value);
+                }
+            }
         }
 
         return Collections.unmodifiableMap(map);

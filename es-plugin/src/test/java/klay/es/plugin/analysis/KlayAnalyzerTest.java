@@ -27,10 +27,10 @@ public class KlayAnalyzerTest {
     public void beforeAll() throws Exception {
 
         Properties config = new Properties();
-        config.put("dictionary.emission.path", "src/test/resources/dictionary/binary/system/emission.bin");
-        config.put("dictionary.transition.path", "src/test/resources/dictionary/binary/system/transition.bin");
-        config.put("dictionary.user.path", "src/test/resources/dictionary/text/user/dic.user");
-        config.put("dictionary.fwd.path", "src/test/resources/dictionary/text/user/fwd.user");
+        config.put("dictionary.emission.path", "../data/dictionary/binary/system/emission.bin");
+        config.put("dictionary.transition.path", "../data/dictionary/binary/system/transition.bin");
+        config.put("dictionary.user.path", "../data/dictionary/text/user/dic.user");
+        config.put("dictionary.fwd.path", "../data/dictionary/text/user/fwd.user");
         config.put("tokenization.token.length_limit", "-1");
 
         klayAnalyzer = new KlayAnalyzer.Builder()

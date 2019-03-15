@@ -1,13 +1,14 @@
 package klay.dictionary.mapbase;
 
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.io.Output;
-import com.esotericsoftware.kryo.serializers.MapSerializer;
 import klay.dictionary.Dictionary;
 import klay.dictionary.param.DictionaryBinarySource;
 import klay.dictionary.param.DictionaryBinaryTarget;
 import klay.dictionary.param.DictionaryTextSource;
 
+import java.io.BufferedOutputStream;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.Map;
 
@@ -26,10 +27,23 @@ public abstract class AbstractMapBaseDictionary
 
     @Override
     public void save(DictionaryBinaryTarget target) throws Exception {
-        Kryo kryo = new Kryo();
-        kryo.register(Map.class, 24253);
-        try (Output out = new Output(Files.newOutputStream(target.getFilePath()))) {
-            kryo.writeObject(out, map);
+
+        try (DataOutputStream dos = new DataOutputStream(
+                new BufferedOutputStream(Files.newOutputStream(target.getFilePath())))) {
+
+            int mapSize = map.size();
+            dos.writeInt(mapSize);
+            for(CharSequence key : map.keySet()) {
+                dos.writeUTF(key.toString());
+
+                Map<CharSequence, Double> innerMap = map.get(key);
+                int innerMapSize = innerMap.size();
+                dos.writeInt(innerMapSize);
+                for(CharSequence innerKey : innerMap.keySet()) {
+                    dos.writeUTF(innerKey.toString());
+                    dos.writeDouble(innerMap.get(innerKey));
+                }
+            }
         }
     }
 
