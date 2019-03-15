@@ -2,6 +2,7 @@ package klay.dictionary.mapbase;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.serializers.MapSerializer;
 import klay.common.pos.Pos;
 import klay.dictionary.param.DictionaryBinarySource;
 import klay.dictionary.param.DictionaryTextSource;
@@ -79,10 +80,10 @@ public class TransitionMapBaseDictionary extends AbstractMapBaseDictionary {
 
     @Override
     protected Map<CharSequence, Map<CharSequence, Double>> loadBinary(DictionaryBinarySource source) throws Exception {
-
         Map<CharSequence, Map<CharSequence, Double>> map;
 
         Kryo kryo = new Kryo();
+        kryo.register(Map.class, 24253);
         try (Input in = new Input(Files.newInputStream(source.getFilePath()))) {
             map = kryo.readObject(in, HashMap.class);
         }

@@ -17,6 +17,7 @@ import org.junit.Test;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 public class KlayAnalyzerTest {
 
@@ -24,8 +25,16 @@ public class KlayAnalyzerTest {
 
     @Before
     public void beforeAll() throws Exception {
+
+        Properties config = new Properties();
+        config.put("dictionary.emission.path", "src/test/resources/dictionary/binary/system/emission.bin");
+        config.put("dictionary.transition.path", "src/test/resources/dictionary/binary/system/transition.bin");
+        config.put("dictionary.user.path", "src/test/resources/dictionary/text/user/dic.user");
+        config.put("dictionary.fwd.path", "src/test/resources/dictionary/text/user/fwd.user");
+        config.put("tokenization.token.length_limit", "-1");
+
         klayAnalyzer = new KlayAnalyzer.Builder()
-                .setConfigFilePath(Paths.get("src/test/resources/configuration/klay.conf"))
+                .config(config)
                 .usePosFilter(true)
                 .build();
     }

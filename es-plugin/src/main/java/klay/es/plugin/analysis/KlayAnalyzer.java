@@ -8,12 +8,12 @@ import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.core.LowerCaseFilter;
+import org.elasticsearch.SpecialPermission;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.util.*;
 
 public class KlayAnalyzer extends Analyzer {
 
@@ -43,11 +43,11 @@ public class KlayAnalyzer extends Analyzer {
     private final CharArraySet allowedPosSet;
     private final Klay klay;
 
-    private KlayAnalyzer(Path configFilePath,
-                        boolean usePosFilter,
-                        CharArraySet allowedPosSet) {
+    private KlayAnalyzer(Properties config,
+                         boolean usePosFilter,
+                         CharArraySet allowedPosSet) {
         try {
-            this.klay = new Klay(configFilePath);
+            this.klay = new Klay(config);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -68,12 +68,12 @@ public class KlayAnalyzer extends Analyzer {
 
     public static class Builder {
 
-        private Path configFilePath;
+        private Properties config;
         private boolean usePosFilter;
         private CharArraySet allowedPosSet;
 
-        public Builder setConfigFilePath(Path configFilePath) {
-            this.configFilePath = configFilePath;
+        public Builder config(Properties config) {
+            this.config = config;
             return this;
         }
 
@@ -89,7 +89,17 @@ public class KlayAnalyzer extends Analyzer {
         }
 
         public KlayAnalyzer build() {
-            return new KlayAnalyzer(configFilePath, usePosFilter, allowedPosSet);
+            SecurityManager sm = System.getSecurityManager();
+            if(sm != null) sm.checkPermission(new SpecialPermission());
+
+            return AccessController.doPrivileged(
+                    new PrivilegedAction<KlayAnalyzer>() {
+                        @Override
+                        public KlayAnalyzer run() {
+                            return new KlayAnalyzer(config, usePosFilter, allowedPosSet);
+                        }
+                    }
+            );
         }
     }
 }

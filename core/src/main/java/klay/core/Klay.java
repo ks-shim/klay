@@ -51,6 +51,21 @@ public class Klay {
         System.out.println("Dictionary Loading Time : " + watch.getTime(TimeUnit.MILLISECONDS) + " (ms)");
     }
 
+    public Klay(Properties config) throws Exception {
+
+        this.config = config;
+
+        StopWatch watch = new StopWatch();
+        watch.start();
+
+        this.transitionDictionary = buildTransitionDictionary();
+        this.tokenizationRule = buildTokenizationRule();
+        this.chainedAnalysisRule = buildAnalysisRule();
+
+        watch.stop();
+        System.out.println("Dictionary Loading Time : " + watch.getTime(TimeUnit.MILLISECONDS) + " (ms)");
+    }
+
     private ChainedTokenizationRule buildTokenizationRule() throws Exception {
         // 1. build user dictionary and rules .
         DictionaryTextSource userDicSource =

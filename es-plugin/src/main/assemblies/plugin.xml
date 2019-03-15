@@ -8,13 +8,38 @@
     <files>
         <file>
             <source>${basedir}/src/main/resources/plugin-descriptor.properties</source>
-            <outputDirectory>elasticsearch</outputDirectory>
+            <outputDirectory></outputDirectory>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>${basedir}/src/main/resources/plugin-security.policy</source>
+            <outputDirectory></outputDirectory>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>../data/dictionary/binary/system/transition.bin</source>
+            <outputDirectory>dictionary/binary/system</outputDirectory>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>../data/dictionary/binary/system/emission.bin</source>
+            <outputDirectory>dictionary/binary/system</outputDirectory>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>../data/dictionary/text/user/dic.user</source>
+            <outputDirectory>dictionary/text/user</outputDirectory>
+            <filtered>true</filtered>
+        </file>
+        <file>
+            <source>../data/dictionary/text/user/fwd.user</source>
+            <outputDirectory>dictionary/text/user</outputDirectory>
             <filtered>true</filtered>
         </file>
     </files>
     <dependencySets>
         <dependencySet>
-            <outputDirectory>elasticsearch</outputDirectory>
+            <outputDirectory></outputDirectory>
             <useProjectArtifact>true</useProjectArtifact>
             <useTransitiveFiltering>true</useTransitiveFiltering>
             <excludes>

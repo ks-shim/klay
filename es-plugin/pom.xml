@@ -12,6 +12,10 @@
     <artifactId>klay-es-plugin</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+        <main.basedir>${parent.basedir}</main.basedir>
+    </properties>
+
     <dependencies>
         <!-- elasticsearch -->
         <dependency>
@@ -72,6 +76,7 @@
                 <filtering>false</filtering>
                 <excludes>
                     <exclude>*.properties</exclude>
+                    <exclude>*.policy</exclude>
                 </excludes>
             </resource>
         </resources>

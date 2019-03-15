@@ -2,6 +2,7 @@ package klay.dictionary.mapbase;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Output;
+import com.esotericsoftware.kryo.serializers.MapSerializer;
 import klay.dictionary.Dictionary;
 import klay.dictionary.param.DictionaryBinarySource;
 import klay.dictionary.param.DictionaryBinaryTarget;
@@ -26,6 +27,7 @@ public abstract class AbstractMapBaseDictionary
     @Override
     public void save(DictionaryBinaryTarget target) throws Exception {
         Kryo kryo = new Kryo();
+        kryo.register(Map.class, 24253);
         try (Output out = new Output(Files.newOutputStream(target.getFilePath()))) {
             kryo.writeObject(out, map);
         }
