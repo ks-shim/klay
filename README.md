@@ -91,7 +91,7 @@ Lucene의 Trie를 변형하여 적용하였습니다.
 ```
 
 # 5. Elasticsearch Plugin
- - Elasticsearch 6.6.2 : https://github.com/ks-shim/klay-es-plugin/raw/master/0.3/klay-es-plugin-0.3.zip
+ - Download : https://github.com/ks-shim/klay-es-plugin
  
 # 6. Maven
 ```
