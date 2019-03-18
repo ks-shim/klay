@@ -31,20 +31,11 @@ public final class KlayTokenizer extends Tokenizer {
 
     public KlayTokenizer(Klay klay) {
         this.klay = klay;
-        this.bufferSize = MAX_READ_COUNT;
     }
 
-    public KlayTokenizer(Klay klay, int bufferSize) {
-        this.klay = klay;
-        this.bufferSize = bufferSize;
-    }
-
-    private final static int MAX_READ_COUNT = Integer.MAX_VALUE / 4;
-    private final int bufferSize;
-    private int readCount = 0;
     @Override
     public boolean incrementToken() throws IOException {
-        if(morphIterator == null || !morphIterator.hasNext()) {
+        if(morphIterator == null) {
             try {
                 boolean readSome = readNewData();
                 if (!readSome) return false;
@@ -69,17 +60,12 @@ public final class KlayTokenizer extends Tokenizer {
         int ch;
         StringBuilder sb = new StringBuilder();
         int count = 0;
-        while((ch = buffer.get(readCount++)) > 0) {
-            ++count;
+        while((ch = buffer.get(count++)) > 0) {
             sb.append((char) ch);
-            if(count >= bufferSize) {
-                buffer.freeBefore(readCount);
-                break;
-            }
+            buffer.freeBefore(count);
         }
 
         if(sb.length() == 0) return false;
-
         Morphs morphs = klay.doKlay(sb.toString());
         morphIterator = morphs.iterator();
         return true;
@@ -90,7 +76,6 @@ public final class KlayTokenizer extends Tokenizer {
         super.close();
         buffer.reset(input);
         morphIterator = null;
-        readCount = 0;
     }
 
     @Override
@@ -98,6 +83,5 @@ public final class KlayTokenizer extends Tokenizer {
         super.reset();
         buffer.reset(input);
         morphIterator = null;
-        readCount = 0;
     }
 }
