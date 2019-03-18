@@ -90,10 +90,10 @@ Lucene의 Trie를 변형하여 적용하였습니다.
     System.out.println("Analysis Time : " + watch.getTime(TimeUnit.MILLISECONDS) / 1000.0 + " (s)");
 ```
 
-# 5. Elasticsearch Plugin
+# 5. Elasticsearch Plugin Download
  - Download : https://github.com/ks-shim/klay-es-plugin
  
-# 6. Resources 
+# 6. Resources Download
  - Dictionary : https://github.com/ks-shim/klay-resources/tree/master/dictionary
  - Configuration : https://github.com/ks-shim/klay-resources/tree/master/configuration
  
