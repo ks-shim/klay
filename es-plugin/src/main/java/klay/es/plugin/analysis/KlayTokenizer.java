@@ -59,7 +59,6 @@ public final class KlayTokenizer extends Tokenizer {
             offsetAtt.setOffset(morph.getStartOffset(), morph.getEndOffset());
             posIncrAtt.setPositionIncrement(1);
             typeAtt.setType(morph.getPos().toString());
-            System.out.println(morph);
             return true;
         }
 

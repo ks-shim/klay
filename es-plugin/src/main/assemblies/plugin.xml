@@ -19,22 +19,22 @@
         <file>
             <source>../data/dictionary/binary/system/transition.bin</source>
             <outputDirectory>dictionary/binary/system</outputDirectory>
-            <filtered>true</filtered>
+            <filtered>false</filtered>
         </file>
         <file>
             <source>../data/dictionary/binary/system/emission.bin</source>
             <outputDirectory>dictionary/binary/system</outputDirectory>
-            <filtered>true</filtered>
+            <filtered>false</filtered>
         </file>
         <file>
             <source>../data/dictionary/text/user/dic.user</source>
             <outputDirectory>dictionary/text/user</outputDirectory>
-            <filtered>true</filtered>
+            <filtered>false</filtered>
         </file>
         <file>
             <source>../data/dictionary/text/user/fwd.user</source>
             <outputDirectory>dictionary/text/user</outputDirectory>
-            <filtered>true</filtered>
+            <filtered>false</filtered>
         </file>
     </files>
     <dependencySets>
