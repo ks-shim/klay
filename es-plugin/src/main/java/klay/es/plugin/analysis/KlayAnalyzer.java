@@ -43,15 +43,10 @@ public class KlayAnalyzer extends Analyzer {
     private final CharArraySet allowedPosSet;
     private final Klay klay;
 
-    private KlayAnalyzer(Properties config,
+    private KlayAnalyzer(Klay klay,
                          boolean usePosFilter,
                          CharArraySet allowedPosSet) {
-        try {
-            this.klay = new Klay(config);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
+        this.klay = klay;
         this.usePosFilter = usePosFilter;
         this.allowedPosSet = (allowedPosSet == null || allowedPosSet.isEmpty()) ? DEFAULT_ALLOWED_POS_SET : allowedPosSet;
     }
@@ -68,12 +63,12 @@ public class KlayAnalyzer extends Analyzer {
 
     public static class Builder {
 
-        private Properties config;
+        private Klay klay;
         private boolean usePosFilter;
         private CharArraySet allowedPosSet;
 
-        public Builder config(Properties config) {
-            this.config = config;
+        public Builder setKlay(Klay klay) {
+            this.klay = klay;
             return this;
         }
 
@@ -96,7 +91,7 @@ public class KlayAnalyzer extends Analyzer {
                     new PrivilegedAction<KlayAnalyzer>() {
                         @Override
                         public KlayAnalyzer run() {
-                            return new KlayAnalyzer(config, usePosFilter, allowedPosSet);
+                            return new KlayAnalyzer(klay, usePosFilter, allowedPosSet);
                         }
                     }
             );

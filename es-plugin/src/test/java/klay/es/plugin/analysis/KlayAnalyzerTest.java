@@ -34,7 +34,7 @@ public class KlayAnalyzerTest {
         config.put("tokenization.token.length_limit", "-1");
 
         klayAnalyzer = new KlayAnalyzer.Builder()
-                .config(config)
+                .setKlay(new Klay(config))
                 .usePosFilter(true)
                 .build();
     }

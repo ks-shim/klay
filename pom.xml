@@ -24,7 +24,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <junit.version>4.12</junit.version>
-        <elasticsearch.version>6.6.2</elasticsearch.version>
+        <elasticsearch.version>6.5.0</elasticsearch.version>
         <lucene.version>7.7.1</lucene.version>
         <log4j2.version>2.8.2</log4j2.version>
     </properties>

@@ -24,17 +24,10 @@ public class KlayAnalyzerProvider extends AbstractIndexAnalyzerProvider<KlayAnal
     public KlayAnalyzerProvider(IndexSettings indexSettings, Environment env, @Assisted String name, @Assisted Settings settings) {
         super(indexSettings, name, settings);
 
-        Properties config = new Properties();
-        config.put("dictionary.emission.path", "plugins/analysis-klay/dictionary/binary/system/emission.bin");
-        config.put("dictionary.transition.path", "plugins/analysis-klay/dictionary/binary/system/transition.bin");
-        config.put("dictionary.user.path", "plugins/analysis-klay/dictionary/text/user/dic.user");
-        config.put("dictionary.fwd.path", "plugins/analysis-klay/dictionary/text/user/fwd.user");
-        config.put("tokenization.token.length_limit", "-1");
-
         boolean usePosFilter = settings.getAsBoolean("usePosFilter", true);
         List<String> allowedPoses = settings.getAsList("allowedPoses");
         this.analyzer = new KlayAnalyzer.Builder()
-                .config(config)
+                .setKlay(KlayFactory.getInstance())
                 .usePosFilter(usePosFilter)
                 .setAllowedPoses(allowedPoses)
                 .build();
