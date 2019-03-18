@@ -29,6 +29,8 @@ public final class KlayTokenizer extends Tokenizer {
     private final PositionIncrementAttribute posIncrAtt = addAttribute(PositionIncrementAttribute.class);
     private final TypeAttribute typeAtt = addAttribute(TypeAttribute.class);
 
+    private int finalOffset = 0;
+
     public KlayTokenizer(Klay klay) {
         this.klay = klay;
     }
@@ -47,7 +49,7 @@ public final class KlayTokenizer extends Tokenizer {
         if(morphIterator.hasNext()) {
             Morph morph = morphIterator.next();
             termAtt.setEmpty().append(morph.getText());
-            offsetAtt.setOffset(morph.getStartOffset(), morph.getEndOffset());
+            offsetAtt.setOffset(correctOffset(morph.getStartOffset()), finalOffset = correctOffset(morph.getEndOffset()+1));
             posIncrAtt.setPositionIncrement(1);
             typeAtt.setType(morph.getPos().toString());
             return true;
@@ -72,10 +74,17 @@ public final class KlayTokenizer extends Tokenizer {
     }
 
     @Override
+    public void end() throws IOException {
+        super.end();
+        offsetAtt.setOffset(finalOffset, finalOffset);
+    }
+
+    @Override
     public void close() throws IOException {
         super.close();
         buffer.reset(input);
         morphIterator = null;
+        finalOffset = 0;
     }
 
     @Override
@@ -83,5 +92,6 @@ public final class KlayTokenizer extends Tokenizer {
         super.reset();
         buffer.reset(input);
         morphIterator = null;
+        finalOffset = 0;
     }
 }

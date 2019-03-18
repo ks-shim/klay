@@ -15,8 +15,8 @@ public class KlayTokenizerTest {
     @Test
     public void test() throws Exception {
         String[] lines = {
-                "(‘14.8월)의 일환으로 ’15.3.3 상반기중(행복서울대학교 등 활용)",
-                "ㄱㅐOOO같은영화 뭐가무섭다는건지ㅡㅡ"
+                "심강섭과 하임준 입니다.",
+                "박기림입니다.", "심강섭 입니다..", "하임준입니다."
         };
 
         Klay klay = new Klay(Paths.get("src/test/resources/configuration/klay.conf"));

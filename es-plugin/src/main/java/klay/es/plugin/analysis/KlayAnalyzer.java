@@ -35,7 +35,7 @@ public class KlayAnalyzer extends Analyzer {
                         Arrays.asList(
                                 new String[]{
                                         Pos.NNG.label(), Pos.NNP.label(), Pos.VV.label(), Pos.VA.label(),
-                                        Pos.SL.label(), Pos.SH.label(), Pos.NA.label()}),
+                                        Pos.SL.label(), Pos.SH.label(), Pos.NA.label(), Pos.SN.label()}),
                         true));
     }
 
