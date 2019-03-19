@@ -123,3 +123,44 @@ Lucene의 Trie를 변형하여 적용하였습니다.
   <type>pom</type>
 </dependency>
 ```
+
+# 8. Dictionary build
+- dictionary-build 모듈 : klay.dictionary.build.DictionaryBuilder 실행
+```java
+public static void main(String[] args) throws Exception {
+
+    // 1. 사전에 환경설정 파일의 Raw 사전 정보를 변경합니다.
+    Properties config = new Properties();
+    config.load(Files.newInputStream(Paths.get("data/configuration/klay.conf")));
+
+    // 2. 관측확률/전이확률에 사용한 pos-frequency 정보를 읽어들입니다.
+    DictionaryTextSource posFreqSource = new DictionaryTextSource(Paths.get(config.getProperty("dictionary.grammar.path")));
+
+    // 3. 관측확률 사전의 소스/타겟 정보를 생성합니다.
+    DictionaryTextSource[] emissionSources = {
+            // *** must build DIC_WORD first !!
+            new DictionaryTextSource(
+                    Paths.get(config.getProperty("dictionary.word.path")), DictionaryTextSource.DictionaryType.DIC_WORD),
+            new DictionaryTextSource(
+                    Paths.get(config.getProperty("dictionary.irregular.path")), DictionaryTextSource.DictionaryType.DIC_IRREGULAR)
+    };
+    DictionaryBinaryTarget emissionTarget =
+            new DictionaryBinaryTarget(Paths.get(config.getProperty("dictionary.emission.path")));
+
+    // 4. 전이확률 사전의 소스/타켓 정보를 생성합니다.
+    DictionaryTextSource transitionSource =
+            new DictionaryTextSource(
+                    Paths.get(config.getProperty("dictionary.grammar.path")), DictionaryTextSource.DictionaryType.GRAMMAR);
+    DictionaryBinaryTarget transitionTarget =
+            new DictionaryBinaryTarget(Paths.get(config.getProperty("dictionary.transition.path")));
+
+    // 5. 빌더를 생성하고 빌딩을 시작합니다.
+    DictionaryBuilder builder = new DictionaryBuilder.Builder()
+            .posFreqSource(posFreqSource)
+            .emissionSourcesAndTarget(emissionSources, emissionTarget)
+            .transitionSourceAndTarget(transitionSource, transitionTarget)
+            .build();
+
+    builder.buildAll();
+}
+```
