@@ -2,9 +2,11 @@ package klay.python.wrapper;
 
 import klay.core.Klay;
 import klay.core.morphology.analysis.Morphs;
+import lombok.Data;
 
 import java.nio.file.Paths;
 
+@Data
 public class KlayEntryPoint {
 
     private final Klay klay;
