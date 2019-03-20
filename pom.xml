@@ -16,6 +16,7 @@
         <module>dictionary-build</module>
         <module>example</module>
         <module>es-plugin</module>
+        <module>python-wrapper</module>
     </modules>
 
     <properties>
