@@ -1,6 +1,7 @@
 package klay.python.wrapper;
 
 import klay.core.Klay;
+import klay.core.morphology.analysis.Morphs;
 
 import java.nio.file.Paths;
 
@@ -14,5 +15,9 @@ public class KlayEntryPoint {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Morphs analyze(CharSequence text) {
+        return klay.doKlay(text);
     }
 }
