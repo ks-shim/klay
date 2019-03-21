@@ -19,7 +19,7 @@ public class KlayEntryPoint {
         }
     }
 
-    public Morphs analyze(CharSequence text) {
+    public Morphs doKlay(CharSequence text) {
         return klay.doKlay(text);
     }
 }
