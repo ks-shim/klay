@@ -104,7 +104,6 @@ Lucene의 Trie를 변형하여 적용하였습니다.
   <groupId>io.github.ks-shim.klay</groupId>
   <artifactId>klay-common</artifactId>
   <version>0.3</version>
-  <type>pom</type>
 </dependency>
 ```
 ```
@@ -112,7 +111,6 @@ Lucene의 Trie를 변형하여 적용하였습니다.
   <groupId>io.github.ks-shim.klay</groupId>
   <artifactId>klay-dictionary</artifactId>
   <version>0.3</version>
-  <type>pom</type>
 </dependency>
 ```
 ```
@@ -120,7 +118,6 @@ Lucene의 Trie를 변형하여 적용하였습니다.
   <groupId>io.github.ks-shim.klay</groupId>
   <artifactId>klay-core</artifactId>
   <version>0.3</version>
-  <type>pom</type>
 </dependency>
 ```
 
