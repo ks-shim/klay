@@ -19,6 +19,12 @@
         <module>python-wrapper</module>
     </modules>
 
+    <name>KLAY</name>
+    <description>
+        Korean Language AnalYzer
+    </description>
+    <url>https://github.com/ks-shim/klay</url>
+
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
