@@ -190,21 +190,24 @@ public abstract class Trie<T> {
         StrEnum e = new StrEnum(key, from, key.length() - from, forward);
 
         int i = from;
+        int lastIndex = 0;
         for (; i < key.length() - 1; i++) {
             Character ch = e.next();
             w = now.getCmd(ch);
             if (w >= 0) {
                 last = cmds.get(w);
+                lastIndex = i;
             }
             w = now.getRef(ch);
             if (w >= 0) {
                 now = getRow(w);
             } else {
-                return new TrieResult(last, from, i+1);
+                return new TrieResult(last, from, lastIndex+1);
             }
         }
         w = now.getCmd(e.next());
-        return new TrieResult((w >= 0) ? cmds.get(w) : last, from, i+1);
+        if(w >= 0) lastIndex = i;
+        return new TrieResult((w >= 0) ? cmds.get(w) : last, from, lastIndex+1);
     }
 
     /**
