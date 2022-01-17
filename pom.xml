@@ -7,7 +7,7 @@
     <groupId>io.github.ks-shim.klay</groupId>
     <artifactId>klay</artifactId>
     <packaging>pom</packaging>
-    <version>0.3.1</version>
+    <version>0.3.2</version>
 
     <modules>
         <module>common</module>
@@ -213,8 +213,8 @@
 
     <distributionManagement>
         <repository>
-            <id>klay</id>
-            <url>https://api.bintray.com/maven/dwayne/nlp/io.github.ks-shim.klay:klay/;publish=1</url>
+            <id>release</id>
+            <url>https://github.com/ks-shim/dwayne-maven-repo/tree/main</url>
         </repository>
     </distributionManagement>
 </project>

@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.github.ks-shim.klay</groupId>
         <artifactId>klay</artifactId>
-        <version>0.3.1</version>
+        <version>0.3.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -18,8 +18,8 @@
 
     <distributionManagement>
         <repository>
-            <id>klay-core</id>
-            <url>https://api.bintray.com/maven/dwayne/nlp/io.github.ks-shim.klay:klay-core/;publish=1</url>
+            <id>release</id>
+            <url>https://github.com/ks-shim/dwayne-maven-repo/tree/main</url>
         </repository>
     </distributionManagement>
 
@@ -27,13 +27,13 @@
         <dependency>
             <groupId>io.github.ks-shim.klay</groupId>
             <artifactId>klay-common</artifactId>
-            <version>0.3.1</version>
+            <version>0.3.2</version>
         </dependency>
 
         <dependency>
             <groupId>io.github.ks-shim.klay</groupId>
             <artifactId>klay-dictionary</artifactId>
-            <version>0.3.1</version>
+            <version>0.3.2</version>
         </dependency>
     </dependencies>
 </project>
