@@ -1,5 +1,6 @@
 package klay.core.tokenization;
 
+import klay.common.pos.Pos;
 import lombok.Data;
 import lombok.ToString;
 
@@ -52,7 +53,7 @@ public class Token {
     }
 
     public boolean canSkipAnalysis() {
-        return pos != null;
+        return pos != null && !Pos.SL.name().equals(pos);
     }
 
     public boolean isWhiteSpace() {
