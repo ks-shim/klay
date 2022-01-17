@@ -6,11 +6,12 @@ import klay.core.morphology.analysis.rule.param.AnalysisParam;
 import klay.core.morphology.analysis.sequence.MorphSequence;
 import klay.core.morphology.analysis.sequence.SingleMorphSequence;
 import klay.dictionary.mapbase.TransitionMapBaseDictionary;
+import org.apache.commons.lang3.StringUtils;
 
-public class NARule extends AbstractChainedAnalysisRule {
+public class NAOrPrePosRule extends AbstractChainedAnalysisRule {
 
     private final TransitionMapBaseDictionary transitionDictionary;
-    public NARule(TransitionMapBaseDictionary transitionDictionary) {
+    public NAOrPrePosRule(TransitionMapBaseDictionary transitionDictionary) {
         super(null);
         this.transitionDictionary = transitionDictionary;
     }
@@ -19,8 +20,10 @@ public class NARule extends AbstractChainedAnalysisRule {
     public void apply(AnalysisParam param) {
         MorphSequence previousMSeq = param.lastMSeq();
 
+        CharSequence finalPos = StringUtils.isBlank(param.getPos()) ?  Pos.NA.SL.label() : param.getPos();
         MorphSequence mSeq = new SingleMorphSequence(
-                new Morph(param.getTokenNumber(), param.getSubCharSequence(), Pos.NA.label(), param.getFrom(), param.getTo()-1));
+                new Morph(param.getTokenNumber(), param.getSubCharSequence(),
+                        finalPos, param.getFrom(), param.getTo()-1));
         while(true) {
 
             mSeq.compareScoreAndSetPreviousMSeq(previousMSeq, transitionDictionary);

@@ -98,7 +98,7 @@ public class Klay {
         return new CanSkipRule(transitionDictionary,
                 new FWDRule(fwdDictionary, transitionDictionary,
                         new AllPossibleCandidatesRule(emissionDictionary, transitionDictionary,
-                                new NARule(transitionDictionary)
+                                new NAOrPrePosRule(transitionDictionary)
                         )
                 )
         );
