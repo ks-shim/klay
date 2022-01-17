@@ -42,7 +42,7 @@ public class UserTrieBaseDictionary extends AbstractTrieBaseDictionary<CharSeque
                     pos = line.substring(tabIndex + 1);
                 }
 
-                trie.add(word, pos);
+                trie.add(word.toLowerCase() , pos);
             }
         }
 

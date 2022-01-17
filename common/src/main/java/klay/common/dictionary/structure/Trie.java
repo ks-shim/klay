@@ -53,7 +53,7 @@ public abstract class Trie<T> {
 
         int i = from;
         for (; i < key.length() - 1; i++) {
-            char ch = e.next();
+            char ch =Character.toLowerCase(e.next());
             w = now.getCmd(ch);
             if (w >= 0) {
                 res[resc] = w;
@@ -191,8 +191,8 @@ public abstract class Trie<T> {
 
         int i = from;
         int lastIndex = 0;
-        for (; i < key.length() - 1; i++) {
-            Character ch = e.next();
+        for (; i <= key.length() - 1; i++) {
+            Character ch = Character.toLowerCase(e.next());
             w = now.getCmd(ch);
             if (w >= 0) {
                 last = cmds.get(w);
