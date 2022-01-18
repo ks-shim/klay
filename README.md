@@ -1,5 +1,5 @@
 # 1. KLAY
-[![Build Status](https://travis-ci.com/ks-shim/klay.svg?branch=master)](https://travis-ci.com/ks-shim/klay)
+[![Build Status](https://github.com/ks-shim/klay/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/ks-shim/klay/actions/workflows/pages/pages-build-deployment)
 [![Coverage Status](https://coveralls.io/repos/github/ks-shim/klay/badge.svg?branch=master)](https://coveralls.io/github/ks-shim/klay?branch=master)
 
 **K**orean **L**anguage **A**nal**Y**zer using KOMORAN's dictionaries.
