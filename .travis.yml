@@ -1,5 +1,4 @@
 # .travis.yml
 language: java
 
-after_success:
-  - mvn -Pcoveralls clean test jacoco:report org.eluder.coveralls:coveralls-maven-plugin:report
+install: mvn -DskipTests -Dgpg.skip install
