@@ -128,7 +128,14 @@ Lucene의 Trie를 변형하여 적용하였습니다.
   <version>0.3.2</version>
 </dependency>
 ```
-
+```
+<repositories>
+  <repository>
+      <id>oos</id>
+      <url>https://s01.oss.sonatype.org/content/groups/public/</url>
+  </repository>
+</repositories>
+```
 # 9. Dictionary build
 - dictionary-build 모듈 : klay.dictionary.build.DictionaryBuilder 실행
 ```java
