@@ -11,18 +11,6 @@
 
     <artifactId>klay-dictionary</artifactId>
 
-    <properties>
-        <bintray.repo>ks-shim/klay</bintray.repo>
-        <bintray.package>io.github.ks-shim.klay:klay-dictionary</bintray.package>
-    </properties>
-
-    <distributionManagement>
-        <repository>
-            <id>release</id>
-            <url>https://github.com/ks-shim/dwayne-maven-repo/tree/main</url>
-        </repository>
-    </distributionManagement>
-
     <dependencies>
         <dependency>
             <groupId>io.github.ks-shim.klay</groupId>
@@ -30,4 +18,15 @@
             <version>0.3.2</version>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 </project>

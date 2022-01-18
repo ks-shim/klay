@@ -36,6 +36,7 @@
         <log4j2.version>2.8.2</log4j2.version>
         <bintray.repo>ks-shim/klay</bintray.repo>
         <bintray.package>io.github.ks-shim.klay:klay</bintray.package>
+        <gpg.executable>C:\Program Files (x86)\GnuPG\bin\gpg.exe</gpg.executable>
     </properties>
 
     <licenses>
@@ -178,29 +179,18 @@
             </plugin>
 
             <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.3</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
                 <executions>
                     <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
                         <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>report</goal>
+                            <goal>sign</goal>
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.eluder.coveralls</groupId>
-                <artifactId>coveralls-maven-plugin</artifactId>
-                <version>4.3.0</version>
             </plugin>
 
             <plugin>
@@ -212,9 +202,13 @@
     </build>
 
     <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
         <repository>
-            <id>release</id>
-            <url>https://github.com/ks-shim/dwayne-maven-repo/tree/main</url>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
 </project>
