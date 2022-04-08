@@ -65,6 +65,37 @@ public class Klay {
         System.out.println("Dictionary Loading Time : " + watch.getTime(TimeUnit.MILLISECONDS) + " (ms)");
     }
 
+    public Klay(String inUserDicFilePath,
+                String inFwdDicFilePath,
+                String inEmissionFilePath,
+                String inTransitionFilePath) throws Exception {
+
+        this.config = buildConfig(inUserDicFilePath, inFwdDicFilePath,
+                inEmissionFilePath, inTransitionFilePath);
+
+        StopWatch watch = new StopWatch();
+        watch.start();
+
+        this.transitionDictionary = buildTransitionDictionary();
+        this.tokenizationRule = buildTokenizationRule();
+        this.chainedAnalysisRule = buildAnalysisRule();
+
+        watch.stop();
+        System.out.println("Dictionary Loading Time : " + watch.getTime(TimeUnit.MILLISECONDS) + " (ms)");
+    }
+
+    private Properties buildConfig(String inUserDicFilePath,
+                                   String inFwdDicFilePath,
+                                   String inEmissionFilePath,
+                                   String inTransitionFilePath) {
+        Properties prop = new Properties();
+        prop.put("dictionary.user.path", inUserDicFilePath);
+        prop.put("dictionary.fwd.path", inFwdDicFilePath);
+        prop.put("dictionary.emission.path", inEmissionFilePath);
+        prop.put("dictionary.transition.path", inTransitionFilePath);
+        return prop;
+    }
+
     private ChainedTokenizationRule buildTokenizationRule() throws Exception {
         // 1. build user dictionary and rules .
         DictionaryTextSource userDicSource =
