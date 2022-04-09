@@ -20,7 +20,7 @@ public class NAOrPrePosRule extends AbstractChainedAnalysisRule {
     public void apply(AnalysisParam param) {
         MorphSequence previousMSeq = param.lastMSeq();
 
-        CharSequence finalPos = StringUtils.isBlank(param.getPos()) ?  Pos.NA.SL.label() : param.getPos();
+        CharSequence finalPos = StringUtils.isBlank(param.getPos()) ?  Pos.NA.label() : param.getPos();
         MorphSequence mSeq = new SingleMorphSequence(
                 new Morph(param.getTokenNumber(), param.getSubCharSequence(),
                         finalPos, param.getFrom(), param.getTo()-1));
