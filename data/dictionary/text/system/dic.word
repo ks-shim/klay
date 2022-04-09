@@ -43,18 +43,18 @@ $	SW:2
 @	SW:23
 동일률	NNG:1
 얼씨구나	IC:7
-G	SW:14
+G	SL:14
 윤동균	NNP:13
-I	SW:3
+I	SL:3
 자유시	NNG:4
-K	SW:1
-L	SW:1
-M	SW:60
+K	SL:1
+L	SL:1
+M	SL:60
 노비안	NNG:1
 장한몽	NNP:1
-P	SW:1
-T	SW:21
-X	SW:1	SO:14
+P	SL:1
+T	SL:21
+X	SL:1	SO:14
 [	SS:10611
 그러구	MAJ:1
 \	SW:2
@@ -66,14 +66,14 @@ X	SW:1	SO:14
 부여국	NNP:3
 꽂이	NNG:1
 대구일보	NNP:1
-g	SW:24
-m	SW:243
-p	SW:19
-t	SW:43
+g	SL:24
+m	SL:243
+p	SL:19
+t	SL:43
 턱없이	MAG:18
 정의준	NNP:1
 꿈뜨	VA:1
-w	SW:3
+w	SL:3
 황주천	NNP:1
 {	SS:3139
 공여자	NNG:1
@@ -860,7 +860,7 @@ w	SW:3
 상냥	XR:12
 고려지	NNP:1
 옥시덴트	NNG:7
-CC	SW:1
+CC	SL:1
 쫓아오	VV:18
 금과옥조	NNG:1
 가스총	NNG:1
@@ -885,7 +885,7 @@ CC	SW:1
 외조부	NNG:6
 뉴스위크	NNP:1
 탁성	NNG:1
-Cm	SW:2
+Cm	SL:2
 스위스정부	NNP:1
 큐커	NNP:1
 프시케	NNG:1
@@ -934,7 +934,7 @@ Cm	SW:2
 삐라	NNG:3
 비스트로	NNG:2
 탄성	NNG:24
-HA	SW:4
+HA	SL:4
 조건부	NNG:21
 유도제	NNG:1
 진행자	NNG:14
@@ -1007,8 +1007,8 @@ HA	SW:4
 외종매	NNG:1
 편마암	NNG:1
 게시리	EF:1	EC:2
-Kg	SW:1
-Km	SW:1
+Kg	SL:1
+Km	SL:1
 스머프	NNP:2
 성의껏	MAG:6
 유전자은행	NNG:1
@@ -1016,7 +1016,7 @@ Km	SW:1
 주방장	NNG:3
 오가통사목	NNP:3
 눈칫밥	NNG:1
-MB	SW:1
+MB	SL:1
 끌끌	MAG:7
 들러리	NNG:7
 이만큼	MAG:19	NNG:4
@@ -1051,7 +1051,7 @@ MB	SW:1
 국제적십자사	NNP:3
 탈속	NNG:3
 현암사	NNP:1
-OO	SO:1
+OO	SL:1
 탐색	NNG:43
 걸어가	VV:93
 아버님	NNG:23
@@ -1294,7 +1294,7 @@ OO	SO:1
 연락처	NNG:9
 오브젝트	NNG:1
 다품종	NNG:3
-cm	SW:64
+cm	SL:64
 튀어나오	VV:33
 박상건	NNP:1
 문화저널	NNP:4
@@ -1349,7 +1349,7 @@ cm	SW:64
 마하바라나	NNP:1
 는구나	EF:54	EC:29
 성용욱	NNP:4
-ha	SW:5
+ha	SL:5
 향토관	NNG:1
 ㄹ지어다	EF:1
 라그랑쥬	NNP:2
@@ -1388,7 +1388,7 @@ ha	SW:5
 막아서	VV:1
 미닫이	NNG:2
 출소자	NNG:1
-kG	SW:1
+kG	SL:1
 잦아들	VV:14
 살람	NNG:8
 지혈증	NNG:10
@@ -1403,8 +1403,8 @@ kG	SW:1
 시행령	NNG:16
 흥청대	VV:4
 포도상	NNG:1
-kg	SW:47
-km	SW:33
+kg	SL:47
+km	SL:33
 낭자머리	NNG:1
 로오스트테드	NNP:1
 방구리	NNG:1
@@ -1430,9 +1430,9 @@ km	SW:33
 태식	NNP:26	NNG:3
 가와시마	NNP:4
 강태진	NNP:1
-mm	SW:8
+mm	SL:8
 냐느니	EC:1
-mv	SW:2
+mv	SL:2
 진달래산	NNP:1
 들러붙	VV:4
 쉐라톤워커힐호텔	NNP:4
@@ -15604,7 +15604,7 @@ mv	SW:2
 미이라	NNG:9
 폭풍	NNG:11
 스티브포브스	NNP:1
-Mbps	SW:8
+Mbps	SL:8
 풍성	XR:36
 거리끼	VV:3
 전북도	NNP:2
@@ -39336,7 +39336,7 @@ Mbps	SW:8
 초등학교	NNG:88
 리까	EF:1
 시카고	NNP:16
-MHz	SW:3
+MHz	SL:3
 난나슈엔	NNP:1
 지반	NNG:9
 눈웃음	NNG:4
@@ -40582,7 +40582,7 @@ MHz	SW:3
 지점	NNG:112
 제삼국	NNG:1
 지정	NNG:192
-PPM	SW:4
+PPM	SL:4
 뿌리박	VV:7
 진작	MAG:44	NNG:13
 진자	NNG:1
@@ -47929,7 +47929,7 @@ PPM	SW:4
 미몽	NNG:1
 밭둑	NNG:2
 백동	NNG:1
-bps	SW:27
+bps	SL:27
 수용품	NNG:1
 묘혈	NNG:1
 바랑	NNG:7
@@ -51365,7 +51365,7 @@ bps	SW:27
 가속	NNG:101
 클렌징	NNG:1
 게나	EF:4
-Kbps	SW:4
+Kbps	SL:4
 별말	NNG:2
 백양나무	NNG:1
 초속	NNG:2
@@ -52118,7 +52118,7 @@ Kbps	SW:4
 갱생	NNG:5
 브레이크	NNG:12
 백태	NNG:1
-kHz	SW:1
+kHz	SL:1
 하버마스	NNP:1
 재종조부	NNG:1
 번외	NNG:2
