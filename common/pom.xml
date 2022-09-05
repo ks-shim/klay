@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.github.ks-shim.klay</groupId>
         <artifactId>klay</artifactId>
-        <version>0.3.4</version>
+        <version>0.3.5</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
