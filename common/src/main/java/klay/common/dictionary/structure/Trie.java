@@ -191,7 +191,7 @@ public abstract class Trie<T> {
 
         int i = from;
         int lastIndex = 0;
-        for (; i <= key.length() - 1; i++) {
+        for (; i < key.length() - 1; i++) {
             Character ch = Character.toLowerCase(e.next());
             w = now.getCmd(ch);
             if (w >= 0) {
@@ -205,7 +205,7 @@ public abstract class Trie<T> {
                 return new TrieResult(last, from, lastIndex+1);
             }
         }
-        w = now.getCmd(e.next());
+        w = now.getCmd(Character.toLowerCase(e.next()));
         if(w >= 0) lastIndex = i;
         return new TrieResult((w >= 0) ? cmds.get(w) : last, from, lastIndex+1);
     }
