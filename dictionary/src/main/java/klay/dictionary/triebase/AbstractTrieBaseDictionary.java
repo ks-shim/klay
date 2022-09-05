@@ -64,5 +64,7 @@ public abstract class AbstractTrieBaseDictionary<T> implements Dictionary {
 
     protected abstract Trie<T> loadBinary(DictionaryBinarySource source) throws Exception;
 
-
+    public void addWordAndPos(String word, String pos, double score) throws Exception {
+        throw new UnsupportedOperationException();
+    }
 }

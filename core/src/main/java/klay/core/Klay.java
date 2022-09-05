@@ -1,5 +1,6 @@
 package klay.core;
 
+import klay.common.pos.Pos;
 import klay.core.morphology.analysis.Morph;
 import klay.core.morphology.analysis.Morphs;
 import klay.core.morphology.analysis.rule.*;
@@ -19,6 +20,10 @@ import klay.dictionary.triebase.user.FWDUserTrieBaseDictionary;
 import klay.dictionary.triebase.user.UserTrieBaseDictionary;
 import org.apache.commons.lang3.time.StopWatch;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -117,15 +122,27 @@ public class Klay {
     }
 
     private ChainedAnalysisRule buildAnalysisRule() throws Exception {
+        //-----------------------------------------------------------------------------
+        // 1. create emission dictionary
+        //-----------------------------------------------------------------------------
+        // 1-1. load emission dictionary
         DictionaryBinarySource emissionSource =
                 new DictionaryBinarySource(Paths.get(config.getProperty("dictionary.emission.path")));
         EmissionTrieBaseDictionary emissionDictionary = new EmissionTrieBaseDictionary(emissionSource);
+        // 1-2. add user-dic to emission dictionary
+        addUserDicToEmissionTrie(emissionDictionary);
 
+        //-----------------------------------------------------------------------------
+        // 2. create fwd-user dictionary
+        //-----------------------------------------------------------------------------
         DictionaryTextSource fwdSource =
                 new DictionaryTextSource(Paths.get(config.getProperty("dictionary.fwd.path")));
         FWDUserTrieBaseDictionary fwdDictionary = new FWDUserTrieBaseDictionary(fwdSource);
 
+        //-----------------------------------------------------------------------------
+        // 3. create rules
         // CanSkipRule --> FWDRule --> AllPossibleCandidateRule --> NARule
+        //-----------------------------------------------------------------------------
         return new CanSkipRule(transitionDictionary,
                 new FWDRule(fwdDictionary, transitionDictionary,
                         new AllPossibleCandidatesRule(emissionDictionary, transitionDictionary,
@@ -133,6 +150,32 @@ public class Klay {
                         )
                 )
         );
+    }
+
+    private void addUserDicToEmissionTrie(EmissionTrieBaseDictionary emissionDictionary) throws Exception {
+        try (BufferedReader in = new BufferedReader(
+                new InputStreamReader(
+                        new FileInputStream(config.getProperty("dictionary.user.path")), StandardCharsets.UTF_8))) {
+
+            String line = null;
+            while((line = in.readLine()) != null) {
+                line = line.trim();
+                if(line.isEmpty() || line.startsWith("#")) continue;
+
+                String word;
+                String pos;
+                int tabIndex = line.lastIndexOf('\t');
+                if(tabIndex < 0) {
+                    word = line;
+                    pos = Pos.NNP.label();
+                } else {
+                    word = line.substring(0, tabIndex);
+                    pos = line.substring(tabIndex + 1);
+                }
+
+                emissionDictionary.addWordAndPos(word.toLowerCase(), pos, 1.0);
+            }
+        }
     }
 
     public Morphs doKlay(CharSequence text) {

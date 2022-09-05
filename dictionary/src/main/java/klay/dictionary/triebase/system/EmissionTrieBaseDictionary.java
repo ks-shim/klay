@@ -6,6 +6,7 @@ import klay.dictionary.exception.DataFormatException;
 import klay.dictionary.param.DictionaryBinarySource;
 import klay.dictionary.param.DictionaryTextSource;
 import klay.dictionary.triebase.AbstractTrieBaseDictionary;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -24,6 +25,17 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary<Item[
 
     public EmissionTrieBaseDictionary(DictionaryBinarySource source) throws Exception {
         super(source);
+    }
+
+    @Override
+    public void addWordAndPos(String word, String pos, double score) throws Exception {
+        if(StringUtils.isBlank(word) || StringUtils.isBlank(pos)) return;
+
+        CharSequence morph = JasoParser.parseAsString(word);
+        Item item = new Item(1);
+        item.setScore(score);
+        item.addItemAt(0, new ItemData(word, pos));
+        trie.add(morph, new Item[]{item});
     }
 
     @Override
@@ -75,6 +87,16 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary<Item[
     //*********************************************************************************************************
     // validateAndReformForWord method related ...
     //*********************************************************************************************************
+    private Item[] validateAndReformForWord(String pos,
+                                            CharSequence word,
+                                            double score) throws DataFormatException {
+
+        Item item = new Item(1);
+        item.setScore(score);
+        item.addItemAt(0, new ItemData(word, pos));
+        return new Item[]{item};
+    }
+
     private Item[] validateAndReformForWord(String data,
                                             CharSequence word,
                                             List<Item> itemList,
