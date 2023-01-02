@@ -107,7 +107,7 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary<Item[
             String[] values = poses[i].trim().split(":");
 
             if(values.length != 2 || values[0].isEmpty() || values[1].isEmpty()) throw new DataFormatException();
-            String pos = values[0];
+            String pos = values[0].toUpperCase();
             double score = changeProbability(pos, values[1], posFreqMap);
 
             Item item = new Item(1);
@@ -124,8 +124,7 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary<Item[
                                      Map<CharSequence, Integer> posFreqMap) {
         Integer freq = Integer.parseInt(freqStr);
         Integer totalFreq = posFreqMap.get(pos);
-        double score = Math.log10((double)freq/(double)totalFreq);
-        return score;
+        return Math.log10((double) freq / (double) totalFreq);
     }
 
     //*********************************************************************************************************
