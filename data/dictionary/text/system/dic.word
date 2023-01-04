@@ -72114,7 +72114,7 @@ IPAL계산기용일본어기본사서	NNP:1
 곤법	NNG:1
 공명	NNP:4	NNG:79	XR:37
 구개	NNG:13
-골반	NNG:119
+골반	NNG:300
 춘월	NNP:1
 겅정	MAG:4
 결신	NNG:26
@@ -165560,3 +165560,5 @@ WGBH­TV	NNP:2
 차가움	NNG:3
 갈낙탕	NNG:1
 는고나	EF:1
+유튜버	NNG:300
+유투버	NNG:300
