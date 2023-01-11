@@ -39,6 +39,7 @@ public abstract class AbstractMorphSequence implements MorphSequence {
         if(transitionMap == null || (transitionScore = transitionMap.get(first().getPos())) == null) transitionScore = -10.0;
 
         double newTotalScore = newPreviousMSeq.score() + transitionScore + emissionScore;
+        //System.out.println(newPreviousMSeq.first() + " - " + newPreviousMSeq.last() + " -> " + first() + " : " + newPreviousMSeq.score() + " : " + transitionScore + " : " + emissionScore + " : " + newTotalScore);
         if(newTotalScore < score && hasHPreviousMSeq()) return;
 
         //System.out.println(newPreviousMSeq.first() + " - " + newPreviousMSeq.last() + " -> " + first() + " : " + newPreviousMSeq.score() + " : " + transitionScore + " : " + emissionScore + " : " + newTotalScore);
