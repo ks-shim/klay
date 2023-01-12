@@ -8220,7 +8220,6 @@ Na2CO3	NNG:1
 장호준	NNP:1
 숙박인	NNG:1
 샘플	NNG:55
-남자친구	NNG:3
 솔빈	NNG:3
 솟보	VV:3
 사정권	NNG:1
@@ -29612,6 +29611,7 @@ W.K.김	NNP:2
 여관촌	NNG:1
 얌차	NNG:1
 오링	NNG:15
+오리엔탈	NNG:300
 레	NNP:10	NA:1	JKS:1	NNG:19
 렌	NNP:5	NNG:3
 오리	VV:108	NNG:164
@@ -30051,7 +30051,7 @@ W.K.김	NNP:2
 어줍	VA:4
 토론토대학	NNP:2
 스크푸	NNP:1
-마	VV:4	EF:77	NNP:81	VX:11	MAG:8	NNB:18	NNG:103	IC:40	EC:22
+마	EF:77	NNP:81	VX:11	MAG:8	NNB:18	NNG:103	IC:40	EC:22
 김하인	NNP:1
 레코드판	NNG:7
 막	VV:2106	MAG:4749	NNB:67	NNG:391
@@ -34209,7 +34209,6 @@ A사	MAG:1
 와중	NNG:204
 명진출판	NNP:1
 벽암선사	NNP:1
-쫌	MAG:1	XSN:1	NNG:1
 베어스	NNP:2
 쫏	MAG:4
 원래	MAG:649	NNG:1304
@@ -36614,7 +36613,7 @@ BK-44	NNG:1
 핍	NNP:2	NNG:2
 성범죄	NNG:15
 동교리	NNP:1
-핏	NNP:1
+핏	NNG:300
 원수	NNG:303
 완파	NNG:14
 타지인	NNG:1
@@ -67622,7 +67621,6 @@ TASS통신사	NNP:1
 건들	VV:6	MAG:2	NNG:1
 경감	NNG:70
 이웃집	NNG:148
-쳐지	VV:10
 게눈	NNG:4
 경개	NNP:1	NNG:3
 각신	NNG:1
@@ -103469,7 +103467,7 @@ SBC그룹	NNP:1
 품격	NNG:42
 대밭	NNG:43
 애처럽	VA:1
-물방울	NNP:1	NNG:96
+물방울	NNG:96
 중저준위	NNG:2
 기울기울	MAG:1
 몰겨들	VV:1
