@@ -1,6 +1,7 @@
 package klay.dictionary.triebase.system;
 
 import klay.common.dictionary.structure.*;
+import klay.common.dictionary.structure.merger.ItemArrayCmdMerger;
 import klay.common.parser.JasoParser;
 import klay.dictionary.exception.DataFormatException;
 import klay.dictionary.param.DictionaryBinarySource;
@@ -49,6 +50,8 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary<Item[
     private void loadText(Trie<Item[]> trie,
                           DictionaryTextSource source) throws Exception {
 
+        ItemArrayCmdMerger cmdMerger = new ItemArrayCmdMerger();
+
         try (BufferedReader in = new BufferedReader(
                 new InputStreamReader(
                         Files.newInputStream(source.getFilePath()), source.getCharSet()))) {
@@ -69,7 +72,8 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary<Item[
                 Item[] data = (source.getDictionaryType() == DictionaryTextSource.DictionaryType.DIC_WORD) ?
                         validateAndReformForWord(line.substring(tabIndex+1), word, itemList, source.getPosFreqMap()) :
                         validateAndReformForIrregular(line.substring(tabIndex+1), itemList, itemDataList, trie, source.getTransitionMap());
-                trie.addIfNotExist(morph, data);
+
+                trie.append(morph, data, cmdMerger);
             }
         }
     }

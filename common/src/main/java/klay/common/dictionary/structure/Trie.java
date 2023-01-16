@@ -1,6 +1,7 @@
 package klay.common.dictionary.structure;
 
-import java.io.DataInput;
+import klay.common.dictionary.structure.merger.CmdMerger;
+
 import java.io.DataOutput;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -225,20 +226,7 @@ public abstract class Trie<T> {
 
     public abstract void store(DataOutput os) throws IOException;
 
-    /**
-     * Add the given key associated with the given patch command. If either
-     * parameter is null this method will return without executing.
-     *
-     * @param key the key
-     * @param cmd the patch command
-     */
-    protected void add(CharSequence key, T cmd, boolean addIfNotExist) {
-
-        int id_cmd = cmds.indexOf(cmd);
-        if (id_cmd == -1) {
-            id_cmd = cmds.size();
-            cmds.add(cmd);
-        }
+    public void append(CharSequence key, T cmd, CmdMerger<T> cmdMerger) {
 
         int node = root;
         Row r = getRow(node);
@@ -259,8 +247,59 @@ public abstract class Trie<T> {
             }
         }
 
-        if(addIfNotExist) r.setCmdIfNotExist(e.next(), id_cmd);
-        else r.setCmd(e.next(), id_cmd);
+        char lastCh = e.next();
+        int preCmdIndex = r.getCmd(lastCh);
+        if(preCmdIndex < 0) {
+            int cmdIndex = _putCmd(cmd);
+            r.setCmd(lastCh, cmdIndex);
+        } else {
+            T preCmd = cmds.get(preCmdIndex);
+            T mergedCmd = cmdMerger.merge(preCmd, cmd);
+            cmds.set(preCmdIndex, mergedCmd);
+        }
+    }
+
+    private int _putCmd(T cmd) {
+        int cmdIndex = cmds.indexOf(cmd);
+        if (cmdIndex == -1) {
+            cmdIndex = cmds.size();
+            cmds.add(cmd);
+        }
+        return cmdIndex;
+    }
+
+    /**
+     * Add the given key associated with the given patch command. If either
+     * parameter is null this method will return without executing.
+     *
+     * @param key the key
+     * @param cmd the patch command
+     */
+    protected void add(CharSequence key, T cmd, boolean addIfNotExist) {
+
+        int node = root;
+        Row r = getRow(node);
+
+        StrEnum e = new StrEnum(key, forward);
+
+        for (int i = 0; i < e.length() - 1; i++) {
+            Character ch = e.next();
+            node = r.getRef(ch);
+            if (node >= 0) {
+                r = getRow(node);
+            } else {
+                node = rows.size();
+                Row n;
+                rows.add(n = new Row());
+                r.setRef(ch, node);
+                r = n;
+            }
+        }
+
+        char lastCh = e.next();
+        int cmdIndex = _putCmd(cmd);
+        if(addIfNotExist) r.setCmdIfNotExist(lastCh, cmdIndex);
+        else r.setCmd(lastCh, cmdIndex);
     }
 
     public void add(CharSequence key, T cmd) {
