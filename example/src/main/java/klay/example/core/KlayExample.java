@@ -24,7 +24,7 @@ public class KlayExample {
         //***********************************************************************
         // 2. start morphological analysis.
         //***********************************************************************
-        String text = "뱅글도 따로 해도 이쁘고";
+        String text = "집에 안 가는";
 
         StopWatch watch = new StopWatch();
         watch.start();
