@@ -24,7 +24,7 @@ public class KlayExample {
         //***********************************************************************
         // 2. start morphological analysis.
         //***********************************************************************
-        String text = "집에 안 가는";
+        String text = "봄 여름 가을 겨울 바지 셔츠 정장 자켓 티셔츠 팬츠 아우터";
 
         StopWatch watch = new StopWatch();
         watch.start();

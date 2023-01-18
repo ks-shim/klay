@@ -160,6 +160,7 @@ public class EmissionTrieBaseDictionary extends AbstractTrieBaseDictionary<Item[
             double score = scoreForIrregular(pos, itemDataList, trie, transitionMap);
 
             Item item = new Item(itemDataList);
+            item.setScore(score);
             itemList.add(item);
         }
 
